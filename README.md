@@ -4,9 +4,9 @@ Forked from Raven coin Updated to use Equihash
 -------
 ### Screenshots
 #### Pool Stats<br />
-![Home](https://github.com/49handyman/EasyEquihashNomp/blob/main/docs/screenshots/EasyEquihashNomp-1.PNG)
+![Home](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-1.PNG)
 #### Block Explorer<br />
-![Block Explorer](https://github.com/49handyman/EasyEquihashNomp/blob/main/docs/screenshots/EasyEquihashNomp-3.PNG)<br /><br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-3.PNG)<br /><br />
 
 -------
 ### Node Open Mining Portal consists of 3 main modules:
@@ -33,7 +33,7 @@ Forked from Raven coin Updated to use Equihash
 
     sudo apt install git -y
     cd ~
-    git clone https://github.com/49handyman/EasyEquihashNomp.git
+    git clone https://github.com/49handyman/equihashnomppool.git
     cd EasyEquihashNomp/
     npm install
     npm start
@@ -43,7 +43,7 @@ Forked from Raven coin Updated to use Equihash
 
 Change "stratumHost": "192.168.0.200", to your IP or DNS in file config.json:
 
-    cd ~/EasyEquihashNomp
+    cd ~/equihashnomppool
     nano config.json
 
 ```javascript
@@ -202,7 +202,7 @@ Change "stratumHost": "192.168.0.200", to your IP or DNS in file config.json:
 
 Change "address": "RKopFydExeQXSZZiSTtg66sRAWvMzFReUj", to your pool created wallet address in file KMD.json:
 
-    cd ~/EasyEquihash/pool_configs/KMD.json
+    cd ~/equihashnomppool/pool_configs/KMD.json
 
 ```javascript
 {
@@ -290,7 +290,7 @@ Change "address": "RKopFydExeQXSZZiSTtg66sRAWvMzFReUj", to your pool created wal
 
 ### Run Pool
     
-    cd ~/EasyEquihashNomp
+    cd ~/equihashnomppool
     npm start
 
 ### Donates for developers easyNOMP
@@ -303,4 +303,4 @@ LTC: LX1fUwLVcAaRXvP67ZcqUvjjteaKx1nAvL
 ETH/ERC20: 0x52fD0B6847E1D3cEc5600359f24d671FdE2Bc65B
     
 -------
-# EasyEquihashNomp
+# equihashnomppool
