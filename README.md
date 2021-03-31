@@ -1,4 +1,4 @@
-# EasyEquihashNomp
+# equihashnomppool
 Forked from Raven coin Updated to use Equihash
 
 -------
