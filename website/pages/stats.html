@@ -1,0 +1,76 @@
+<style>
+
+    #topCharts{
+        padding: 18px;
+    }
+
+    #topCharts > div > div > svg{
+        display: block;
+        height: 280px;
+    }
+
+    .chartWrapper{
+        border: solid 1px #c7c7c7;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 18px;
+    }
+
+    .chartLabel{
+        font-size: 1.2em;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .chartHolder{
+
+    }
+
+</style>
+
+<div class="container-fluid">
+	<div class="row">
+    	<div class="col-md-6 chartWrapper">
+        	<div class="chartLabel">Top 5 Pool Workers</div>
+        	<div class="chartHolder"><canvas id="workerChart" height="100px"></canvas></div>
+    	</div>
+
+    	<div class="col-md-6 chartWrapper">
+        	<div class="chartLabel">Top 5 Pool Hashrates (MH/s)</div>
+            <div class="chartHolder"><canvas id="hashChart" height="100px"></canvas></div>
+    	</div>
+    </div>
+	<div class="row">
+    	<div class="col-md-12 chartWrapper">
+        	<div class="chartLabel">Top 5 Blocks Pending Per Pool</div>
+        	<div class="chartHolder"><canvas id="blockChart" height="200px"></canvas></div>
+    	</div>
+	</div>
+</div>
+
+
+
+<script>
+    document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stats.js';
+</script>
+<script>
+    $(function() {
+        statsSource.addEventListener('message', function (e) {
+            var stats = JSON.parse(e.data);
+            for (var pool in stats.pools) {
+				$('#statsMiners' + pool).text(stats.pools[pool].minerCount);
+                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+                $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
+				$('#statsHashrateAvg' + pool).text(getReadableHashRateString(calculateAverageHashrate(pool)));
+				$('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
+				$('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
+				$('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
+				$('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
+				$('#statsNetworkDiff' + pool).text(stats.pools[pool].poolStats.networkDiff);
+				$('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats.networkSols));
+				$('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
+            }
+        });
+    });
+</script>
+

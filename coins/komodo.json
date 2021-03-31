@@ -1,0 +1,19 @@
+{
+  "name": "komodo",
+  "symbol": "kmd",
+  "algorithm": "equihash",
+  "txfee": 0.00005,
+  "getMarketStats": true,
+  "peerMagic": "f9eee48d",
+  "sapling": true,
+
+   "explorer":"https://kmdexplorer.io/",
+    
+    "explorerGetBlockJSON": "http://kmdexplorer.io/api/getrawtransaction?decrypt=1&txid=",
+    "explorerGetBlock": "https://kmdexplorer.io/block/",
+    "explorerGetTX": "https://kmdexplorer.io/tx/",
+    
+    "blockTime": 60,
+    "blockChange": 1
+
+}

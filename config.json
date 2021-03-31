@@ -1,0 +1,149 @@
+{
+    
+    "poolname": "Entrust Equihash Private Pool",
+    
+    "devmode": false,
+    "devmodePayMinimim": 0.25,
+    "devmodePayInterval": 120,
+    "marketStats": true,
+    "logips": true,       
+    "anonymizeips": true,
+    "ipv4bits": 16,
+    "ipv6bits": 16,
+    "poolwarningmsg": "",
+    "defaultCoin": "komodo",
+    "poollogo": "/static/icons/entrustcircle-circuit.png",
+    "discordtwitterfacebook": "Private Mining Pool",
+    "pagetitle": "Entrust Computer Mining Pool - Nonprofit Charity",
+    "pageauthor": "Support...",
+    "pagedesc": "Entrust Computer Technology Center Crypto Mining Project",
+    "pagekeywds": "ASIC,CPU,Hash,Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
+
+    "btcdonations": "",
+    "ltcdonations": "",
+    "ethdonations": "",
+    "xmrdonations": "",
+
+    "logger" : {
+        "level" : "debug",
+        "file" : "logs/nomp_debug.log"
+    },
+
+    "cliHost": "127.0.0.1",
+    "cliPort": 17119,
+
+    "clustering": {
+        "enabled": true,
+        "forks": "auto"
+    },
+
+    "defaultPoolConfigs": {
+        "blockRefreshInterval": 0,
+        "jobRebroadcastTimeout": 55,
+        "connectionTimeout": 1600,
+        "emitInvalidBlockHashes": true,
+        "validateWorkerUsername": false,
+        "tcpProxyProtocol": false,
+        "banning": {
+            "enabled": true,
+            "time": 1200,
+            "invalidPercent": 50,
+            "checkThreshold": 500,
+            "purgeInterval": 300
+        },
+        "redis": {
+            "host": "127.0.0.1",
+            "port": 6379
+        },
+	 "poolHex": "706f6f6c2e656e747275737475732e6f7267"
+    },
+
+    "website": {
+        "enabled": true,
+        "sslenabled": false,
+        "sslforced": false,
+        "host": "0.0.0.0",
+        "port": 8082,
+        "sslport": 743,
+        "sslkey": "certs/privkey.pem",
+        "sslcert": "certs/fullchain.pem",
+        "stratumHost": "pool.entrustus.org",
+        "stats": {
+            "updateInterval": 5,
+            "historicalRetention": 14400,
+            "hashrateWindow": 300
+        },
+        "adminCenter": {
+            "enabled": false,
+            "password": "NOT_WORKING_YET_:P_LESHACAT_CAN_DO_ADMIN_PANEL_FUNCTIONALITY_TOO"
+        }
+    },
+
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379
+    },
+
+    "switching": {
+        "Equihash": {
+            "enabled": false,
+            "algorithm": "equihash",
+            "ports": {
+                "3333": {
+                    "diff": 1000,
+                    "varDiff": {
+                        "minDiff": 700,
+                        "maxDiff": 99999,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            }
+        },
+        "switch2": {
+            "enabled": false,
+            "algorithm": "scrypt",
+            "ports": {
+                "4444": {
+                    "diff": 10,
+                    "varDiff": {
+                        "minDiff": 16,
+                        "maxDiff": 512,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            }
+        },
+        "switch3": {
+            "enabled": false,
+            "algorithm": "x11",
+            "ports": {
+                "5555": {
+                    "diff": 0.001,
+                    "varDiff": {
+                        "minDiff": 0.001,
+                        "maxDiff": 1, 
+                        "targetTime": 15, 
+                        "retargetTime": 60, 
+                        "variancePercent": 30 
+                    }
+                }
+            }
+        }
+    },
+
+    "profitSwitch": {
+        "enabled": false,
+        "updateInterval": 60,
+        "depth": 0.90,
+        "usePoloniex": false,
+        "useCryptsy": false,
+        "useMintpal": false,
+        "useBittrex": false,
+        "useBittrex": false
+    }
+
+}

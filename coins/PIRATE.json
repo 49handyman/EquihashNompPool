@@ -1,0 +1,22 @@
+{
+"name": "arrr",
+"symbol": "arrr",
+"algorithm": "equihash",
+"txfee": 0.0001,
+"getMarketStats": true,
+"peerMagic": "58e0b617",
+"disablecb": "false",
+"requireShielding": "false",
+"privateChain": "tue",
+  "sapling": true,
+
+   "explorer":"https://explorer.pirate.black/",
+
+    "explorerGetBlockJSON": "https://explorer.pirate.black/api/getrawtransaction?decrypt=1&txid=",
+    "explorerGetBlock": "https://explorer.pirate.black/block/",
+    "explorerGetTX": "https://explorer.pirate.black/tx/",
+
+    "blockTime": 60,
+    "blockChange": 1
+
+}
