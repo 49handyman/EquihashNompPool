@@ -63,7 +63,8 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
 	 poolSize: 0,
 	 currRoundPoolShares: 0,
 	 invalidShares: 0,
-		miners: {}
+		miners: {},
+blocksFound: null
 	};
 	$.getJSON('/api/stats', function(data) {
     for (var p in data.pools) {
@@ -77,7 +78,8 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
             hashrate: [],
             validShares: data.pools[p].workers[w].shares,
             currRoundShares: data.pools[p].workers[w].currRoundShares,
-            invalidShares: data.pools[p].workers[w].invalidshares
+            invalidShares: data.pools[p].workers[w].invalidshares,
+blocksFound: data.pools[p].blocks.blocksFound[w]
           });
           account.invalidShares += data.pools[p].workers[w].invalidshares;
           account.currRoundShares += data.pools[p].workers[w].currRoundShares;
@@ -105,10 +107,12 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
         hashrate: [],
         validShares: 0,
         currRoundShares: 0,
-        invalidShares: 0
+        invalidShares: 0,
+blocksFound:  data.pools[account.pool].blocks.blocksFound[w]
       });
       for (var wh in workerData.history[w]) {
         a.hashrate.push([workerData.history[w][wh].time * 1000, workerData.history[w][wh].hashrate]);
+        a.hashrate.push([workerData.history[w][wh].time * 1000, workerData.history[w][wh].blocksFound]);
       }
     }
     var key = 'w_' + address;

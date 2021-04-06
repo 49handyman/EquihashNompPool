@@ -125,7 +125,6 @@
             </nav>
         </header>
         <style>
-            
             #wrapper {
                 padding-left: 40px;
                 -webkit-transition: all 0.5s ease;
@@ -161,12 +160,15 @@
                 width: 100%;
                 position: absolute;
                 padding: 15px;
+		text-decoration: text-light
+		text-color text-light
             }
 
             #wrapper.toggled #page-content-wrapper {
                 position: absolute;
                 margin-right: -250px;
             }
+
 
 
             /* Sidebar Styles */
@@ -224,7 +226,16 @@
               padding-left: 7.5px;
               padding-right: 7.5px;
             }
+.table {
+color: #999;
+ background-color:#22272e;
+}
 
+	body {
+	line-height: 1.1;
+	background-color: #2d333b;
+	color: #ddd;
+	}
             @media(min-width:768px) {
                 #wrapper {
                     padding-left: 40px;
@@ -249,15 +260,14 @@
             }
             footer{
                 text-align: center;
-                color: #b3b3b3;
-                text-decoration: none;
+                text-decoration: text-light;
                 font-size: 0.8em;
                 padding: 15px;
                 line-height: 24px;
+		background-color:#22272e;
             }
 
             footer a{
-                color: #1AC4BA;
                 text-decoration: none;
             }
 
@@ -317,7 +327,7 @@
                 				{{ total += rewardRecipients[r]; }}
                 			{{ } }}                       
                         
-            			     <a class="bg-dark text-light pl-3" href="/stats/{{=it.stats.pools[pool].name}}">&nbsp;&nbsp;<img src="/static/icons/{{=it.stats.pools[pool].name}}.png" style="height: 24px;" alt="icon" /> {{=it.stats.pools[pool].name.charAt(0).toUpperCase() + it.stats.pools[pool].name.slice(1)}} ({{=total}}% fee)</a>
+            			     <a class=" pl-3" href="/stats/{{=it.stats.pools[pool].name}}">&nbsp;&nbsp;<img src="/static/icons/{{=it.stats.pools[pool].name}}.png" style="height: 24px;" alt="icon" /> {{=it.stats.pools[pool].name.charAt(0).toUpperCase() + it.stats.pools[pool].name.slice(1)}} ({{=total}}% fee)</a>
             			     
             			</li>
                         {{ } }}
@@ -398,8 +408,8 @@
         
 
             <!-- Page Content -->
-            <div class="page-content-wrapper px-0">
-                <div class="container-fluid px-0 pt-4">
+            <div class="page-content-wrapper px-0 ">
+                <div class="container-fluid px-0 pt-4 bg-blue">
 			<div style="position:relative;float:middle;display:block;top:16px;">
 			{{ if (it.portalConfig.devmode) { }}
                         	<span style="display:block;height: 15px;">
@@ -427,7 +437,7 @@
 		<br />
 		<br />
 
-                    <span>Forked by <a href="https://github.com/49handyman/EasyEquihashNomp" >Entrust Computer Technology Center</a></span>
+                    <span>Forked by <a href="https://github.com/49handyman/EquihashNompPool" >Entrust Computer Technology Center</a></span>
                <div id="communityFooter">
                </div>
 					

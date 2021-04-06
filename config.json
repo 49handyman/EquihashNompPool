@@ -1,20 +1,20 @@
 {
     
-    "poolname": "Entrust Equihash Private Pool",
+    "poolname": "Development Site - Entrust Equihash Private Pool",
     
     "devmode": false,
     "devmodePayMinimim": 0.25,
     "devmodePayInterval": 120,
     "marketStats": true,
-    "logips": true,       
-    "anonymizeips": true,
+    "logips": true,
+    "anonymizeips": false,
     "ipv4bits": 16,
     "ipv6bits": 16,
-    "poolwarningmsg": "",
+    "poolwarningmsg": "Public Alert - Do Not Use this Pool - It will only pay out on KMD Komodo Coin - All other coins stay in pool wallet",
     "defaultCoin": "komodo",
     "poollogo": "/static/icons/entrustcircle-circuit.png",
     "discordtwitterfacebook": "Private Mining Pool",
-    "pagetitle": "Entrust Computer Mining Pool - Nonprofit Charity",
+    "pagetitle": "Dev - Entrust Computer Mining Pool - Nonprofit Charity",
     "pageauthor": "Support...",
     "pagedesc": "Entrust Computer Technology Center Crypto Mining Project",
     "pagekeywds": "ASIC,CPU,Hash,Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
@@ -30,7 +30,7 @@
     },
 
     "cliHost": "127.0.0.1",
-    "cliPort": 17119,
+    "cliPort": 17120,
 
     "clustering": {
         "enabled": true,
@@ -63,7 +63,7 @@
         "sslenabled": false,
         "sslforced": false,
         "host": "0.0.0.0",
-        "port": 8082,
+        "port": 8083,
         "sslport": 743,
         "sslkey": "certs/privkey.pem",
         "sslcert": "certs/fullchain.pem",
@@ -86,7 +86,7 @@
 
     "switching": {
         "Equihash": {
-            "enabled": false,
+            "enabled": true,
             "algorithm": "equihash",
             "ports": {
                 "3333": {
@@ -136,13 +136,12 @@
     },
 
     "profitSwitch": {
-        "enabled": false,
+        "enabled": true,
         "updateInterval": 60,
         "depth": 0.90,
         "usePoloniex": false,
         "useCryptsy": false,
         "useMintpal": false,
-        "useBittrex": false,
         "useBittrex": false
     }
 

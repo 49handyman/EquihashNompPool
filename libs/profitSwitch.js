@@ -79,10 +79,10 @@ module.exports = function(logger){
     );
 
     var bittrexApi =  new Bittrex(
-        // 'd4889c33eb3346ddad775a888adc219e',
-        // '54032ecc4fa64a9a85782bfd7dc76520'
+         'd4889c33eb3346ddad775a888adc219e',
+         '54032ecc4fa64a9a85782bfd7dc76520',
     );
-
+console.log('bittrexApi Called...');
     // 
     // market data collection from Poloniex
     //
@@ -539,6 +539,8 @@ module.exports = function(logger){
     this.getDaemonInfoForCoin = function(symbol, cfg, callback){
         var daemon = new Stratum.daemon.interface([cfg], function(severity, message){
             logger[severity](logSystem, symbol, message);
+
+console.log('getDaemonInfoForCoin called ...',daemon, symbol, cfg, message);
             callback(null); // fail gracefully for each coin
         });
 

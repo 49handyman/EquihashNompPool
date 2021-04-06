@@ -3,12 +3,12 @@ var nonce   = require('nonce');
 
 module.exports = function() {
     'use strict';
-
+//console.log('\u001b[32m apiBittrex.js Called.. \u001b[37m');
     // Module dependencies
 
     // Constants
     var version         = '0.1.0',
-        PUBLIC_API_URL  = 'https://api.bittrex.com/v3/currencies/',
+        PUBLIC_API_URL  = 'https://api.bittrex.com/v3/markets/summaries',
         PRIVATE_API_URL = 'https://api.bittrex.com/v3/market',
         USER_AGENT      = 'nomp/node-open-mining-portal'
 
@@ -24,14 +24,14 @@ var secret = '54032ecc4fa64a9a85782bfd7dc76520'
             if (!key || !secret){
                 throw 'Bittrex: Error. API key and secret required';
             }
-
+console.log('PrivateHeader : ',this._getPrivateHeaders);
             // Sort parameters alphabetically and convert to `arg1=foo&arg2=bar`
             paramString = Object.keys(parameters).sort().map(function(param){
                 return encodeURIComponent(param) + '=' + encodeURIComponent(parameters[param]);
             }).join('&');
 
             signature = crypto.createHmac('sha512', secret).update(paramString).digest('hex');
-
+console.log('\u001b[32mBittrex signature : \u001b[37m',signature);
             return {
                 Key: key,
                 Sign: signature
@@ -63,6 +63,7 @@ var secret = '54032ecc4fa64a9a85782bfd7dc76520'
 
             request(options, function(err, response, body) {
                 callback(err, body);
+console.log('\u001b[36mAPI request called : \u001b[37m', options, err, response, body);
             });
 
             return this;
@@ -75,7 +76,7 @@ var secret = '54032ecc4fa64a9a85782bfd7dc76520'
                 url: PUBLIC_API_URL,
                 qs: parameters
             };
-
+console.log('\u001b[36mAPI request return : \u001b[37m',options,callback);
             return this._request(options, callback);
         },
 
@@ -103,10 +104,10 @@ var secret = '54032ecc4fa64a9a85782bfd7dc76520'
         getTicker: function(callback){
             var options = {
                 method: 'GET',
-                url: PUBLIC_API_URL + '/markets/summaries',
+                url: PUBLIC_API_URL + '/markets/tickers',
                 qs: null
             };
-
+console.log('\u001b[32mgetTicker Results : \u001b[37m',this._request(options, callback));
             return this._request(options, callback);
         },
 
@@ -218,7 +219,8 @@ var secret = '54032ecc4fa64a9a85782bfd7dc76520'
 
             return this._private(parameters, callback);
         }
+// console.log('\u001b[36mreturn Bittex... : \u001b[37m');
     };
-
+// console.log('\u001b[36mreturn Bittex... : \u001b[37m',parameters);
     return Bittrex;
 }();

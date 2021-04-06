@@ -16,18 +16,18 @@ module.exports = {
         if (portalConfig.logips && portalConfig.anonymizeips) {
             
             retval = anonymize(ipaddr, portalConfig.ipv4bits, portalConfig.ipv6bits);
-            logger.silly("ANONIP>TRUE> before [%s] after [%s]", ipaddr, retval);
+//            logger.silly("ANONIP>TRUE> before [%s] after [%s]", ipaddr, retval);
             
         }
         else if (!(portalConfig.logips)) {
             
             retval = "AnOnYmOuS!";
-            logger.debug("ANONIP>FULL> ipaddr [%s]", retval);
+//            logger.debug("ANONIP>FULL> ipaddr [%s]", retval);
             
         }
         else {
             
-            logger.debug("ANONIP>FALSE> ipaddr [%s]", retval);            
+  //          logger.debug("ANONIP>FALSE> ipaddr [%s]", retval);            
             
         }
         

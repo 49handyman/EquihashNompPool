@@ -2,8 +2,9 @@
 
   .chartLabel {
     text-align: center;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 300;
+    
   }
   .chartHolder {
     min-height: 300px;
@@ -25,7 +26,7 @@
         <tbody>
             {{ for(var pool in it.stats.pools) { }}
               {{ if(pool !== it.stats.coin) continue; }}
-              <tr>
+      	<tr>
                 <td style="text-align:center;vertical-align: middle;">Coin: </td>
                 <th style="text-align:center;vertical-align: middle;"><img src="/static/icons/{{=String(it.stats.coin)}}.png" alt="icon" style="height: 24px;" /> {{=(String(it.stats.coin).charAt(0).toUpperCase() + String(it.stats.coin).slice(1))}}</th>
                 <td style="text-align:center;vertical-align: middle;">Symbol:</td>
@@ -34,13 +35,12 @@
                 <th id="poolHashRate" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].hashrateString}}</th>
                 <td style="text-align:center;vertical-align: middle;">Pending Blocks:</td>
                 <th id="pendingBlocks" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].blocks.pending || 0}}</th>
-
                 <td style="text-align:center;vertical-align: middle;">Hashrate:</td>
                 <th id="networkHashRate" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].poolStats.networkSolsString}}</th>
                 <td style="text-align:center;vertical-align: middle;">Height:</td>
                 <th id="networkBlocks"  style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].poolStats.networkBlocks}}</th>
-              <tr>
-              <tr>
+       	</tr>
+       	<tr>
                 <td style="text-align:center;vertical-align: middle;">Ports:</td>
                 {{ for(var pool in it.poolsConfigs) { }}
                   {{ if(pool !== it.stats.coin) continue; }}
@@ -62,66 +62,77 @@
                 {{ var changeblocks = ((blockchange) - (blockheight % blockchange)) || 0; }}
 		<td style="text-align:center;vertical-align: middle;">Blocktime:</td>
 		<th colspan='1' style="text-align:center;vertical-align: middle;">{{=blocktime}}</th>
-                </tr>
-
+       	</tr>
 		{{ var sortedPools = Object.keys(it.stats.pools); }}
   		{{ sortedPools.sort(function(a, b) { return a.workerCount - b.workerCount; }); }}
-		<tr>
-                 <td style="text-align:center;vertical-align: middle;">Workers:</td>
-                  <th id="poolWorkers" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].workerCount}}</th>
- 
-                <td style="text-align:center;">Pool Paid Out:</td>
+	<tr>
+                <td style="text-align:center;vertical-align: middle;">Workers:</td>
+                <th id="poolWorkers" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].workerCount}}</th>
+                <td style="text-align:center;vertical-align: middle;">Pool Paid Out:</td>
 		{{ var totalPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}').toFixed(2);}}
-                <th style="text-align:center;">{{=totalPaid}} {{=it.stats.pools[pool].symbol}}</th>
-                <td style="text-align:center;">Last Paid Blk:</td>
-		{{ var BlockFound = it.stats.pools[pool].confirmed.blocks[0].split(':') || 0;}}
-		{{ var BlockFoundHeight = it.stats.pools[pool].confirmed.blocks[0].split(':')[2] || 0;}}
-		<th style="text-align:center;"><a href="{{=it.stats.pools[pool].explorerGetBlock + it.stats.pools[pool].confirmed.blocks[0].split(':')[0] }}" target="_blank">{{=BlockFoundHeight}}</a></th>
-
- 		<td style="text-align:center;">Miner Paid:</td>
+                <th style="text-align:center;"vertical-align: middle;>{{=totalPaid}} {{=it.stats.pools[pool].symbol}}</th>
+                <td style="text-align:center;vertical-align: middle;">Last Paid Blk:</td>
+		<th id="blockFound" style="text-align:center;vertical-align: middle;"></th>
+ 		<td style="text-align:center;vertical-align: middle;">Miner Paid:</td>
 		{{var lastPayment = parseFloat('{{=it.stats.pools[pool].payments[0]}}').toFixed(5);}}
-                <th id="lastBlockAmt" style="text-align:center;">{{=lastPayment}} </th>
+                <th id="lastBlockAmt" style="text-align:center;vertical-align: middle;">{{=lastPayment}} </th>
 
-                <td style="text-align:center;">blank0:</td>
+                <td style="text-align:center;vertical-align: middle;">Our Hash %</td>
 		{{ var tmpPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}').toFixed(2);}}
-                <th style="text-align:center;">calc</th>
-                <td style="text-align:center;">Net Connectons:</td>
-                <th style="text-align:center;">{{=it.stats.pools[pool].poolStats.networkConnections}}</th>
-		</tr>
-
-		<tr>
-		<td style="text-align:center;">Pool Luck:</td>
-		<th id=id="luckDays" style="text-align:center;">{{=it.stats.pools[pool].luckDays || 0}} Days</th>
-		<td style="text-align:center;">Pool Luck:</td>
-                <th id="luckHours" style="text-align:center;">{{=it.stats.pools[pool].luckHours || 0}} Hours</th>
-		{{ var BlockFound = it.stats.pools[pool].blocks.lastBlock[0].split(':') || 0;}}
-		 {{ var BlockFoundHeight = it.stats.pools[pool].blocks.lastBlock[0].split(':')[3] || 0;}}
-                <td style="text-align:center;">Last Block Found:</td>
-		<th id="lastBlockFound" style="text-align:center;"><a href="{{=it.stats.pools[pool].explorerGetBlock + BlockFound[0]}}" target="_blank">{{=BlockFoundHeight}}</a></th>
-		<td style="text-align:center;">Valid Blocks:</td>
-		<th id="validBlocks" style="text-align:center;">{{=it.coin}}</th>
-		<td style="text-align:center;">All Time High:</td>
-		<th id="ath" style="text-align:center;">calc</th>
-                <td style="text-align:center;">24 Hour High:</td>
-                <th id="24h_high" style="text-align:center;"></th>
-		
-		</tr>
-                 <tr>
-		<td style="text-align:center;">Current Price:</td>
-		<th id="priceUsd" style="text-align:center;"></th>
-		<td style="text-align:center;">BTC Exchange Rate:</td>
-		<th id="priceBtc" style="text-align:center;"></th>
-		<td style="text-align:center;">Total Paid:</td>
-		<th id="poolPaidOut" style="text-align:center;"></th>
-		<td style="text-align:center;">blank3:</td>
-                <th id="" style="text-align:center;"></th>
-                <td style="text-align:center;">blank4:</td>
-                <th id="" style="text-align:center;"></th>
-                <td style="text-align:center;">blank5:</td>
-                <th id="" style="text-align:center;"></th>
-		
-		
-                 </tr>
+                <th id="networkPercent" style="text-align:center;vertical-align: middle;"></th>
+                <td style="text-align:center;vertical-align: middle;">Net Connectons:</td>
+                <th style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].poolStats.networkConnections}}</th>
+	</tr>
+	<tr>
+		<td style="text-align:center;vertical-align: middle;">Pool Luck:</td>
+		<th id=id="luckDays" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].luckDays || 0}} Days</th>
+		<td style="text-align:center;vertical-align: middle;">Pool Luck:</td>
+                <th id="luckHours" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].luckHours || 0}} Hours</th>
+                <td style="text-align:center;vertical-align: middle;">Last Block Found:</td>
+		<th id="lastBlockFound" style="text-align:center;vertical-align: middle;"></th>
+		<td style="text-align:center;vertical-align: middle;">Valid Blocks:</td>
+		<th id="validBlocks" style="text-align:center;vertical-align: middle;">{{=it.coin}}</th>
+		<td style="text-align:center;vertical-align: middle;">All Time High:</td>
+		<th id="ath" style="text-align:center;vertical-align: middle;">calc</th>
+                <td style="text-align:center;vertical-align: middle;">24 Hour High:</td>
+                <th id="24h_high" style="text-align:center;vertical-align: middle;"></th>	
+	</tr>
+       	<tr>
+		<td style="text-align:center;vertical-align: middle;">Current Price:</td>
+		<th id="priceUsd" style="text-align:center;vertical-align: middle;"></th>
+		<td style="text-align:center;vertical-align: middle;">BTC Exchange Rate:</td>
+		<th id="priceBtc" style="text-align:center;vertical-align: middle;"></th>
+		<td style="text-align:center;vertical-align: middle;">Total Paid:</td>
+		<th id="poolPaidOut" style="text-align:center;vertical-align: middle;"></th>
+		<td style="text-align:center;vertical-align: middle;">Last Blk time:</td>
+                <th id="lastBlockFoundTime" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
+                <td style="text-align:center;vertical-align: middle;">Time Since Blk:</td>
+                <th id="timeSinceBlock" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
+                <td style="text-align:center;vertical-align: middle;">blank:</td>
+                <th id="" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
+       	</tr>
+	<tr>
+		<td style="text-align:center;">Coin:</td>
+		<th id="shortDesc"  colspan="12" style="text-align:center;vertical-align: middle;"></th>	
+	</tr>
+       	<tr>
+                <td style="text-align:center;vertical-align: middle;">Trade:</td>
+                <th id="tradeUrl1"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl2"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl3"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl4"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl5"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl6"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl7"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+		<th id="tradeUrl8"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+                <th id="explorerUrl"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+                <th id="homePage"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+                <th id="githubUrl"  colspan="1" style="text-align:center;vertical-align: middle;"></th>
+       	</tr>
+	<tr>
+		<td style="text-align:center;">Miner's Blocks</td>
+		<th id="blocks"  colspan="11" style="text-align:center;vertical-align: middle;"></th>
+	</tr>
 
 
               {{ break; }}
@@ -135,11 +146,11 @@
 
   <div class="row justify-content-center">
   <div class="col-md-12 chartWrapper">
-      <div class="chartLabel">Hashrate History</div>
+      <div class="chartLabel">Pool History</div>
       <div class="chartHolder"><canvas id="poolHashChart" height="50"></canvas></div>
   </div>
   </div>
-
+<!--
   <div class="row">&nbsp;<br /></div>
 
   <div class="row justify-content-center">
@@ -147,8 +158,10 @@
       <div class="chartLabel">Pending Block History</div>
       <div class="chartHolder"><canvas id="blockChart" height="50"></div>
     </div>
-  </div>
-
+  <
+</div>
+-->
+<!--
   <div class="row">&nbsp;<br /></div>
 
   <div class="row justify-content-center">
@@ -159,7 +172,7 @@
   </div>
 
 </div>
-
+-->
 
 
 <script>

@@ -4,7 +4,7 @@ Forked from Raven coin Updated to use Equihash
 -------
 ### Screenshots
 #### Pool Stats<br />
-![Home](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-1.PNG)
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dev-stats-2.PNG)<br /><br />
 #### Block Explorer<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-3.PNG)<br /><br />
 

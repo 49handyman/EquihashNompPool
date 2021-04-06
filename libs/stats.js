@@ -6,7 +6,7 @@ var os = require('os');
 var algos = require('stratum-pool/lib/algoProperties.js');
 const logger = require('./logger.js').getLogger('Stats', 'system');
 var price;
-
+var found;
 module.exports = function(portalConfig, poolConfigs) {
   logger.info("Starting Stats Module...");
 
@@ -23,14 +23,7 @@ module.exports = function(portalConfig, poolConfigs) {
   var marketStats = [] ;
   var price;
   var retentionTime;
-//getData(poolConfigs[coin].coin.symbol.toUpperCase());
-//  var market_stats_interval = 120 * 1000;
-//  var marketStatsInterval = setInterval(function() {
-// marketData = getData(poolConfigs[coin].coin.symbol.toUpperCase());
-//console.log('getData() called....',marketData);
-//          }, market_stats_interval);
-
-
+ var found;
   setupStatsRedis();
 
   gatherStatHistory();
@@ -165,7 +158,12 @@ module.exports = function(portalConfig, poolConfigs) {
       }
     });
   };
+/*
 
+ add getBlocksFoundByAddress
+
+
+*/
   this.getBalanceByAddress = function(address, cback) {
 
     var a = address.split(".")[0];
@@ -182,7 +180,7 @@ module.exports = function(portalConfig, poolConfigs) {
     async.each(_this.stats.pools, function(pool, pcb) {
       var coin = String(_this.stats.pools[pool.name].name);
 
-//      client.hscan(coin + ':shares:roundCurrent', 0, "match", a + "*", "count", 1000, function(error, result) {pexacoin:blocksPending
+      client.hscan(coin + ':blocksFound', 0, "match", a + "*", "count", 1000, function(error, found) {   // pexacoin:blocksPending
 
       // get all immature balances from address
       client.hscan(coin + ':immature', 0, "match", a + "*", "count", 10000, function(pendserr, pends) {
@@ -197,8 +195,23 @@ module.exports = function(portalConfig, poolConfigs) {
             var balAmount = 0;
             var paidAmount = 0;
             var pendingAmount = 0;
-
+//	   var blocks;
             var workers = {};
+/* doug start
+            for (var i in found[1]) {
+              if (Math.abs(i % 2) != 1) {
+                workerName = String(found[1][i]);
+                workers[workerName] = (workers[workerName] || {});
+console.log('found1 :', found[1][i], workerName,  workers[workerName]);
+
+              } else {
+                blocks = parseFloat(found[1][i]);
+                workers[workerName].blocks = coinsRound(blocks);
+                totalBlocks = blocks;
+console.log('found2 :',  blocks,  workers[workerName].blocks, totalBlocks);
+              }
+            }
+*/ //doug end
 
             for (var i in pays[1]) {
               if (Math.abs(i % 2) != 1) {
@@ -252,7 +265,7 @@ module.exports = function(portalConfig, poolConfigs) {
         });
 
       });
-      
+   });
 
 
     }, function(err) {
@@ -305,7 +318,6 @@ module.exports = function(portalConfig, poolConfigs) {
         ['scard', ':blocksKicked'],
 	['zrevrange', ':lastBlock', 0, 0]
 
-	
       ];
 
       var commandsPerCoin = redisCommandTemplates.length;
@@ -440,6 +452,7 @@ module.exports = function(portalConfig, poolConfigs) {
         coinStats.hashrates.forEach(function(ins) {
         var parts = ins.split(':');
         var workerShares = parseFloat(parts[0]);
+ // var blocks = parseFloat(parts[0]);
         var worker = parts[1];
         var diff = Math.round(parts[0] * 8192);
                 if (workerShares > 0) {
@@ -447,25 +460,27 @@ module.exports = function(portalConfig, poolConfigs) {
                     if (worker in coinStats.workers) {
                         coinStats.workers[worker].shares += workerShares;
                         coinStats.workers[worker].diff = diff;
+//			coinStats.workers[worker].blocks = blocks // doug
                     }
                     else {
                         coinStats.workers[worker] = {
                         shares: workerShares,
-			blocksFound: worker,
                         diff: diff,
                         invalidshares: 0,
                         currRoundShares: 0,
                         currRoundTime: 0,
                         hashrateString: null,
                         luckDays: null,
-                        luckHours: null
-                        };
+                        luckHours: null,
+			blocksFound: null    // doug
+                       };
                     }
                 }
                 else {
                     if (worker in coinStats.workers) {
                         coinStats.workers[worker].invalidshares -= workerShares; // workerShares is negative number!
                         coinStats.workers[worker].diff = diff;
+		//	coinStats.workers[worker].blocks = blocks  // doug
                     }
                     else {
                         coinStats.workers[worker] = {
@@ -476,7 +491,8 @@ module.exports = function(portalConfig, poolConfigs) {
                         invalidshares: -workerShares,
                         hashrateString: null,
                         luckDays: null,
-                        luckHours: null
+                        luckHours: null,
+//			blocksFound: null
                         };
                     }
 
@@ -505,7 +521,19 @@ module.exports = function(portalConfig, poolConfigs) {
         }
         portalStats.algos[algo].hashrate += coinStats.hashrate;
         portalStats.algos[algo].workers += Object.keys(coinStats.workers).length;
+//       
 
+/*	var _blockTotal = parseFloat(0);
+        for (var worker in coinStats.workers) {
+            var miner = worker.split(".")[0];
+            if (worker in coinStats.workers) {
+                coinStats.workers[worker].blocks = parseFloat(coinStats.blocks[worker]);
+            }
+            _blockTotal = parseFloat(coinStats.blocks[worker]);
+        }
+*/
+
+//
         var _shareTotal = parseFloat(0);
         for (var worker in coinStats.currentRoundShares) {
             var miner = worker.split(".")[0];
@@ -523,6 +551,7 @@ module.exports = function(portalConfig, poolConfigs) {
           coinStats.workers[worker].luckHours = ((_networkHashRate / _wHashRate * _blocktime) / (60 * 60)).toFixed(3);
           coinStats.workers[worker].hashrate = _workerRate;
           coinStats.workers[worker].hashrateString = _this.getReadableHashRateString(_workerRate);
+//	  coinStats.workers[worker].blocksFound = _blockTotal // doug
         }
 
         delete coinStats.hashrates;

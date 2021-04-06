@@ -1,0 +1,55 @@
+{
+"enabled": true,
+"coin": "PIRATE.json",
+"address": "RF1ZgZEhEzHiPkYsQV5mhswY78Dvba84JP",
+"zAddress": "zs1k3wnsss29w0vsyp5zq4wjl8sen2xvp7vcj0w206w80k5kau666dnhtvnhequ2mzdn4llywq0wm5",
+"tAddress": "RF1ZgZEhEzHiPkYsQV5mhswY78Dvba84JP",
+"walletInterval": 1,
+"marketStats": true,
+"rewardRecipients": {},
+"tlsOptions": { "enabled": false },
+    "paymentProcessing": {
+        "minConf": 10,
+        "enabled": true,
+        "paymentMode": "prop",
+        "paymentInterval": 1800,
+        "minimumPayment": 60,
+        "maxBlocksPerPayment": 20,
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 7771,
+            "user": "entrust",
+            "password": "entrust"
+        }
+    },
+
+
+"trackShares": { "disable": false },
+"ports": {
+    "3348": {
+        "tls":false,
+        "diff": 1400,
+        "varDiff": {
+            "minDiff": 700,
+            "maxDiff": 9999,
+            "targetTime": 15,
+            "retargetTime": 60,
+            "variancePercent": 30
+        }
+    }
+},
+"daemons": [{
+    "host": "127.0.0.1",
+    "port": 7771,
+    "user": "entrust",
+    "password": "entrust"
+}],
+
+"p2p": {
+        "enabled": true,
+        "host": "127.0.0.1",
+        "port": 45452,
+        "disableTransactions": true
+},
+"mposMode": { "enabled": false }
+}

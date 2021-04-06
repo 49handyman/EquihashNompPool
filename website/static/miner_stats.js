@@ -243,12 +243,39 @@ $.getJSON('/api/worker_stats?' + _miner, function(data) {
 	if (document.hidden) return;
 	$.getJSON('/api/pool_stats', function(statData) {
 		addWorkerToTracker(statData, data, _miner, function(){
+                         var stats = getWorkerStats(_miner);
+                         //statData = data;
+                         for (var w in statData.workers) {
+                                 _workerCount++;
+                         }
+                         displayCharts();
+                         rebuildWorkerDisplay();
+                         updateStats();
+			updateWorkerStats();
+	                 var totalPaid = statData.paid || 0;
+        	         var totalBal = statData.balance || 0;
+                	 var totalImmature = (statData.immature) || 0;
+               		 var luckDays = statData.luckDays || "unknown";
+                 	 var SYMB = stats.symbol || "unknown symbol";
+                         $('#total-paid-label').html(totalPaid.toFixed(8) + ' ' + SYMB);
+                         $('#total-immature-label').html(totalImmature.toFixed(8) + ' ' + SYMB);
+                         $('#total-balance-label').html(totalBal.toFixed(8) + ' ' + SYMB);
+                         $('#total-luckdays-label').html(statData.time);
+
+
+  		});
+ 	});
+});
+statsSource.addEventListener('message', function(e) {
+var statsData = JSON.parse(e.data);
+updateWorkerData(statData, _miner, function(_miner) {
 			var stats = getWorkerStats(_miner);
 			statData = data;
 			for (var w in statData.workers) {
 				_workerCount++;
 			}
-			displayCharts();
+
+updateWorkerStats()
 			rebuildWorkerDisplay();
 			updateStats();
 
@@ -258,16 +285,16 @@ $.getJSON('/api/worker_stats?' + _miner, function(data) {
         	var luckDays = statData.luckDays || "unknown";
         	var SYMB = stats.symbol || "unknown symbol";
 
-			$('#total-paid-label').append(totalPaid.toFixed(8) + ' ' + SYMB);
-			$('#total-immature-label').append(totalImmature.toFixed(8) + ' ' + SYMB);
-			$('#total-balance-label').append(totalBal.toFixed(8) + ' ' + SYMB);
-			$('#total-luckdays-label').append(luckDays);
-		});
-	});
-});
+			$('#total-paid-label').html(totalPaid.toFixed(8) + ' ' + SYMB);
+			$('#total-immature-label').html(totalImmature.toFixed(8) + ' ' + SYMB);
+			$('#total-balance-label').html(totalBal.toFixed(8) + ' ' + SYMB);
+			$('#total-luckdays-label').html(dateNow());
+//		});
+//	});
+ });
 
-
-// live stat updates
+}, false);
+/* / live stat updates
 statsSource.addEventListener('message', function(e) {
 	var stats = JSON.parse(e.data);
 	$.getJSON('/api/worker_stats?' + _miner, function(data) {
@@ -275,3 +302,4 @@ statsSource.addEventListener('message', function(e) {
     //$('#total-paid-label').append(total.toFixed(8) + ' ' + symbol);
 	});
 });
+*/

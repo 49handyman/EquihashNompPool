@@ -30,7 +30,7 @@ module.exports = function(poolConfig){
     var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
 
     var connection = redis.createClient(redisConfig.port, redisConfig.host);
-
+	var client = redis.createClient(redisConfig.port, redisConfig.host); 
     connection.on('ready', function(){
         logger.debug('Share processing setup with redis (' + redisConfig.host +
             ':' + redisConfig.port  + ')');
@@ -42,7 +42,7 @@ module.exports = function(poolConfig){
         logger.error(logSystem, logComponent, logSubCat, 'Connection to redis database has been ended');
     });
 
-    connection.info(function(error, response){
+  connection.info(function(error, response){
         if (error){
             logger.error(logSystem, logComponent, logSubCat, 'Redis version check failed');
             return;
@@ -66,6 +66,10 @@ module.exports = function(poolConfig){
         else if (version < 2.6){
             logger.error(logSystem, logComponent, logSubCat, "You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
         }
+console.log('hset', coin + ':stats', 'poolStartTime', Date.now())
+//connection.multi(['hset', coin + ':stats', 'poolStartTime', Date.now()])
+//client.hset(['hset', coin + ':stats', 'poolStartTime', Date.now()])
+//client.redisClient(['hset', coin + ':stats', 'poolStartTime', Date.now()])
     });
 
 
@@ -90,7 +94,7 @@ module.exports = function(poolConfig){
         if (isValidBlock){
             redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
             redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height].join(':')]);
- 	    redisCommands.push(['zadd', coin + ':lastBlock',  dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height].join(':')]);
+ 	    redisCommands.push(['zadd', coin + ':lastBlock',  dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height, dateNow / 1000 | 0].join(':')]);
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
 		redisCommands.push(['hincrby', coin + ':blocksFound', shareData.worker, 1]);
         }

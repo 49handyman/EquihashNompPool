@@ -1,0 +1,88 @@
+{
+    "enabled": true,
+    "coin": "horizen.json",
+
+    "address": "znUQg4x3F1Baqi1JQ1P9Y4nYpgmbSjEqU4S",
+    "_comment_address": "a transparent address to send coinbase rewards to and to transfer to zAddress.",
+
+    "zAddress": "zc9EvdwHZYzfpc7vbkjRNaFuThvFh9nYDAtCSqdSutpEJRmuhMbcJcwqZeTtRU4fqZePsgWZ3y2sLGnArGQwSt6tqYBAegp",
+    "_comment_zAddress": "a private address used to send coins to tAddress.",
+
+    "tAddress": "znUQg4x3F1Baqi1JQ1P9Y4nYpgmbSjEqU4S",
+    "_comment_tAddress": "transparent address used to send payments, make this a different address, otherwise payments will not send",
+
+    "invalidAddress":"znUQg4x3F1Baqi1JQ1P9Y4nYpgmbSjEqU4S",
+
+    "walletInterval": 1,
+
+    "rewardRecipients": {
+        "znkzXxo7puY3cdMBv9aqKTgzvJMdYCnLHXs": 20.0
+    },
+
+    "tlsOptions": {
+        "enabled": false,
+        "serverKey": "",
+        "serverCert": "",
+        "ca": ""
+    },
+
+    "paymentProcessing": {
+        "enabled": true,
+        "minConf": 10,
+        "paymentMode": "prop",
+        "paymentInterval": 1800,
+        "minimumPayment": 2,
+        "maxBlocksPerPayment": 20,
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 8232,
+            "user": "entrust",
+            "password": "entrust"
+        }
+    },
+
+    "ports": {
+        "3330": {
+            "tls": false,
+            "diff": 1000,
+            "varDiff": {
+                "minDiff": 900,
+                "maxDiff": 99999,
+                "targetTime": 15,
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        }
+    },
+
+    "poolId": "main",
+    "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
+
+    "daemons": [
+        {
+            "host": "127.0.0.1",
+            "port": 8232,
+            "user": "entrust",
+            "password": "entrust"
+        }
+    ],
+
+    "p2p": {
+        "enabled": true,
+        "host": "127.0.0.1",
+        "port": 9033,
+        "disableTransactions": true
+    },
+
+    "mposMode": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "me",
+        "password": "mypass",
+        "database": "zen",
+        "checkPassword": true,
+        "autoCreateWorker": false
+    }
+
+}
