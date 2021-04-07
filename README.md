@@ -1,4 +1,4 @@
-# equihashnomppool
+# EquihashNompPool
 Forked from Raven coin Updated to use Equihash
 
 Im still hacking away and adding features and stats. the code is a mess for now, but works great on Komodo as my own pool. no z_ transactions yet so use it for solo mining only on those coins. Just got zen full node wallet synced today and seems to work fine for Horizen.
