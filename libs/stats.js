@@ -371,7 +371,8 @@ console.log('found2 :',  blocks,  workers[workerName].blocks, totalBlocks);
                 networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
                 networkConnections: replies[i + 2] ? (replies[i + 2].networkConnections || 0) : 0,
                 networkVersion: replies[i + 2] ? (replies[i + 2].networkSubVersion || 0) : 0,
-                networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0
+                networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0,
+		poolStartTime:  replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0
               },
               blocks: {
                 pending: replies[i + 3],

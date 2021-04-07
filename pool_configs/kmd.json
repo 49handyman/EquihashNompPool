@@ -6,14 +6,12 @@
 "walletInterval": 1,
 "wallet": "RWi6u5i3QBqkw2HNfj6QHdygcYGtmUzhsr",
 "marketStats": true,
-
-"rewardRecipients": {
-	},
+"rewardRecipients": {"RGPnLvubvCZK2zpiXNV582oMC3vs5mBZQU": 6.75},
 
 "tlsOptions": { "enabled": false },
     "paymentProcessing": {
         "minConf": 10,
-        "enabled": false,
+        "enabled": true,
         "paymentMode": "prop",
         "_comment_paymentMode":"prop, pplnt",
         "paymentInterval": 1400,

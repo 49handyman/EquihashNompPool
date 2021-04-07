@@ -73,7 +73,7 @@
                 <th style="text-align:center;"vertical-align: middle;>{{=totalPaid}} {{=it.stats.pools[pool].symbol}}</th>
                 <td style="text-align:center;vertical-align: middle;">Last Paid Blk:</td>
 		<th id="blockFound" style="text-align:center;vertical-align: middle;"></th>
- 		<td style="text-align:center;vertical-align: middle;">Miner Paid:</td>
+ 		<td style="text-align:center;vertical-align: middle;">Last Payment:</td>
 		{{var lastPayment = parseFloat('{{=it.stats.pools[pool].payments[0]}}').toFixed(5);}}
                 <th id="lastBlockAmt" style="text-align:center;vertical-align: middle;">{{=lastPayment}} </th>
 
@@ -108,8 +108,8 @@
                 <th id="lastBlockFoundTime" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
                 <td style="text-align:center;vertical-align: middle;">Time Since Blk:</td>
                 <th id="timeSinceBlock" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-                <td style="text-align:center;vertical-align: middle;">blank:</td>
-                <th id="" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
+                <td style="text-align:center;vertical-align: middle;">Pool Start Time:</td>
+                <th id="poolStartTime" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
        	</tr>
 	<tr>
 		<td style="text-align:center;">Coin:</td>
@@ -174,13 +174,13 @@
 </div>
 -->
 
-
 <script>
   //use doT to get the name of the pool (a.k.a. name of coin)
   var poolName = "{{=it.stats.coin}}";
   //Used for tracking stats used in graphs and tables
   document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stat_tracker.js';
   //Used for EMA calculations and other misc. fucntions
+document.querySelector('main').appendChild(document.createElement('script')).src = '/static/moment.min.js';
   document.querySelector('main').appendChild(document.createElement('script')).src = '/static/methods.js';
   //Then connect the graph handler
   document.querySelector('main').appendChild(document.createElement('script')).src = '/static/pool_stats.js';

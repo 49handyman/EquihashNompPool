@@ -1,6 +1,15 @@
 # equihashnomppool
 Forked from Raven coin Updated to use Equihash
 
+Im still hacking away and adding features and stats. the code is a mess for now, but works great on Komodo as my own pool. no z_ transactions yet so use it for solo mining only on those coins. Just got zen full node wallet synced today and seems to work fine for Horizen.
+
+Changing UI to dark theme. More to come in next few days as i work on mor important items.
+
+I use webworker's stratum-pool package/
+
+The raven repository wasn't setup for sheilded coins, so it might take lots to get working, help would be appreciated. paymentProcessor.js needs to be reworked.
+
+
 -------
 ### Screenshots
 #### Pool Stats<br />

@@ -1,9 +1,11 @@
 var docCookies = {
-    getItem: function (sKey) {
+    getItem: function(sKey) {
         return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
     },
-    setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+    setItem: function(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+            return false;
+        }
         var sExpires = "";
         if (vEnd) {
             switch (vEnd.constructor) {
@@ -21,12 +23,14 @@ var docCookies = {
         document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
         return true;
     },
-    removeItem: function (sKey, sPath, sDomain) {
-        if (!sKey || !this.hasItem(sKey)) { return false; }
-        document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + ( sDomain ? "; domain=" + sDomain : "") + ( sPath ? "; path=" + sPath : "");
+    removeItem: function(sKey, sPath, sDomain) {
+        if (!sKey || !this.hasItem(sKey)) {
+            return false;
+        }
+        document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
         return true;
     },
-    hasItem: function (sKey) {
+    hasItem: function(sKey) {
         return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
     }
 };
@@ -34,40 +38,39 @@ var docCookies = {
 var password = docCookies.getItem('password');
 
 
-function showLogin(){
+function showLogin() {
     $('#adminCenter').hide();
     $('#passwordForm').show();
 }
 
-function showAdminCenter(){
+function showAdminCenter() {
     $('#passwordForm').hide();
     $('#adminCenter').show();
 }
 
-function tryLogin(){
-    apiRequest('pools', {}, function(response){
+function tryLogin() {
+    apiRequest('pools', {}, function(response) {
         showAdminCenter();
         displayMenu(response.result)
     });
 }
 
-function displayMenu(pools){
-    $('#poolList').after(Object.keys(pools).map(function(poolName){
+function displayMenu(pools) {
+    $('#poolList').after(Object.keys(pools).map(function(poolName) {
         return '<li class="poolMenuItem"><a href="#">' + poolName + '</a></li>';
     }).join(''));
 }
 
-function apiRequest(func, data, callback){
+function apiRequest(func, data, callback) {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function(){
-        if (httpRequest.readyState === 4 && httpRequest.responseText){
-            if (httpRequest.status === 401){
+    httpRequest.onreadystatechange = function() {
+        if (httpRequest.readyState === 4 && httpRequest.responseText) {
+            if (httpRequest.status === 401) {
                 docCookies.removeItem('password');
                 $('#password').val('');
                 showLogin();
                 alert('Incorrect Password');
-            }
-            else{
+            } else {
                 var response = JSON.parse(httpRequest.responseText);
                 callback(response);
             }
@@ -79,17 +82,16 @@ function apiRequest(func, data, callback){
     httpRequest.send(JSON.stringify(data));
 }
 
-if (password){
+if (password) {
     tryLogin();
-}
-else{
+} else {
     showLogin();
 }
 
-$('#passwordForm').submit(function(event){
+$('#passwordForm').submit(function(event) {
     event.preventDefault();
     password = $('#password').val();
-    if (password){
+    if (password) {
         if ($('#remember').is(':checked'))
             docCookies.setItem('password', password, Infinity);
         else

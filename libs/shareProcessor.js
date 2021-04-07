@@ -8,12 +8,11 @@ const logger = loggerFactory.getLogger('ShareProcessor', 'system');
 This module deals with handling shares when in internal payment processing mode. It connects to a redis
 database and inserts shares with the database structure of:
 
-key: coin_name + ':' + block_height
+key: coin_name + ':' + block_height + ':' + Date.now()/1000
 value: a hash with..
         key:
 
  */
-
 
 
 module.exports = function(poolConfig){
@@ -66,10 +65,17 @@ module.exports = function(poolConfig){
         else if (version < 2.6){
             logger.error(logSystem, logComponent, logSubCat, "You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
         }
-console.log('hset', coin + ':stats', 'poolStartTime', Date.now())
+var startTime = [];
+console.log('hset', coin + ':stats', 'poolStartTime', Date.now()/1000)
 //connection.multi(['hset', coin + ':stats', 'poolStartTime', Date.now()])
-//client.hset(['hset', coin + ':stats', 'poolStartTime', Date.now()])
+startTime.push(['hset', coin + ':stats', 'poolStartTime', Date.now()/1000]);
 //client.redisClient(['hset', coin + ':stats', 'poolStartTime', Date.now()])
+       connection.multi(startTime).exec(function(err, replies){
+             if (err)
+                 logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
+         });
+
+
     });
 
 
@@ -93,7 +99,7 @@ console.log('hset', coin + ':stats', 'poolStartTime', Date.now())
 
         if (isValidBlock){
             redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
-            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height].join(':')]);
+            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, Date.now()/1000].join(':')]);
  	    redisCommands.push(['zadd', coin + ':lastBlock',  dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height, dateNow / 1000 | 0].join(':')]);
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
 		redisCommands.push(['hincrby', coin + ':blocksFound', shareData.worker, 1]);
