@@ -13,7 +13,7 @@
         "enabled": true,
         "paymentMode": "prop",
         "paymentInterval": 1800,
-        "minimumPayment": 60,
+        "minimumPayment": 32,
         "maxBlocksPerPayment": 20,
         "daemon": {
             "host": "127.0.0.1",
@@ -28,9 +28,9 @@
 "ports": {
     "3348": {
         "tls":false,
-        "diff": 1400,
+        "diff": 900,
         "varDiff": {
-            "minDiff": 700,
+            "minDiff": 500,
             "maxDiff": 9999,
             "targetTime": 15,
             "retargetTime": 60,

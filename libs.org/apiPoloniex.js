@@ -1,5 +1,5 @@
 var request = require('request');
-var nonce = require('nonce');
+var nonce   = require('nonce');
 
 module.exports = function() {
     'use strict';
@@ -7,24 +7,24 @@ module.exports = function() {
     // Module dependencies
 
     // Constants
-    var version = '0.1.0',
-        PUBLIC_API_URL = 'https://poloniex.com/public',
+    var version         = '0.1.0',
+        PUBLIC_API_URL  = 'https://poloniex.com/public',
         PRIVATE_API_URL = 'https://poloniex.com/tradingApi',
-        USER_AGENT = 'npm-crypto-apis/' + version
+        USER_AGENT      = 'npm-crypto-apis/' + version
 
     // Constructor
-    function Poloniex(key, secret) {
+    function Poloniex(key, secret){
         // Generate headers signed by this user's key and secret.
         // The secret is encapsulated and never exposed
-        this._getPrivateHeaders = function(parameters) {
+        this._getPrivateHeaders = function(parameters){
             var paramString, signature;
 
-            if (!key || !secret) {
+            if (!key || !secret){
                 throw 'Poloniex: Error. API key and secret required';
             }
 
             // Sort parameters alphabetically and convert to `arg1=foo&arg2=bar`
-            paramString = Object.keys(parameters).sort().map(function(param) {
+            paramString = Object.keys(parameters).sort().map(function(param){
                 return encodeURIComponent(param) + '=' + encodeURIComponent(parameters[param]);
             }).join('&');
 
@@ -41,7 +41,7 @@ module.exports = function() {
     Poloniex.STRICT_SSL = true;
 
     // Helper methods
-    function joinCurrencies(currencyA, currencyB) {
+    function joinCurrencies(currencyA, currencyB){
         return currencyA + '_' + currencyB;
     }
 
@@ -50,8 +50,8 @@ module.exports = function() {
         constructor: Poloniex,
 
         // Make an API request
-        _request: function(options, callback) {
-            if (!('headers' in options)) {
+        _request: function(options, callback){
+            if (!('headers' in options)){
                 options.headers = {};
             }
 
@@ -67,7 +67,7 @@ module.exports = function() {
         },
 
         // Make a public API request
-        _public: function(parameters, callback) {
+        _public: function(parameters, callback){
             var options = {
                 method: 'GET',
                 url: PUBLIC_API_URL,
@@ -78,7 +78,7 @@ module.exports = function() {
         },
 
         // Make a private API request
-        _private: function(parameters, callback) {
+        _private: function(parameters, callback){
             var options;
 
             parameters.nonce = nonce();
@@ -98,36 +98,36 @@ module.exports = function() {
 
         // PUBLIC METHODS
 
-        getTicker: function(callback) {
+        getTicker: function(callback){
             var parameters = {
-                command: 'returnTicker'
-            };
+                    command: 'returnTicker'
+                };
 
             return this._public(parameters, callback);
         },
 
-        get24hVolume: function(callback) {
+        get24hVolume: function(callback){
             var parameters = {
-                command: 'return24hVolume'
-            };
+                    command: 'return24hVolume'
+                };
 
             return this._public(parameters, callback);
         },
 
-        getOrderBook: function(currencyA, currencyB, callback) {
+        getOrderBook: function(currencyA, currencyB, callback){
             var parameters = {
-                command: 'returnOrderBook',
-                currencyPair: joinCurrencies(currencyA, currencyB)
-            };
+                    command: 'returnOrderBook',
+                    currencyPair: joinCurrencies(currencyA, currencyB)
+                };
 
             return this._public(parameters, callback);
         },
 
-        getTradeHistory: function(currencyA, currencyB, callback) {
+        getTradeHistory: function(currencyA, currencyB, callback){
             var parameters = {
-                command: 'returnTradeHistory',
-                currencyPair: joinCurrencies(currencyA, currencyB)
-            };
+                    command: 'returnTradeHistory',
+                    currencyPair: joinCurrencies(currencyA, currencyB)
+                };
 
             return this._public(parameters, callback);
         },
@@ -138,71 +138,71 @@ module.exports = function() {
 
         // PRIVATE METHODS
 
-        myBalances: function(callback) {
+        myBalances: function(callback){
             var parameters = {
-                command: 'returnBalances'
-            };
+                    command: 'returnBalances'
+                };
 
             return this._private(parameters, callback);
         },
 
-        myOpenOrders: function(currencyA, currencyB, callback) {
+        myOpenOrders: function(currencyA, currencyB, callback){
             var parameters = {
-                command: 'returnOpenOrders',
-                currencyPair: joinCurrencies(currencyA, currencyB)
-            };
+                    command: 'returnOpenOrders',
+                    currencyPair: joinCurrencies(currencyA, currencyB)
+                };
 
             return this._private(parameters, callback);
         },
 
-        myTradeHistory: function(currencyA, currencyB, callback) {
+        myTradeHistory: function(currencyA, currencyB, callback){
             var parameters = {
-                command: 'returnTradeHistory',
-                currencyPair: joinCurrencies(currencyA, currencyB)
-            };
+                    command: 'returnTradeHistory',
+                    currencyPair: joinCurrencies(currencyA, currencyB)
+                };
 
             return this._private(parameters, callback);
         },
 
-        buy: function(currencyA, currencyB, rate, amount, callback) {
+        buy: function(currencyA, currencyB, rate, amount, callback){
             var parameters = {
-                command: 'buy',
-                currencyPair: joinCurrencies(currencyA, currencyB),
-                rate: rate,
-                amount: amount
-            };
+                    command: 'buy',
+                    currencyPair: joinCurrencies(currencyA, currencyB),
+                    rate: rate,
+                    amount: amount
+                };
 
             return this._private(parameters, callback);
         },
 
-        sell: function(currencyA, currencyB, rate, amount, callback) {
+        sell: function(currencyA, currencyB, rate, amount, callback){
             var parameters = {
-                command: 'sell',
-                currencyPair: joinCurrencies(currencyA, currencyB),
-                rate: rate,
-                amount: amount
-            };
+                    command: 'sell',
+                    currencyPair: joinCurrencies(currencyA, currencyB),
+                    rate: rate,
+                    amount: amount
+                };
 
             return this._private(parameters, callback);
         },
 
-        cancelOrder: function(currencyA, currencyB, orderNumber, callback) {
+        cancelOrder: function(currencyA, currencyB, orderNumber, callback){
             var parameters = {
-                command: 'cancelOrder',
-                currencyPair: joinCurrencies(currencyA, currencyB),
-                orderNumber: orderNumber
-            };
+                    command: 'cancelOrder',
+                    currencyPair: joinCurrencies(currencyA, currencyB),
+                    orderNumber: orderNumber
+                };
 
             return this._private(parameters, callback);
         },
 
-        withdraw: function(currency, amount, address, callback) {
+        withdraw: function(currency, amount, address, callback){
             var parameters = {
-                command: 'withdraw',
-                currency: currency,
-                amount: amount,
-                address: address
-            };
+                    command: 'withdraw',
+                    currency: currency,
+                    amount: amount,
+                    address: address
+                };
 
             return this._private(parameters, callback);
         }

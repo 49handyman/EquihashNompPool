@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient,
 
 const loggerFactory = require('./logger.js');
 
-module.exports = function(poolConfig) {
+module.exports = function (poolConfig) {
 
     var mongoConfig = poolConfig.mongoMode;
     var coin = poolConfig.coin.name;
@@ -31,12 +31,12 @@ module.exports = function(poolConfig) {
 
     //TODO: PRIORITY: Check to see if collection exists and create it if not
 
-    var mongoInsert = function(collectionName, data, errCallback, successCallback) {
-        MongoClient.connect(connectionURL, function(err, db) {
+    var mongoInsert = function (collectionName, data, errCallback, successCallback) {
+        MongoClient.connect(connectionURL, function (err, db) {
 
             var collection = db.collection(collectionName);
 
-            collection.insert(data, function(err, result) {
+            collection.insert(data, function (err, result) {
                 if (err) {
                     errCallback(err);
                     //TODO: do we stop it from moving on here?
@@ -49,7 +49,7 @@ module.exports = function(poolConfig) {
         });
     };
 
-    this.handleShare = function(isValidShare, isValidBlock, shareData) {
+    this.handleShare = function (isValidShare, isValidBlock, shareData) {
 
         var dbData = {
             rem_host: shareData.ip,
@@ -62,20 +62,20 @@ module.exports = function(poolConfig) {
         };
 
         mongoInsert('shares', dbData,
-            function(err) {
+            function (err) {
                 logger.error('Insert error when adding share: %s', JSON.stringify(err));
             },
-            function(result) {
+            function (result) {
                 logger.debug('Share inserted, result = %s', JSON.stringify(result));
             });
 
     };
 
-    this.handleDifficultyUpdate = function(workerName, diff) {
+    this.handleDifficultyUpdate = function (workerName, diff) {
         //TODO:
     };
 
-    this.handleAuth = function(workerName, password, authCallback) {
+    this.handleAuth = function (workerName, password, authCallback) {
         //TODO:
     };
 

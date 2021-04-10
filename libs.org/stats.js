@@ -86,7 +86,6 @@ module.exports = function(portalConfig, poolConfigs) {
         for (var pool in stats.pools) {
             data.pools[pool] = {
                 hashrate: stats.pools[pool].hashrate,
-		poolLuck:  null,
                 workerCount: stats.pools[pool].workerCount,
                 blocks: stats.pools[pool].blocks
             }
@@ -335,9 +334,8 @@ module.exports = function(portalConfig, poolConfigs) {
                 ['hgetall', ':blocksFound'],
                 ['scard', ':blocksKicked'],
                 ['zrevrange', ':lastBlock', 0, 0],
-                ['zrevrange', ':lastBlockTime', 0, 0],
-		['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime]
-          ];
+                ['zrevrange', ':lastBlockTime', 0, 0]
+            ];
             var commandsPerCoin = redisCommandTemplates.length;
             client.coins.map(function(coin) {
                 redisCommandTemplates.map(function(t) {
@@ -502,17 +500,6 @@ module.exports = function(portalConfig, poolConfigs) {
                 coinStats.luckDays = ((_networkHashRate / _myHashRate * _blocktime) / (24 * 60 * 60)).toFixed(3);
                 coinStats.luckHours = ((_networkHashRate / _myHashRate * _blocktime) / (60 * 60)).toFixed(3);
                 coinStats.timeToFind = readableSeconds(_networkHashRate / _myHashRate * _blocktime);
-
-
-//console.log(('coinSats :', coinStats.lastBlockTime * 1000 || 0))
-
-var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
-
-
-var poolLuck = (parseInt(timeSinceLastBlock)  * 1000 / parseInt(coinStats.poolStats.networkSols) / parseInt(coinStats.hashrate*2/1000000)  * parseInt(coinStats.lastblockTime*1000 * 100)).toFixed(2)
-parseFloat(poolLuck);
-//console.log('pooluck: '+poolLuck);
-coinStats.poolLuck=poolLuck;
                 coinStats.workerCount = Object.keys(coinStats.workers).length;
                 portalStats.global.workers += coinStats.workerCount;
                 portalStats.global.hashrate += coinStats.hashrate;

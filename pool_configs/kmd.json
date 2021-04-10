@@ -29,12 +29,12 @@
 "ports": {
     "3331": {
        "tls":false,
-        "diff": 800,
-          "varDiff": {"minDiff": 600, "maxDiff": 10000, "targetTime": 15, "retargetTime": 60, "variancePercent": 30}
+        "diff": 700,
+          "varDiff": {"minDiff": 500, "maxDiff": 10000, "targetTime": 15, "retargetTime": 60, "variancePercent": 30}
     },
     "3332": {
         "tls":false,
-         "diff": 1000
+         "diff": 700
      }
 
 },

@@ -24,19 +24,11 @@ const logger = loggerFactory.getLogger('Website', 'system');
 
 
 /* LeshaCat code to add LZ/Matomo support :D */
-if (fs.existsSync('lzCode.conf')) {
-    var lzCode = fs.readFileSync('lzCode.conf', 'utf8');
-} else {
-    var lzCode = "";
-}
-if (fs.existsSync('matomoCode.conf')) {
-    var matomoCode = fs.readFileSync('matomoCode.conf', 'utf8');
-} else {
-    var matomoCode = "";
-}
+if (fs.existsSync('lzCode.conf')) { var lzCode = fs.readFileSync('lzCode.conf','utf8'); } else { var lzCode = ""; }
+if (fs.existsSync('matomoCode.conf')) { var matomoCode = fs.readFileSync('matomoCode.conf','utf8'); } else { var matomoCode = ""; }
 
 
-module.exports = function() {
+module.exports = function () {
     logger.info("Starting Website module");
 
     dot.templateSettings.strip = false;
@@ -51,36 +43,37 @@ module.exports = function() {
 
     var logSystem = 'Website';
 
-
+    
 
     var pageFiles = {
-        'home.html': '', // home page
-        'index.html': 'index', // index page
-        'getting_started.html': 'getting_started', // getting started page
-        'dashboard.html': 'dashboard', // dashboard page
-        'pools.html': 'pools', // all pool stats page
-        'stats.html': 'stats', // individual pool stats pages
-        'workers.html': 'workers', // individual & all worker stats pages
-        'blocks.html': 'blocks', // payment history
-        'tbs.html': 'tbs', // help
-        'api.html': 'api', // api
-        'miner_stats.html': 'miner_stats', // individual miner stats (skeleton?)
+        'home.html': '',                                // home page
+        'index.html': 'index',                          // index page
+        'getting_started.html': 'getting_started',      // getting started page
+        'dashboard.html': 'dashboard',                  // dashboard page
+    	'pools.html': 'pools',                          // all pool stats page
+        'stats.html': 'stats',                           // individual pool stats pages
+        'workers.html': 'workers',                      // individual & all worker stats pages
+        'blocks.html': 'blocks',                        // payment history
+        'tbs.html': 'tbs',                // help
+        'api.html': 'api',                              // api
+        'miner_stats.html': 'miner_stats',              // individual miner stats (skeleton?)
         'pool_stats.html': 'pool_stats',
-        'learn_more.html': 'learn_more' // individual pool stats (skeleton?)
+	'learn_more.html': 'learn_more'                 // individual pool stats (skeleton?)
     };
-
+    
     // LeshaCat code to decide wether to load example page or real news page.    
-    var mainScriptPath = require('path').dirname(require.main.filename)
+    var mainScriptPath = require('path').dirname(require.main.filename)    
     if ((fs.existsSync(mainScriptPath + '/website/pages/news.html'))) {
         // Do something
-        pageFiles['news.html'] = "news"; // news page
-        logger.debug("Loaded CUSTOM news.html");
-    } else {
-        pageFiles['news_example.html'] = "news"; // news page
-
-        logger.debug("Loaded EXAMPLE news_example.html");
+        pageFiles['news.html'] = "news";                // news page
+        logger.debug("Loaded CUSTOM news.html"); 
     }
-
+    else {
+        pageFiles['news_example.html'] = "news";        // news page
+        
+        logger.debug("Loaded EXAMPLE news_example.html");
+    }    
+    
     var pageTemplates = {};
 
     var pageProcessed = {};
@@ -90,7 +83,7 @@ module.exports = function() {
     var keyScriptProcessed = '';
 
 
-    var processTemplates = function() {
+    var processTemplates = function () {
 
         for (var pageName in pageTemplates) {
             if (pageName === 'index') continue;
@@ -98,8 +91,8 @@ module.exports = function() {
                 poolsConfigs: poolConfigs,
                 stats: portalStats.stats,
                 portalConfig: portalConfig,
-                matomoCode: matomoCode, ///* LeshaCat code to add LZ/Matomo support :D */
-                livezillaCode: lzCode ///* LeshaCat code to add LZ/Matomo support :D */
+                matomoCode: matomoCode,             ///* LeshaCat code to add LZ/Matomo support :D */
+                livezillaCode: lzCode               ///* LeshaCat code to add LZ/Matomo support :D */
             });
             indexesProcessed[pageName] = pageTemplates.index({
                 page: pageProcessed[pageName],
@@ -107,34 +100,34 @@ module.exports = function() {
                 stats: portalStats.stats,
                 poolConfigs: poolConfigs,
                 portalConfig: portalConfig,
-                matomoCode: matomoCode, ///* LeshaCat code to add LZ/Matomo support :D */
-                livezillaCode: lzCode ///* LeshaCat code to add LZ/Matomo support :D */
+                matomoCode: matomoCode,             ///* LeshaCat code to add LZ/Matomo support :D */
+                livezillaCode: lzCode               ///* LeshaCat code to add LZ/Matomo support :D */
             });
         }
 
-        //        logger.debug('WEBSITE> Updated to latest stats');
-
+//        logger.debug('WEBSITE> Updated to latest stats');
+        
     };
 
 
-    var readPageFiles = function(files) {
-        async.each(files, function(fileName, callback) {
+    var readPageFiles = function(files){
+        async.each(files, function(fileName, callback){
             var filePath = 'website/' + (fileName === 'index.html' ? '' : 'pages/') + fileName;
-            fs.readFile(filePath, 'utf8', function(err, data) {
+            fs.readFile(filePath, 'utf8', function(err, data){
                 var pTemp = dot.template(data);
                 pageTemplates[pageFiles[fileName]] = pTemp
                 callback();
             });
-        }, function(err) {
-            if (err) {
-                console.log('WEBSITE> error reading files for creating dot templates: ' + JSON.stringify(err));
+        }, function(err){
+            if (err){
+                console.log('WEBSITE> error reading files for creating dot templates: '+ JSON.stringify(err));
                 return;
             }
             processTemplates();
         });
     };
     /* requires node-watch 0.5.0 or newer */
-    watch(['./website', './website/pages'], function(evt, filename) {
+    watch(['./website', './website/pages'], function(evt, filename){
         var basename;
         // support older versions of node-watch automatically
         if (!filename && evt)
@@ -142,18 +135,18 @@ module.exports = function() {
         else
             basename = path.basename(filename);
 
-        if (basename in pageFiles) {
+        if (basename in pageFiles){
             readPageFiles([basename]);
             logger.debug('WEBSITE> Reloaded file %s', basename);
         }
     });
 
-    portalStats.getGlobalStats(function() {
+    portalStats.getGlobalStats(function () {
         readPageFiles(Object.keys(pageFiles));
     });
 
-    var buildUpdatedWebsite = function() {
-        portalStats.getGlobalStats(function() {
+    var buildUpdatedWebsite = function () {
+        portalStats.getGlobalStats(function () {
             processTemplates();
 
             var statData = 'data: ' + JSON.stringify(portalStats.stats) + '\n\n';
@@ -168,11 +161,11 @@ module.exports = function() {
     setInterval(buildUpdatedWebsite, websiteConfig.stats.updateInterval * 1000);
 
 
-    var buildKeyScriptPage = function() {
+    var buildKeyScriptPage = function () {
         async.waterfall([
-            function(callback) {
+            function (callback) {
                 var client = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
-                client.hgetall('coinVersionBytes', function(err, coinBytes) {
+                client.hgetall('coinVersionBytes', function (err, coinBytes) {
                     if (err) {
                         client.quit();
                         return callback('Failed grabbing coin version bytes from redis ' + JSON.stringify(err));
@@ -180,21 +173,21 @@ module.exports = function() {
                     callback(null, client, coinBytes || {});
                 });
             },
-            function(client, coinBytes, callback) {
-                var enabledCoins = Object.keys(poolConfigs).map(function(c) {
+            function (client, coinBytes, callback) {
+                var enabledCoins = Object.keys(poolConfigs).map(function (c) {
                     return c.toLowerCase()
                 });
                 var missingCoins = [];
-                enabledCoins.forEach(function(c) {
+                enabledCoins.forEach(function (c) {
                     if (!(c in coinBytes))
                         missingCoins.push(c);
                 });
                 callback(null, client, coinBytes, missingCoins);
             },
-            function(client, coinBytes, missingCoins, callback) {
+            function (client, coinBytes, missingCoins, callback) {
                 var coinsForRedis = {};
-                async.each(missingCoins, function(c, cback) {
-                    var coinInfo = (function() {
+                async.each(missingCoins, function (c, cback) {
+                    var coinInfo = (function () {
                         for (var pName in poolConfigs) {
                             if (pName.toLowerCase() === c)
                                 return {
@@ -204,7 +197,7 @@ module.exports = function() {
                         }
                     })();
                     var daemon = new Stratum.daemon.interface([coinInfo.daemon], logger);
-                    daemon.cmd('dumpprivkey', [coinInfo.address], function(result) {
+                    daemon.cmd('dumpprivkey', [coinInfo.address], function (result) {
                         if (result[0].error) {
                             logger.error('WEBSITE> Could not dumpprivkey for %s , err = %s', c, JSON.stringify(result[0].error));
                             cback();
@@ -218,36 +211,34 @@ module.exports = function() {
                         coinsForRedis[c] = coinBytes[c];
                         cback();
                     });
-                }, function(err) {
+                }, function (err) {
                     callback(null, client, coinBytes, coinsForRedis);
                 });
             },
-            function(client, coinBytes, coinsForRedis, callback) {
+            function (client, coinBytes, coinsForRedis, callback) {
                 if (Object.keys(coinsForRedis).length > 0) {
-                    client.hmset('coinVersionBytes', coinsForRedis, function(err) {
+                    client.hmset('coinVersionBytes', coinsForRedis, function (err) {
                         if (err) {
                             logger.error('WEBSITE> Failed inserting coin byte version into redis, err = %s', JSON.stringify(err));
                         }
                         client.quit();
                     });
-                } else {
+                }
+                else {
                     client.quit();
                 }
                 callback(null, coinBytes);
             }
-        ], function(err, coinBytes) {
+        ], function (err, coinBytes) {
             if (err) {
                 logger.error('WEBSITE> Error, err = %s', err);
                 return;
             }
             try {
-                keyScriptTemplate = dot.template(fs.readFileSync('website/key.html', {
-                    encoding: 'utf8'
-                }));
-                keyScriptProcessed = keyScriptTemplate({
-                    coins: coinBytes
-                });
-            } catch (e) {
+                keyScriptTemplate = dot.template(fs.readFileSync('website/key.html', {encoding: 'utf8'}));
+                keyScriptProcessed = keyScriptTemplate({coins: coinBytes});
+            }
+            catch (e) {
                 logger.error('WEBSITE> Failed to read key.html file');
             }
         });
@@ -255,7 +246,7 @@ module.exports = function() {
     };
     buildKeyScriptPage();
 
-    var getPage = function(pageId) {
+    var getPage = function (pageId) {
         if (pageId in pageProcessed) {
             var requestedPage = pageProcessed[pageId];
             return requestedPage;
@@ -263,37 +254,38 @@ module.exports = function() {
     };
 
     var poolStatPage = function(req, res, next) {
-        var coin = req.params.coin || null;
-        if (coin != null) {
-            portalStats.getPoolStats(coin, function() {
+          var coin = req.params.coin || null;
+          if (coin != null) {
+            portalStats.getPoolStats(coin, function(){
                 processTemplates();
                 res.end(indexesProcessed['pool_stats']);
             });
-        } else {
-            next();
-        }
-    };
+          } else {
+              next();
+          }
+      };
 
-    var minerpage = function(req, res, next) {
+      var minerpage = function(req, res, next){
         var address = req.params.address || null;
         if (address != null) {
-            address = address.split(".")[0];
-            portalStats.getBalanceByAddress(address, function() {
-                processTemplates();
-                res.header('Content-Type', 'text/html');
-                res.end(indexesProcessed['miner_stats']);
-            });
+  			address = address.split(".")[0];
+        portalStats.getBalanceByAddress(address, function(){
+          processTemplates();
+  		    res.header('Content-Type', 'text/html');
+              res.end(indexesProcessed['miner_stats']);
+          });
         } else {
             next();
         }
-    };
+      };
 
-    var route = function(req, res, next) {
+    var route = function (req, res, next) {
         var pageId = req.params.page || '';
         if (pageId in indexesProcessed) {
             res.header('Content-Type', 'text/html');
             res.end(indexesProcessed[pageId]);
-        } else
+        }
+        else
             next();
 
     };
@@ -304,7 +296,7 @@ module.exports = function() {
 
     app.use(bodyParser.json());
 
-    app.get('/get_page', function(req, res, next) {
+    app.get('/get_page', function (req, res, next) {
         var requestedPage = getPage(req.query.id);
         if (requestedPage) {
             res.end(requestedPage);
@@ -313,7 +305,7 @@ module.exports = function() {
         next();
     });
 
-    app.get('/key.html', function(req, res, next) {
+    app.get('/key.html', function (req, res, next) {
         res.end(keyScriptProcessed);
     });
     app.get('/workers/:address', minerpage);
@@ -321,22 +313,21 @@ module.exports = function() {
     app.get('/:page', route);
     app.get('/', route);
 
-    app.get('/api/:method', function(req, res, next) {
+    app.get('/api/:method', function (req, res, next) {
         portalApi.handleApiRequest(req, res, next);
     });
 
-    app.post('/api/admin/:method', function(req, res, next) {
-        if (portalConfig.website &&
-            portalConfig.website.adminCenter &&
-            portalConfig.website.adminCenter.enabled) {
+    app.post('/api/admin/:method', function (req, res, next) {
+        if (portalConfig.website
+            && portalConfig.website.adminCenter
+            && portalConfig.website.adminCenter.enabled) {
             if (portalConfig.website.adminCenter.password === req.body.password)
                 portalApi.handleAdminApiRequest(req, res, next);
             else
-                res.send(401, JSON.stringify({
-                    error: 'Incorrect Password'
-                }));
+                res.send(401, JSON.stringify({error: 'Incorrect Password'}));
 
-        } else
+        }
+        else
             next();
 
     });
@@ -344,52 +335,51 @@ module.exports = function() {
     app.use(compress());
     app.use('/static', express.static('website/static'));
 
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         console.error(err.stack);
         res.status(500).send('Something broke!');
     });
 
     try {
-
-        /* HTTP WEBSITE */
-        logger.info('WEBSITE> Attempting to start Website on %s:%s', portalConfig.website.host, portalConfig.website.port);
-
-        http.createServer(app).listen(portalConfig.website.port, portalConfig.website.host, function() {
-            logger.info('WEBSITE> Website started on %s:%s', portalConfig.website.host, portalConfig.website.port);
+    	
+    	/* HTTP WEBSITE */
+    	logger.info('WEBSITE> Attempting to start Website on %s:%s', portalConfig.website.host,portalConfig.website.port);
+    	        
+        http.createServer(app).listen(portalConfig.website.port, portalConfig.website.host, function () {
+            logger.info('WEBSITE> Website started on %s:%s', portalConfig.website.host,portalConfig.website.port);
         });
-
-    } catch (e) {
+        
+    }
+    catch (e) {
         logger.error('WEBSITE> e = %s', JSON.stringify(e));
-        logger.error('WEBSITE> Could not start website on %s:%s - its either in use or you do not have permission', portalConfig.website.host, portalConfig.website.port);
+        logger.error('WEBSITE> Could not start website on %s:%s - its either in use or you do not have permission', portalConfig.website.host,portalConfig.website.port);
     }
-
-
-    /* HTTPS WEBSITE */
+    
+    
+    /* HTTPS WEBSITE */ 
     if (portalConfig.website.sslenabled) {
-
-        try {
-
-            logger.info('WEBSITE> Attempting to start SSL Website on %s:%s', portalConfig.website.host, portalConfig.website.sslport);
-
-            var privateKey = fs.readFileSync(portalConfig.website.sslkey);
-            var certificate = fs.readFileSync(portalConfig.website.sslcert);
-
-            var credentials = {
-                key: privateKey,
-                cert: certificate
-            };
-
-            https.createServer(credentials, app).listen(portalConfig.website.sslport, portalConfig.website.host, function() {
-                logger.info('WEBSITE> SSL Website started on %s:%s', portalConfig.website.host, portalConfig.website.sslport);
-            });
-
-        } catch (e) {
-            logger.error('WEBSITE> e = %s', JSON.stringify(e));
-            logger.error('WEBSITE> Could not start SSL website on %s:%s - its either in use or you do not have permission', portalConfig.website.host, portalConfig.website.sslport);
+    	
+    	try {
+    		
+			logger.info('WEBSITE> Attempting to start SSL Website on %s:%s', portalConfig.website.host,portalConfig.website.sslport);	
+			       
+			var privateKey = fs.readFileSync( portalConfig.website.sslkey );
+			var certificate = fs.readFileSync( portalConfig.website.sslcert );
+			
+			var credentials = {key: privateKey, cert: certificate};			
+			
+			https.createServer(credentials, app).listen(portalConfig.website.sslport, portalConfig.website.host, function () {
+	            logger.info('WEBSITE> SSL Website started on %s:%s', portalConfig.website.host,portalConfig.website.sslport);
+	        });
+        	
         }
-
-
-    }
+        catch (e) {        	
+	        logger.error('WEBSITE> e = %s', JSON.stringify(e));
+	        logger.error('WEBSITE> Could not start SSL website on %s:%s - its either in use or you do not have permission', portalConfig.website.host,portalConfig.website.sslport);
+        }
+        	
+        	
+	}
 
 
 };

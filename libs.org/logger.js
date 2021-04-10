@@ -1,28 +1,16 @@
-const {
-    createLogger,
-    format,
-    transports
-} = require('winston');
-const {
-    splat,
-    combine,
-    timestamp,
-    label,
-    printf
-} = format;
+const {createLogger, format, transports} = require('winston');
+const {splat, combine, timestamp, label, printf} = format;
 
 const config = require('../config.json');
-if (!config) {
-    throw new Error("Config file config.json does not exist")
+if(!config)  {
+    throw  new Error("Config file config.json does not exist")
 }
 
 const logLevel = config.logger ? config.logger.level || 'debug' : config.logLevel || 'debug';
 require('winston-daily-rotate-file');
 
 module.exports = {
-    getLogger: function(loggerName, coin) {
-
-
+    getLogger: function (loggerName, coin) {
         let transportz = [new transports.Console()];
         if (config.logger && config.logger.file) {
             transportz.push(
@@ -32,27 +20,22 @@ module.exports = {
                     prepend: false,
                     localTime: true,
                     level: logLevel,
-                    colorize: true
+		    colorize: true
                 })
             );
         }
         return createLogger({
             format: combine(
                 splat(),
-                label({
-                    label: {
-                        loggerName: loggerName,
-                        coin: coin
-                    }
-                }),
+                label({label: {loggerName: loggerName, coin: coin}}),
                 timestamp(),
                 printf(info => {
                     return `[${info.timestamp}] [${info.level}] [${info.label.coin}] [${info.label.loggerName}] : ${info.message}`;
                 })
             ),
             level: logLevel,
-            localTime: true,
-            colorize: true,
+	    localTime: true,
+	    colorize: true,
             transports: transportz,
         });
     }

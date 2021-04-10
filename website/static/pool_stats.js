@@ -131,15 +131,19 @@ statsSource.addEventListener('message', function(e) {
         var pairsols = getReadableHashRatePair(sols);
 	var networkPercent = (poolName in stats.pools ? stats.pools[poolName].hashrate : 0)*2/1000000/(poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0)
         var timeSinceLastBlock = Date.now() - (stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000 || 0
-        if (timeSinceLastBlock / 1000 / 60 <= 60) {
+//console.log('date0: ',readableSeconds(timeSinceLastBlock/1000));
+	var poolLuck = parseFloat(parseInt(timeSinceLastBlock)  * 1000 / parseInt(stats.pools[poolName].poolStats.networkSols) / parseInt(stats.pools[poolName].hashrate*2/1000000) * parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
+console.log(parseFloat(poolLuck).toFixed(2));
+	 $("#poolLuck").html( parseFloat(poolLuck).toFixed(2) + ' %' + '<br> Pool Luck ' );
+/*        if (timeSinceLastBlock / 1000 / 60 <= 60) {
             var t = ' Mins';
-            timeSinceLastBlock = (timeSinceLastBlock / 1000 / 60);
+            timeSinceLastBlock = (timeSinceLastBlock / 1000 /60);
             $("#timeSinceBlock").html(parseFloat(timeSinceLastBlock).toFixed(2) + t);
         } else {
             timeSinceLastBlock = (timeSinceLastBlock / 1000 / 60 / 60);
             t = ' HRs'
-            $("#timeSinceBlock").html(parseFloat(timeSinceLastBlock).toFixed(2) + t);
-        }
+*/          $("#timeSinceBlock").html(readableSeconds(timeSinceLastBlock/1000)+'<BR>Since Blk');
+        
         $("#networkPercent").html((parseFloat(networkPercent * 100)).toFixed(4) + ' %');
         $("#validShares").text(poolName in stats.pools ? stats.pools[poolName].poolStats.validShares : 0);
 	$("#poolHashRate").text((!isNaN(hash) ? hash : 0) + ' ' + (pair[1] ? pair[1] : 'Sols/s'));
@@ -161,8 +165,10 @@ statsSource.addEventListener('message', function(e) {
         $("#poolPaidOut").text(poolName in stats.pools ? '$' + parseFloat(((stats.pools[poolName].poolStats?.totalPaid) || 0) * price || 0).toFixed(2) + ' USD' : 0);
         $("#workers").text(poolName in stats.pools ? stats.pools[poolName]?.blocks?.blocksFound : 0);
         $("#blockFound").html(poolName in stats.pools ? '<a href="' + stats.pools[poolName].explorerGetBlock + stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[0] + '" target="_blank">' + stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[2] + '</a>' : 0);
-
 	$("#poolStartTime").html(poolName in stats.pools ?  timeOfDayFormat(stats.pools[poolName].poolStats.poolStartTime*1000) : 0);
+console.log(stats.pools[poolName].timeToFind)
+	$("#timeToFind").html('Time To find</br>'+stats.pools[poolName].timeToFind);
+
         var time = stats.time * 1000;
         var avg = pool.averagedHashrate;
         addChartData(poolHashrateChart, poolHashrateChart.data.datasets[0], {
