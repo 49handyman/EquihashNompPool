@@ -92,7 +92,7 @@ module.exports = function(poolConfig) {
             redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
             redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, Date.now() / 1000].join(':')]);
             redisCommands.push(['zadd', coin + ':lastBlock', dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height, dateNow / 1000 | 0].join(':')]);
-            redisCommands.push(['zadd', coin + ':lastBlockTime', dateNow / 1000 | 0, [dateNow].join(':')]);
+            redisCommands.push(['zadd', coin + ':lastBlockTime', dateNow / 1000 | 0, [dateNow/1000].join(':')]);
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
             redisCommands.push(['hincrby', coin + ':blocksFound', shareData.worker, 1]);
         } else if (shareData.blockHash) {

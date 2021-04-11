@@ -131,9 +131,11 @@ statsSource.addEventListener('message', function(e) {
         var pairsols = getReadableHashRatePair(sols);
 	var networkPercent = (poolName in stats.pools ? stats.pools[poolName].hashrate : 0)*2/1000000/(poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0)
         var timeSinceLastBlock = Date.now() - (stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000 || 0
-//console.log('date0: ',readableSeconds(timeSinceLastBlock/1000));
+var timeSinceLastBlock2 = Date.now() - (parseFloat(poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlockTime : 0)*1000*100) || 0 
+console.log('lastBlockTime: ',Date.now(), (poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlockTime : 0)*1000, timeSinceLastBlock2, readableSeconds(timeSinceLastBlock2));
+console.log('lastBlock[0]: ',readableSeconds(timeSinceLastBlock/1000));
 	var poolLuck = parseFloat(parseInt(timeSinceLastBlock)  * 1000 / parseInt(stats.pools[poolName].poolStats.networkSols) / parseInt(stats.pools[poolName].hashrate*2/1000000) * parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
-console.log(parseFloat(poolLuck).toFixed(2));
+console.log('poolluck: ',parseFloat(poolLuck).toFixed(2));
 	 $("#poolLuck").html( parseFloat(poolLuck).toFixed(2) + ' %' + '<br> Pool Luck ' );
 /*        if (timeSinceLastBlock / 1000 / 60 <= 60) {
             var t = ' Mins';

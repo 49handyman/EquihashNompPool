@@ -236,7 +236,7 @@ module.exports = function() {
                     }
                     logger.info('\u001b[37mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s [%s]\u001b[37m', data.job, data.difficulty, data.shareDiff, workerInfo[0], workerInfo[1], functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED> job: %s diff: %s by %s worker: %s reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerInfo[0], workerInfo[1], data.error, functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[31mSHARE>REJECTED1!isValidShare> job: %s diff: %s by %s worker: %s reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerInfo[0], workerInfo[1], data.error, functions.anonymizeIP(data.ip));
                 }
             } else {
                 if (isValidShare) {
@@ -247,7 +247,7 @@ module.exports = function() {
                     }
                     logger.info('\u001b[37mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none [%s]\u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED> job: %s diff: %s by %s worker: none reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerStr, data.error, functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[31mSHARE>REJECTED>2 job: %s diff: %s by %s worker: none reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerStr, data.error, functions.anonymizeIP(data.ip));
                 }
             }
 

@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "coin": "zcash.json",
 
     "address": "t1f3G5bL96YAGxDPjCtqrTXVLu9DT5xo3cc",

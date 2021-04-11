@@ -504,11 +504,11 @@ module.exports = function(portalConfig, poolConfigs) {
                 coinStats.timeToFind = readableSeconds(_networkHashRate / _myHashRate * _blocktime);
 
 
-//console.log(('coinSats :', coinStats.lastBlockTime * 1000 || 0))
+//console.log(('coinSats :', coinStats.lastBlockTime || 0))
 
 var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
 
-
+//console.log('timeSinceLastBlock', timeSinceLastBlock);
 var poolLuck = (parseInt(timeSinceLastBlock)  * 1000 / parseInt(coinStats.poolStats.networkSols) / parseInt(coinStats.hashrate*2/1000000)  * parseInt(coinStats.lastblockTime*1000 * 100)).toFixed(2)
 parseFloat(poolLuck);
 //console.log('pooluck: '+poolLuck);
