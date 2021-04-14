@@ -7,9 +7,9 @@
 "txfee": 0.0001,
 "getMarketStats": true,
 "peerMagic": "58e0b617",
-"disablecb": "false",
-"requireShielding": "false",
-"privateChain": "true",
+"disablecb": false,
+"requireShielding": true,
+"privateChain": true,
   "sapling": true,
 
    "explorer":"https://explorer.pirate.black/",

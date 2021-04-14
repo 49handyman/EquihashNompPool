@@ -10,7 +10,7 @@
 "tlsOptions": { "enabled": false },
     "paymentProcessing": {
         "minConf": 10,
-        "enabled": true,
+        "enabled": false,
         "paymentMode": "prop",
         "paymentInterval": 1800,
         "minimumPayment": 32,

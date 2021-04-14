@@ -15,7 +15,8 @@ module.exports = function() {
     var forkId = process.env.forkId;
     var pools = {};
     var proxySwitch = {};
-    var redisClient = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
+  
+  var redisClient = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
 
     //Handle messages from master process sent via IPC
     process.on('message', function(message) {
@@ -97,8 +98,13 @@ module.exports = function() {
 
 
     Object.keys(poolConfigs).forEach(function(coin) {
-
+//console.log('coin poolworker.js l102: ', poolConfigs[coin]);
         var poolOptions = poolConfigs[coin];
+//console.log('poolOptions[coin] poolworker.js l104: ',poolOptions);
+//	 var logComponent = coin;
+//	 var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
+//	var trackShares = (typeof poolOptions.trackShares !== 'undefined' && typeof poolOptions.trackShares.disable !== 'undefined') ? !poolOptions.trackShares.disable : true;
+
         let componentStr = `Pool [:${(parseInt(forkId) + 1)}]`;
         let logger = loggerFactory.getLogger(componentStr, coin);
         var handlers = {
@@ -106,7 +112,6 @@ module.exports = function() {
             share: function() {},
             diff: function() {}
         };
-
         //Functions required for MPOS compatibility
         if (poolOptions.mposMode && poolOptions.mposMode.enabled) {
             var mposCompat = new MposCompatibility(poolOptions);
@@ -124,101 +129,32 @@ module.exports = function() {
             }
         }
 
-        //Functions required for Mongo Mode
-        //else if (poolOptions.mongoMode && poolOptions.mongoMode.enabled) {
-        //TODO: PRIORITY: Write this section
-        //}
 
         //Functions required for internal payment processing
         else {
 
-            var shareProcessor = new ShareProcessor(poolOptions);
+             var shareProcessor = new ShareProcessor(logger, poolOptions);
 
-            handlers.auth = function(port, workerName, password, authCallback) {
-                if (!poolOptions.validateWorkerUsername) {
-                    authCallback(true);
-                } else {
-                    try {
-                        // tests address.worker syntax
-                        let re = /^(?:[a-zA-Z0-9]+\.)*[a-zA-Z0-9]+$/;
-                        if (re.test(workerName)) {
-                            // not valid input, does not respect address.worker scheme. Acceptable chars a a-Z and 0-9
-                            //todo log
-                            if (workerName.indexOf('.') !== -1) {
-                                //have worker
-                                let tmp = workerName.split('.');
-                                if (tmp.length !== 2) {
-                                    authCallback(false);
-                                } else {
-                                    pool.daemon.cmd('validateaddress', [tmp[0]], function(results) {
-                                        var isValid = results.filter(function(r) {
-                                            return r.response.isvalid
-                                        }).length > 0;
+             handlers.auth = function(port, workerName, password, authCallback){
+                 if (poolOptions.validateWorkerUsername !== true) {
+                     authCallback(true);
+                 } else {
+                     authCallback(_this.validateAddress(String(workerName).split(".")[0], poolOptions));
+                 }
+             };
 
-/*
-                                         var authStatus = [];
-                                         console.log('auth : '+coin + 'miner '+workerName+' isValid '+isValid+' results '+results+' timestamp'+ Date.now() / 1000)
-//                                         authStatus.push(['hset', coin + ':auth', 'miner',workerName, Date.now() / 1000]);
-					authStatus.push(['zadd', coin + ':auth', workerName | 0,isValid, [Date.now() / 1000].join(':')]);
-                                          redisClient.multi(authStatus).exec(function(err, replies) {
-// 					redisCommands.push(['zadd', coin + ':auth', workerName | 0,isValid, [Date.now() / 1000].join(':')]);
-                                         console.log('redisClient resp.: '+replies);
-					        if (err)
-                                                 logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
-                                                 });
+             handlers.share = function(isValidShare, isValidBlock, data){
+                 shareProcessor.handleShare(isValidShare, isValidBlock, data);
+             };
+         }
 
-
-
-*/
-                                        authCallback(isValid);
-                                    });
-                                }
-                            } else {
-                                //only address
-                                pool.daemon.cmd('validateaddress', [workerName], function(results) {
-                                    var isValid = results.filter(function(r) {
-                                        return r.response.isvalid
-                                    }).length > 0;
-
-/*
-
-        				var authStatus = [];
-					console.log('auth : '+coin + 'miner '+workerName+' isValid '+isValid+' results '+results+' timestamp'+ Date.now() / 1000)
-        			//	authStatus.push(['hset', coin + ':auth', 'miner',workerName, Date.now() / 1000]);
-        				 redisClient.multi(['zadd', coin + ':auth', 'miner',workerName, [Date.now() / 1000].join(':')]).exec(function(err, replies) {
-					console.log('redisClient resp.: '+replies);
-             					if (err)
-                 				logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
-         					});
-
-*/
-                                    authCallback(isValid);
-                                });
-                            }
-                        } else {
-                            authCallback(false);
-                        }
-                    } catch (e) {
-                        authCallback(false);
-                    }
-
-                }
-            };
-
-            handlers.share = function(isValidShare, isValidBlock, data) {
-                logger.silly('Handle share, execeuting shareProcessor.handleShare, isValidShare = %s, isValidBlock = %s, data = %s', isValidShare, isValidBlock, JSON.stringify(data))
-                shareProcessor.handleShare(isValidShare, isValidBlock, data);
-            };
-        }
 
         var authorizeFN = function(ip, port, workerName, password, callback) {
             handlers.auth(port, workerName, password, function(authorized) {
 
                 var authString = authorized ? 'Authorized' : 'Unauthorized ';
 
-                // PASSWORD "c=pexa,m=solo" etc MOUSE422
                 logger.debug('\u001b[32mAUTH>TRUE> authstr [%s] worker [%s] passwd [%s] ip [%s]\u001b[37m', authString, workerName, password, functions.anonymizeIP(ip));
-
                 callback({
                     error: null,
                     authorized: authorized,
@@ -323,7 +259,7 @@ module.exports = function() {
         logger.debug('Loading last proxy state from redis');
 
         redisClient.on('error', function(err) {
-            logger.debug(logSystem, logComponent, logSubCat, 'Pool configuration failed: ' + err);
+            logger.debug('Pool configuration failed: ' + err);
         });
 
         redisClient.hgetall("proxyState", function(error, obj) {
@@ -433,4 +369,39 @@ module.exports = function() {
             }
         });
     };
+
+
+         this.validateAddress = function(address, poolOptions) {
+         let poolZAddressPrefix = (typeof poolOptions.zAddress !== 'undefined' ? poolOptions.zAddress : '').substring(0,2);
+         let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
+         let minerAddressPrefix = address.substring(0,2);
+console.log('this.validateAddress called poolworker ln373 : ',address, poolZAddressPrefix,minerAddressLength, minerAddressPrefix);
+         if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
+             var privateChain = poolOptions.coin.privateChain === true;
+         } else {
+             var privateChain = false;
+         }
+
+         if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
+             //validate as sapling
+ console.log('privateChain && poolZAddressPrefix == zs && 78 length : ',address, minerAddressLength,minerAddressPrefix)
+             return true;
+         } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {
+             //validate as sprout
+             return true;
+         } else if (privateChain || address.length >= 40 || address.length <= 30) {
+console.log('(privateChain || address.length >= 40 || address.length <= 30 : ',address, privateChain, poolZAddressPrefix , minerAddressLength, minerAddressPrefix);
+
+             return false;
+
+         } else {
+             return true;
+         }
+     };
+
+
+
+
+
+
 };

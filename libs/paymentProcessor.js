@@ -1,14 +1,12 @@
-
 var fs = require('fs');
 var request = require('request');
 const loggerFactory = require('./logger.js');
 var redis = require('redis');
 var async = require('async');
-
 var Stratum = require('stratum-pool');
 var util = require('stratum-pool/lib/util.js');
 var CreateRedisClient = require('./createRedisClient.js');
-
+var displayBool = 'true';
 let badBlocks = {}
 
 module.exports = function(logger){
@@ -18,7 +16,6 @@ var logger = loggerFactory.getLogger('\u001b[32mPaymentProcessing\u001b[37m', 's
 
 
     var poolConfigs = JSON.parse(process.env.pools);
-
     var enabledPools = [];
 
     Object.keys(poolConfigs).forEach(function(coin) {
@@ -225,7 +222,7 @@ logger.info(coin + ' Wallet Balance ' + d + result.data);
                     tBalance = coinsRound(tBalance);
                 }
                 if (displayBool === true) {
-                    logger.special(logSystem, logComponent, addr+' balance of ' + tBalance);
+                    logger.info(logSystem, logComponent, addr+' balance of ' + tBalance);
                 }
                 callback(null, coinsToSatoshies(tBalance));
             }
@@ -246,7 +243,7 @@ cacheMarketStats();
                     zBalance = coinsRound(result[0].response);
                 }
                 if (displayBool === true) {
-                    logger.special(logSystem, logComponent, addr.substring(0,14) + '...' + addr.substring(addr.length - 14) + ' balance: '+(zBalance).toFixed(8));
+                    logger.info(logSystem, logComponent, addr.substring(0,14) + '...' + addr.substring(addr.length - 14) + ' balance: '+(zBalance).toFixed(8));
                 }
                 callback(null, coinsToSatoshies(zBalance));
             }
@@ -284,7 +281,7 @@ cacheMarketStats();
                     var opid = (result.response || result[0].response);
                     opidCount++;
                     opids.push(opid);
-                    logger.special(logSystem, logComponent, 'Shielding balance ' + amount);
+                    logger.info(logSystem, logComponent, 'Shielding balance ' + amount);
                     callback = function (){};
                     callback(null);
                 }
@@ -324,7 +321,7 @@ cacheMarketStats();
                     var opid = (result.response || result[0].response);
                     opidCount++;
                     opids.push(opid);
-                    logger.special(logSystem, logComponent, 'Unshield funds for payout ' + amount + ' ' + opid);
+                    logger.info(logSystem, logComponent, 'Unshield funds for payout ' + amount + ' ' + opid);
                     callback = function (){};
                     callback(null);
                 }
@@ -496,10 +493,10 @@ console.log('data[coin].usd : ',coin,': ',price)
                               logger.error("Shielding operation failed " + op.id);
                             }
                         } else {
-                            logger.special(logSystem, logComponent, 'Shielding operation success ' + op.id + '  txid: ' + op.result.txid);
+                            logger.info(logSystem, logComponent, 'Shielding operation success ' + op.id + '  txid: ' + op.result.txid);
                         }
                     } else if (op.status == "executing") {
-                        logger.special(logSystem, logComponent, 'Shielding operation in progress ' + op.id );
+                        logger.info(logSystem, logComponent, 'Shielding operation in progress ' + op.id );
                     }
                 });
                 // if there are no completed operations
@@ -1271,7 +1268,7 @@ console.log('data[coin].usd : ',coin,': ',price)
                             if (txid != null) {
 
                                 // it worked, congrats on your pools payout ;)
-                                logger.special(logSystem, logComponent, 'Sent ' + satoshisToCoins(totalSent)
+                                logger.info(logSystem, logComponent, 'Sent ' + satoshisToCoins(totalSent)
                                     + ' to ' + Object.keys(addressAmounts).length + ' miners; txid: '+txid);
 
                                 if (withholdPercent > 0) {

@@ -15,15 +15,11 @@ value: a hash with..
  */
 
 
-module.exports = function(poolConfig) {
+module.exports = function(logger, poolConfig) {
 
     var redisConfig = poolConfig.redis;
     var coin = poolConfig.coin.name;
     var forkId = process.env.forkId;
-    let logger = loggerFactory.getLogger(`ShareProcessor [:${forkId}]`, coin);
-    var logSystem = 'Pool';
-    var logComponent = coin;
-    var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
     var connection = redis.createClient(redisConfig.port, redisConfig.host);
     var client = redis.createClient(redisConfig.port, redisConfig.host);
     connection.on('ready', function() {
