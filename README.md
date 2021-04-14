@@ -3,6 +3,8 @@ Forked from Raven coin Updated to use Equihash
 
 [Update 4-14-2021]
 
+Thanks to the Knomp code i got z_addresses working in authorization, and payments -- I hope.
+
 Added POSIX module and testing usage with root. I was having problems with rejected blocks and found my system lagging, and not responding as fast as it should. After disabling all the unused services and background processes I resolved the issue.
 
 Testing the system with only Pirate chain full node wallet running to decrease RPC  response times
