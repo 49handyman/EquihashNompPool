@@ -61,10 +61,7 @@ module.exports = function(poolConfig) {
             logger.error(logSystem, logComponent, logSubCat, "You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
         }
         var startTime = [];
-        console.log('hset', coin + ':stats', 'poolStartTime', Date.now() / 1000)
-        //connection.multi(['hset', coin + ':stats', 'poolStartTime', Date.now()])
         startTime.push(['hset', coin + ':stats', 'poolStartTime', Date.now() / 1000]);
-        //client.redisClient(['hset', coin + ':stats', 'poolStartTime', Date.now()])
         connection.multi(startTime).exec(function(err, replies) {
             if (err)
                 logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
@@ -90,13 +87,15 @@ module.exports = function(poolConfig) {
 
         if (isValidBlock) {
             redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
-            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, Date.now() / 1000].join(':')]);
+	    redisCommands.push(['rename', coin + ':shares:timesCurrent', coin + ':shares:times' + shareData.height]);
+            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000].join(':')]);
             redisCommands.push(['zadd', coin + ':lastBlock', dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height, dateNow / 1000 | 0].join(':')]);
             redisCommands.push(['zadd', coin + ':lastBlockTime', dateNow / 1000 | 0, [dateNow/1000].join(':')]);
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
             redisCommands.push(['hincrby', coin + ':blocksFound', shareData.worker, 1]);
         } else if (shareData.blockHash) {
             redisCommands.push(['hincrby', coin + ':stats', 'invalidBlocks', 1]);
+	    redisCommands.push(['sadd', coin + ':blocksRejected', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000,shareData.worker].join(':')]);
         }
         connection.multi(redisCommands).exec(function(err, replies) {
             if (err)

@@ -50,6 +50,12 @@ function displayCharts() {
           }),
           borderWidth: 2,
           backgroundColor: '#348EA9',
+         pointHoverRadius: 12,
+	pointStyle: 'crossRot',
+	radius: 1,
+	pointBorderColor: '#24becc',
+	pointBorderWidth: 2,
+         pointHitRadius: 10,
           borderColor: '#348EA9'
         },
         {
@@ -63,6 +69,8 @@ function displayCharts() {
           }),
           borderWidth: 2,
           backgroundColor: '#E81D62',
+	pointHoverRadius: 6,
+	pointHitRadius: 9,
           borderColor: '#E81D62'
       }],
       'Time',
@@ -73,7 +81,7 @@ $.get({
     url: "https://api.coingecko.com/api/v3/coins/" + poolName,
     success: function(data) {
    //     console.log(data);
-        $("#priceUsd").html('$' + parseFloat(data.market_data.current_price.usd).toFixed(5) + ' USD');
+//        $("#priceUsd").html('$' + parseFloat(data.market_data.current_price.usd).toFixed(5) + ' USD');
         price = parseFloat(data.market_data.current_price.usd).toFixed(5);
         $("#priceBtc").html(parseFloat(data.market_data.current_price.btc) + ' BTC');
         $("#rank").html(data.market_cap_rank) + ' th';
@@ -131,21 +139,10 @@ statsSource.addEventListener('message', function(e) {
         var pairsols = getReadableHashRatePair(sols);
 	var networkPercent = (poolName in stats.pools ? stats.pools[poolName].hashrate : 0)*2/1000000/(poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0)
         var timeSinceLastBlock = Date.now() - (stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000 || 0
-var timeSinceLastBlock2 = Date.now() - (parseFloat(poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlockTime : 0)*1000*100) || 0 
-console.log('lastBlockTime: ',Date.now(), (poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlockTime : 0)*1000, timeSinceLastBlock2, readableSeconds(timeSinceLastBlock2));
-console.log('lastBlock[0]: ',readableSeconds(timeSinceLastBlock/1000));
+	var timeSinceLastBlock2 = Date.now() - (parseFloat(poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlockTime : 0)*1000*100) || 0 
 	var poolLuck = parseFloat(parseInt(timeSinceLastBlock)  * 1000 / parseInt(stats.pools[poolName].poolStats.networkSols) / parseInt(stats.pools[poolName].hashrate*2/1000000) * parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
-console.log('poolluck: ',parseFloat(poolLuck).toFixed(2));
-	 $("#poolLuck").html( parseFloat(poolLuck).toFixed(2) + ' %' + '<br> Pool Luck ' );
-/*        if (timeSinceLastBlock / 1000 / 60 <= 60) {
-            var t = ' Mins';
-            timeSinceLastBlock = (timeSinceLastBlock / 1000 /60);
-            $("#timeSinceBlock").html(parseFloat(timeSinceLastBlock).toFixed(2) + t);
-        } else {
-            timeSinceLastBlock = (timeSinceLastBlock / 1000 / 60 / 60);
-            t = ' HRs'
-*/          $("#timeSinceBlock").html(readableSeconds(timeSinceLastBlock/1000)+'<BR>Since Blk');
-        
+	$("#poolLuck").html( parseFloat(poolLuck).toFixed(2) + ' %' + '<br> Pool Luck ' );
+	$("#timeSinceBlock").html(readableSeconds(timeSinceLastBlock/1000)+'<BR>Since Blk');
         $("#networkPercent").html((parseFloat(networkPercent * 100)).toFixed(4) + ' %');
         $("#validShares").text(poolName in stats.pools ? stats.pools[poolName].poolStats.validShares : 0);
 	$("#poolHashRate").text((!isNaN(hash) ? hash : 0) + ' ' + (pair[1] ? pair[1] : 'Sols/s'));
@@ -163,13 +160,17 @@ console.log('poolluck: ',parseFloat(poolLuck).toFixed(2));
         $("#networkDiff").text(poolName in stats.pools ? getReadableNetworkDiffString(stats.pools[poolName].poolStats.networkDiff) : 0); //doug
         $("#validBlocks").text(poolName in stats.pools ? stats.pools[poolName].poolStats.validBlocks : 0);
         $("#networkTime").text(poolName in stats.pools ? timeOfDayFormat(Date.now()) : 0);
-        $("#kicked").text(poolName in stats ? pools[poolName]?.blocksKicked : 0);
+        $("#blocksKicked").html(poolName in stats.pools ? 'Kicked Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.kicked) : 0);
         $("#poolPaidOut").text(poolName in stats.pools ? '$' + parseFloat(((stats.pools[poolName].poolStats?.totalPaid) || 0) * price || 0).toFixed(2) + ' USD' : 0);
         $("#workers").text(poolName in stats.pools ? stats.pools[poolName]?.blocks?.blocksFound : 0);
         $("#blockFound").html(poolName in stats.pools ? '<a href="' + stats.pools[poolName].explorerGetBlock + stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[0] + '" target="_blank">' + stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[2] + '</a>' : 0);
 	$("#poolStartTime").html(poolName in stats.pools ?  timeOfDayFormat(stats.pools[poolName].poolStats.poolStartTime*1000) : 0);
-console.log(stats.pools[poolName].timeToFind)
 	$("#timeToFind").html('Time To find</br>'+stats.pools[poolName].timeToFind);
+	$("#priceUsd").html(poolName in stats.pools ? '$'+stats.pools[poolName].poolStats.coinMarketCap : 0);
+	$("#rejected").html(poolName in stats.pools ?   'Rejected Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.blocksRejected) : 0);
+	$("#orphaned").html(poolName in stats.pools ?   'Orphaned Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.orphaned) : 0);
+	$("#duplicated").html(poolName in stats.pools ?   'Duplicated Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.blocksDuplicate) : 0);
+
 
         var time = stats.time * 1000;
         var avg = pool.averagedHashrate;
@@ -188,7 +189,6 @@ console.log(stats.pools[poolName].timeToFind)
 
     });
 }, false);
-//console.log('dataset ',poolBlockChart.data.datasets);
 
 $.getJSON('/api/stats', function(data) {
     const array = [];
@@ -202,9 +202,7 @@ $.getJSON('/api/stats', function(data) {
             //          $("#blocks").text( worker+': '+data.pools[p].blocks.blocksFound[w]);
         }
     }
- //   console.log(array)
     $("#blocks").html(array);
-    //console.log(allblocks, blocks);
 });
 
 

@@ -28,9 +28,9 @@
 "ports": {
     "3348": {
         "tls":false,
-        "diff": 50,
+        "diff": 800,
         "varDiff": {
-            "minDiff": 200,
+            "minDiff": 700,
             "maxDiff": 9999,
             "targetTime": 15,
             "retargetTime": 60,

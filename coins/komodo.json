@@ -3,9 +3,12 @@
   "symbol": "kmd",
   "algorithm": "equihash",
   "blockreward": 3,
-  "txfee": 0.00005,
+  "txfee": 0.00001,
   "getMarketStats": true,
   "peerMagic": "f9eee48d",
+"requireShielding": "false",
+"privateChain": "false",
+
   "sapling": true,
 
    "explorer":"https://kmdexplorer.io/",

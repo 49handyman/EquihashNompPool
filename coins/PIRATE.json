@@ -9,7 +9,7 @@
 "peerMagic": "58e0b617",
 "disablecb": "false",
 "requireShielding": "false",
-"privateChain": "tue",
+"privateChain": "true",
   "sapling": true,
 
    "explorer":"https://explorer.pirate.black/",

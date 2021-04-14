@@ -154,6 +154,22 @@ module.exports = function() {
                                         var isValid = results.filter(function(r) {
                                             return r.response.isvalid
                                         }).length > 0;
+
+/*
+                                         var authStatus = [];
+                                         console.log('auth : '+coin + 'miner '+workerName+' isValid '+isValid+' results '+results+' timestamp'+ Date.now() / 1000)
+//                                         authStatus.push(['hset', coin + ':auth', 'miner',workerName, Date.now() / 1000]);
+					authStatus.push(['zadd', coin + ':auth', workerName | 0,isValid, [Date.now() / 1000].join(':')]);
+                                          redisClient.multi(authStatus).exec(function(err, replies) {
+// 					redisCommands.push(['zadd', coin + ':auth', workerName | 0,isValid, [Date.now() / 1000].join(':')]);
+                                         console.log('redisClient resp.: '+replies);
+					        if (err)
+                                                 logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
+                                                 });
+
+
+
+*/
                                         authCallback(isValid);
                                     });
                                 }
@@ -163,6 +179,19 @@ module.exports = function() {
                                     var isValid = results.filter(function(r) {
                                         return r.response.isvalid
                                     }).length > 0;
+
+/*
+
+        				var authStatus = [];
+					console.log('auth : '+coin + 'miner '+workerName+' isValid '+isValid+' results '+results+' timestamp'+ Date.now() / 1000)
+        			//	authStatus.push(['hset', coin + ':auth', 'miner',workerName, Date.now() / 1000]);
+        				 redisClient.multi(['zadd', coin + ':auth', 'miner',workerName, [Date.now() / 1000].join(':')]).exec(function(err, replies) {
+					console.log('redisClient resp.: '+replies);
+             					if (err)
+                 				logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
+         					});
+
+*/
                                     authCallback(isValid);
                                 });
                             }
@@ -188,7 +217,7 @@ module.exports = function() {
                 var authString = authorized ? 'Authorized' : 'Unauthorized ';
 
                 // PASSWORD "c=pexa,m=solo" etc MOUSE422
-                logger.debug('AUTH>TRUE> authstr [%s] worker [%s] passwd [%s] ip [%s]', authString, workerName, password, functions.anonymizeIP(ip));
+                logger.debug('\u001b[32mAUTH>TRUE> authstr [%s] worker [%s] passwd [%s] ip [%s]\u001b[37m', authString, workerName, password, functions.anonymizeIP(ip));
 
                 callback({
                     error: null,
@@ -234,9 +263,9 @@ module.exports = function() {
                     } else if (data.shareDiff > 1000000) {
                         logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1.000.000!\u001b[37m');
                     }
-                    logger.info('\u001b[37mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s [%s]\u001b[37m', data.job, data.difficulty, data.shareDiff, workerInfo[0], workerInfo[1], functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s \u001b[37m', data.job, data.difficulty, data.shareDiff,  workerInfo[1], functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED1!isValidShare> job: %s diff: %s by %s worker: %s reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerInfo[0], workerInfo[1], data.error, functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[31mSHARE>REJECTED1!isValidShare> job: %s diff: %s by %s worker: %s reason: %s \u001b[37m', data.job, data.difficulty, workerInfo[1], data.error, functions.anonymizeIP(data.ip));
                 }
             } else {
                 if (isValidShare) {
@@ -245,7 +274,7 @@ module.exports = function() {
                     } else if (data.shareDiff > 1000000) {
                         logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1.000.000!\u001b[37m');
                     }
-                    logger.info('\u001b[37mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none [%s]\u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[37mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none \u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
                     logger.info('\u001b[31mSHARE>REJECTED>2 job: %s diff: %s by %s worker: none reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerStr, data.error, functions.anonymizeIP(data.ip));
                 }
@@ -260,9 +289,9 @@ module.exports = function() {
             let workerInfo = workerStr.split('.');
 
             if (workerInfo.length === 2) {
-                logger.info('DIFFICULTY>UPDATE> diff: %s miner: %s worker: %s', diff, workerInfo[0], workerInfo[1]);
+                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: %s miner: %s worker: %s\u001b[37m', diff, workerInfo[0], workerInfo[1]);
             } else {
-                logger.info('DIFFICULTY>UPDATE> diff: %s miner: %s worker: none', diff, workerStr);
+                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: %s miner: %s worker: none\u001b[37m', diff, workerStr);
             }
 
             handlers.diff(workerName, diff);

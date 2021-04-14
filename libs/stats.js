@@ -5,6 +5,7 @@ var async = require('async');
 var os = require('os');
 var algos = require('stratum-pool/lib/algoProperties.js');
 const logger = require('./logger.js').getLogger('Stats', 'system');
+const functions = require('./functions.js');
 var price;
 var found;
 module.exports = function(portalConfig, poolConfigs) {
@@ -217,23 +218,7 @@ module.exports = function(portalConfig, poolConfigs) {
                             var balAmount = 0;
                             var paidAmount = 0;
                             var pendingAmount = 0;
-                            //	   var blocks;
                             var workers = {};
-                            /* doug start
-                                        for (var i in found[1]) {
-                                          if (Math.abs(i % 2) != 1) {
-                                            workerName = String(found[1][i]);
-                                            workers[workerName] = (workers[workerName] || {});
-                            console.log('found1 :', found[1][i], workerName,  workers[workerName]);
-
-                                          } else {
-                                            blocks = parseFloat(found[1][i]);
-                                            workers[workerName].blocks = coinsRound(blocks);
-                                            totalBlocks = blocks;
-                            console.log('found2 :',  blocks,  workers[workerName].blocks, totalBlocks);
-                                          }
-                                        }
-                            */ //doug end
 
                             for (var i in pays[1]) {
                                 if (Math.abs(i % 2) != 1) {
@@ -333,10 +318,12 @@ module.exports = function(portalConfig, poolConfigs) {
                 ['zremrangebyscore', ':marketStats', '-inf', '(' + windowTime],
                 ['zrangebyscore', ':marketStats', windowTime, '+inf'],
                 ['hgetall', ':blocksFound'],
-                ['scard', ':blocksKicked'],
-                ['zrevrange', ':lastBlock', 0, 0],
-                ['zrevrange', ':lastBlockTime', 0, 0],
-		['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime]
+                ['scard', ':blocksKicked'],  // 17
+                ['zrevrange', ':lastBlock', 0, 0],  //18
+                ['zrevrange', ':lastBlockTime', 0, 0],  //19
+		['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime],  //20
+		['scard', ':blocksRejected'],  // 21
+		['scard', ':blocksDuplicate']  // 22
           ];
             var commandsPerCoin = redisCommandTemplates.length;
             client.coins.map(function(coin) {
@@ -383,7 +370,8 @@ module.exports = function(portalConfig, poolConfigs) {
                                 networkConnections: replies[i + 2] ? (replies[i + 2].networkConnections || 0) : 0,
                                 networkVersion: replies[i + 2] ? (replies[i + 2].networkSubVersion || 0) : 0,
                                 networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0,
-                                poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0
+                                poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0,
+				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
                             },
                             blocks: {
                                 pending: replies[i + 3],
@@ -392,7 +380,9 @@ module.exports = function(portalConfig, poolConfigs) {
                                 kicked: replies[i + 17],
                                 blocksFound: replies[i + 16],
                                 lastBlock: replies[i + 18],
-                                lastBlockTime: replies[i + 19]
+                                lastBlockTime: replies[i + 19],
+				blocksRejected: replies[i + 21],
+				blocksDuplicate: replies[i + 22]
                             },
                             pending: {
                                 blocks: replies[i + 9].sort(sortBlocks),
@@ -502,17 +492,10 @@ module.exports = function(portalConfig, poolConfigs) {
                 coinStats.luckDays = ((_networkHashRate / _myHashRate * _blocktime) / (24 * 60 * 60)).toFixed(3);
                 coinStats.luckHours = ((_networkHashRate / _myHashRate * _blocktime) / (60 * 60)).toFixed(3);
                 coinStats.timeToFind = readableSeconds(_networkHashRate / _myHashRate * _blocktime);
-
-
-//console.log(('coinSats :', coinStats.lastBlockTime || 0))
-
-var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
-
-//console.log('timeSinceLastBlock', timeSinceLastBlock);
-var poolLuck = (parseInt(timeSinceLastBlock)  * 1000 / parseInt(coinStats.poolStats.networkSols) / parseInt(coinStats.hashrate*2/1000000)  * parseInt(coinStats.lastblockTime*1000 * 100)).toFixed(2)
-parseFloat(poolLuck);
-//console.log('pooluck: '+poolLuck);
-coinStats.poolLuck=poolLuck;
+		var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
+		var poolLuck = (parseInt(timeSinceLastBlock)  * 1000 / parseInt(coinStats.poolStats.networkSols) / parseInt(coinStats.hashrate*2/1000000)  * parseInt(coinStats.lastblockTime*1000 * 100)).toFixed(2)
+		parseFloat(poolLuck);
+		coinStats.poolLuck=poolLuck;
                 coinStats.workerCount = Object.keys(coinStats.workers).length;
                 portalStats.global.workers += coinStats.workerCount;
                 portalStats.global.hashrate += coinStats.hashrate;
@@ -544,7 +527,6 @@ coinStats.poolLuck=poolLuck;
                     coinStats.workers[worker].luckHours = ((_networkHashRate / _wHashRate * _blocktime) / (60 * 60)).toFixed(3);
                     coinStats.workers[worker].hashrate = _workerRate;
                     coinStats.workers[worker].hashrateString = _this.getReadableHashRateString(_workerRate);
-                    //	  coinStats.workers[worker].blocksFound = _blockTotal // doug
                 }
 
                 delete coinStats.hashrates;
@@ -559,7 +541,6 @@ coinStats.poolLuck=poolLuck;
 
             _this.stats = portalStats;
             _this.statsString = JSON.stringify(portalStats);
-
 
             _this.statHistory.push(portalStats);
             addStatPoolHistory(portalStats);
@@ -676,9 +657,7 @@ coinStats.poolLuck=poolLuck;
     };
 
     function getData(symbol) {
-        //console.log('symbol ', symbol);
-        //console.log(poolConfigs[coin].coin.symbol.toUpperCase());
-        request('https://api.nomics.com/v1/currencies/ticker?key=a61001570699a5ab9a3b1830cf0e9839&ids=' + symbol + '&interval=0d', function(error, response, body) {
+        request('https://api.coingecko.com/api/v3/simple/price?ids=' + symbol + '&vs_currencies=usd', function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 results = JSON.parse(body);
                 console.log(results);

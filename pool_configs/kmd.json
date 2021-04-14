@@ -1,10 +1,14 @@
 {
-"enabled": true,
+"enabled": false,
 "coin": "komodo.json",
 "address": "RWi6u5i3QBqkw2HNfj6QHdygcYGtmUzhsr",
+
+ "zAddress": "",
+ "tAddress": "",
+
+
 "invalidAddress":"",
 "walletInterval": 1,
-"wallet": "RWi6u5i3QBqkw2HNfj6QHdygcYGtmUzhsr",
 "marketStats": true,
 "rewardRecipients": {"RGPnLvubvCZK2zpiXNV582oMC3vs5mBZQU": 6.75},
 
@@ -13,7 +17,7 @@
         "minConf": 10,
         "enabled": true,
         "paymentMode": "prop",
-        "_comment_paymentMode":"prop, pplnt",
+        "_comment_paymentMode":"only prop workin",
         "paymentInterval": 1400,
         "minimumPayment": 7.00,
         "maxBlocksPerPayment": 100,
@@ -29,12 +33,12 @@
 "ports": {
     "3331": {
        "tls":false,
-        "diff": 200,
-          "varDiff": {"minDiff": 20, "maxDiff": 10000, "targetTime": 15, "retargetTime": 60, "variancePercent": 30}
+        "diff": 900,
+          "varDiff": {"minDiff": 600, "maxDiff": 1500, "targetTime": 15, "retargetTime": 60, "variancePercent": 30}
     },
     "3332": {
         "tls":false,
-         "diff": 32
+         "diff": 900
      }
 
 },

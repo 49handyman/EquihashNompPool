@@ -42,7 +42,7 @@
         "jobRebroadcastTimeout": 55,
         "connectionTimeout": 1900,
         "emitInvalidBlockHashes": true,
-        "validateWorkerUsername": false,
+        "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
         "banning": {
             "enabled": true,

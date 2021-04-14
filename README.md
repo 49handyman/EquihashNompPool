@@ -1,6 +1,14 @@
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
 
+[Update 4-14-2021]
+
+New items added to dashboard, testing z_transactions, z_ only working for solo mining. Most work focused on stats, dashboard, and bug fixes
+
+This fork is for solo miners that want a full Dashboard to monitor their mining. I'm using the best parts of many forks to get what i personally want for a large screen/format Dashboard for our 65" display at Entrust's office.
+
+
+
 Im still hacking away and adding features and stats. the code is a mess for now, but works great on Komodo as my own pool. no z_ transactions yet so use it for solo mining only on those coins. Just got zen full node wallet synced today and seems to work fine for Horizen.
 
 Changing UI to dark theme. More to come in next few days as i work on mor important items.

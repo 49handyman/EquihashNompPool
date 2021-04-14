@@ -4,7 +4,9 @@ var os = require('os');
 var cluster = require('cluster');
 var async = require('async');
 var redis = require('redis');
+
 var PoolLogger = require('./libs/logUtil.js');
+
 var CliListener = require('./libs/cliListener.js');
 var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
@@ -14,6 +16,7 @@ const loggerFactory = require('./libs/logger.js');
 const logger = loggerFactory.getLogger('init.js', 'system');
 var algos = require('stratum-pool/lib/algoProperties.js');
 JSON.minify = JSON.minify || require("node-json-minify");
+
 
 if (!fs.existsSync('config.json')) {
     console.log('config.json file does not exist. Read the installation/setup instructions.');
@@ -48,6 +51,7 @@ try {
         logger.debug('POSIX Connection Limit (Safe to ignore) POSIX module not installed and resource (connection) limit was not raised');
     }
 }
+
 
 
 if (cluster.isWorker) {
