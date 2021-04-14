@@ -25,7 +25,7 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 -------
 ### Screenshots
 #### Pool Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dev-stats-2.PNG)<br /><br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EquihashNomp1.PNG)<br /><br />
 #### Block Explorer<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-3.PNG)<br /><br />
 
