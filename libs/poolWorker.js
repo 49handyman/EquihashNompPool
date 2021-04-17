@@ -15,7 +15,7 @@ module.exports = function() {
     var forkId = process.env.forkId;
     var pools = {};
     var proxySwitch = {};
-  
+
   var redisClient = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
 
     //Handle messages from master process sent via IPC
@@ -98,13 +98,7 @@ module.exports = function() {
 
 
     Object.keys(poolConfigs).forEach(function(coin) {
-//console.log('coin poolworker.js l102: ', poolConfigs[coin]);
         var poolOptions = poolConfigs[coin];
-//console.log('poolOptions[coin] poolworker.js l104: ',poolOptions);
-//	 var logComponent = coin;
-//	 var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
-//	var trackShares = (typeof poolOptions.trackShares !== 'undefined' && typeof poolOptions.trackShares.disable !== 'undefined') ? !poolOptions.trackShares.disable : true;
-
         let componentStr = `Pool [:${(parseInt(forkId) + 1)}]`;
         let logger = loggerFactory.getLogger(componentStr, coin);
         var handlers = {
@@ -195,9 +189,12 @@ module.exports = function() {
             if (workerInfo.length === 2) {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
-                        logger.warn('\u001b[33mSHARE>WARN> Share was found with diff higher than 1.000.000.000!\u001b[37m');
+			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
+
+                        logger.warn('\u001b[33mSHARE>WARN> Share was found with diff higher than 1,000,000,000!\u001b[37m error'+redisClient.error);
                     } else if (data.shareDiff > 1000000) {
-                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1.000.000!\u001b[37m');
+			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
+                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1,000,000!\u001b[37m'+redisClient.error);
                     }
                     logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s \u001b[37m', data.job, data.difficulty, data.shareDiff,  workerInfo[1], functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
@@ -206,11 +203,18 @@ module.exports = function() {
             } else {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
-                        logger.warn('\u001b[33mSHARE>WARN> Share was found with diff higher than 1.000.000.000!\u001b[37m');
+
+//doug
+			redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
+
+//doug
+
+                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1,000,000,000!\u001b[37m'+redisClient.error);
                     } else if (data.shareDiff > 1000000) {
-                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1.000.000!\u001b[37m');
+			 redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
+                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1,000,000!\u001b[37m');
                     }
-                    logger.info('\u001b[37mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none \u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none \u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
                     logger.info('\u001b[31mSHARE>REJECTED>2 job: %s diff: %s by %s worker: none reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerStr, data.error, functions.anonymizeIP(data.ip));
                 }
@@ -224,10 +228,11 @@ module.exports = function() {
             let workerStr = workerName;
             let workerInfo = workerStr.split('.');
 
+
             if (workerInfo.length === 2) {
-                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: %s miner: %s worker: %s\u001b[37m', diff, workerInfo[0], workerInfo[1]);
+                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: %s worker: %s\u001b[37m', diff, workerInfo[1]);
             } else {
-                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: %s miner: %s worker: none\u001b[37m', diff, workerStr);
+                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: %s worker: none\u001b[37m', diff, workerStr);
             }
 
             handlers.diff(workerName, diff);
@@ -375,7 +380,7 @@ module.exports = function() {
          let poolZAddressPrefix = (typeof poolOptions.zAddress !== 'undefined' ? poolOptions.zAddress : '').substring(0,2);
          let minerAddressLength = address.replace(/[^0-9a-z]/gi, '').length;
          let minerAddressPrefix = address.substring(0,2);
-console.log('this.validateAddress called poolworker ln373 : ',address, poolZAddressPrefix,minerAddressLength, minerAddressPrefix);
+// console.log('this.validateAddress called poolworker ln373 : ',address, poolZAddressPrefix,minerAddressLength, minerAddressPrefix);
          if (typeof poolOptions.coin.privateChain !== 'undefined' && poolOptions.coin.privateChain === true) {
              var privateChain = poolOptions.coin.privateChain === true;
          } else {
@@ -384,13 +389,13 @@ console.log('this.validateAddress called poolworker ln373 : ',address, poolZAddr
 
          if (privateChain && poolZAddressPrefix == 'zs' && minerAddressLength == 78 && minerAddressPrefix == 'zs') {
              //validate as sapling
- console.log('privateChain && poolZAddressPrefix == zs && 78 length : ',address, minerAddressLength,minerAddressPrefix)
+// console.log('privateChain && poolZAddressPrefix == zs && 78 length : ',address, minerAddressLength,minerAddressPrefix)
              return true;
          } else if (privateChain && poolZAddressPrefix == 'zc' && minerAddressLength == 95 && minerAddressPrefix == 'zc') {
              //validate as sprout
              return true;
          } else if (privateChain || address.length >= 40 || address.length <= 30) {
-console.log('(privateChain || address.length >= 40 || address.length <= 30 : ',address, privateChain, poolZAddressPrefix , minerAddressLength, minerAddressPrefix);
+// console.log('(privateChain || address.length >= 40 || address.length <= 30 : ',address, privateChain, poolZAddressPrefix , minerAddressLength, minerAddressPrefix);
 
              return false;
 

@@ -1,40 +1,71 @@
 var redis = require('redis');
 var async = require('async');
-
-const functions = require('./functions.js');
-
-/*var JSONStream = require('JSONStream');
-var es = require('event-stream');*/
-
+var filterIterate = require('./filterIterate.js');
 var stats = require('./stats.js');
 
-
+const functions = require('./functions.js');
 const loggerFactory = require('./logger.js');
-
 const logger = loggerFactory.getLogger('Api', 'system');
 
+   function readableSeconds(t) {
+          var seconds = Math.round(t);
+          var minutes = Math.floor(seconds / 60);
+          var hours = Math.floor(minutes / 60);
+          var days = Math.floor(hours / 24);
+          hours = hours - (days * 24);
+          minutes = minutes - (days * 24 * 60) - (hours * 60);
+          seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+          if (days > 0) {
+              return (days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+          }
+         if (hours > 0) {
+              return (hours + "h " + minutes + "m " + seconds + "s");
+          }
+          if (minutes > 0) {
+             return (minutes + "m " + seconds + "s");
+         }
+         return (seconds + "s");
+     }
 
 
 module.exports = function(portalConfig, poolConfigs) {
 
     var _this = this;
-
     var portalStats = this.stats = new stats(portalConfig, poolConfigs);
-
     this.liveStatConnections = {};
-
     this.handleApiRequest = function(req, res, next) {
         switch (req.params.method) {
+            case 'pools':
+		res.header('Content-Type', 'application/json');
+                res.end(JSON.stringify({result: poolConfigs}));
+                return;
             case 'stats':
                 res.header('Content-Type', 'application/json');
                 res.end(portalStats.statsString);
                 return;
+	    case 'blocks':
+		portalStats.getBlocks(function(data){
+		let blocks = JSON.parse(JSON.stringify(data));
+		(blocks, {split:{by:':', index:3}}, 'miner-');
+		res.header('Content-Type', 'application/json');
+		res.end(JSON.stringify(blocks));
+		 });
+		break;
             case 'getblocksstats':
-                portalStats.getBlocks(function(data) {
-                    res.header('Content-Type', 'application/json');
-                    res.end(JSON.stringify(data));
+                 portalStats.getBlocks(function(data){
+                     //Anonymize
+                     let anonData = JSON.parse(JSON.stringify(data));
+                     filterIterate(anonData, {split:{by:':', index:3}}, 'miner-');
+                     res.header('Content-Type', 'application/json');
+                     res.end(JSON.stringify(anonData));
                 });
                 break;
+//            case 'getblocksstats':
+//                portalStats.getBlocks(function(data) {
+//                    res.header('Content-Type', 'application/json');
+//                    res.end(JSON.stringify(data));
+//                });
+//                break;
             case 'payments':
                 var poolBlocks = [];
                 for (var pool in portalStats.stats.pools) {
@@ -176,7 +207,7 @@ module.exports = function(portalConfig, poolConfigs) {
                     var intMinPymt = poolConfigs[pool].paymentProcessing.minimumPayment || 0;
                     var strSchema = poolConfigs[pool].paymentProcessing.schema || "PROP";
 
-                    tmpStr = functions.secToDHMSStr(intSec);
+                    tmpStr = readableSeconds(intSec);
 
                     o.pools.push({
                         "coin": pool,

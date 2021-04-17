@@ -170,8 +170,7 @@ statsSource.addEventListener('message', function(e) {
 	$("#rejected").html(poolName in stats.pools ?   'Rejected Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.blocksRejected) : 0);
 	$("#orphaned").html(poolName in stats.pools ?   'Orphaned Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.orphaned) : 0);
 	$("#duplicated").html(poolName in stats.pools ?   'Duplicated Blocks</br>'+ parseInt(stats.pools[poolName]?.blocks.blocksDuplicate) : 0);
-
-
+//	$("#bigDiff").html(poolName in stats.pools ?   'BigDiff Blocks</br>'+ parseInt(stats.pools[poolName]?.bigDiff) : 0);
         var time = stats.time * 1000;
         var avg = pool.averagedHashrate;
         addChartData(poolHashrateChart, poolHashrateChart.data.datasets[0], {

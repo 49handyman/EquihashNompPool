@@ -86,7 +86,7 @@ module.exports = function(logger, poolConfig) {
 	    redisCommands.push(['rename', coin + ':shares:timesCurrent', coin + ':shares:times' + shareData.height]);
             redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000].join(':')]);
             redisCommands.push(['zadd', coin + ':lastBlock', dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height, dateNow / 1000 | 0].join(':')]);
-            redisCommands.push(['zadd', coin + ':lastBlockTime', dateNow / 1000 | 0, [dateNow/1000].join(':')]);
+            redisCommands.push(['zadd', coin + ':lastBlockTime', shareData.height, dateNow/1000]);
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
             redisCommands.push(['hincrby', coin + ':blocksFound', shareData.worker, 1]);
         } else if (shareData.blockHash) {

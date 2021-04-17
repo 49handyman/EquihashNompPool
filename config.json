@@ -11,17 +11,18 @@
     "ipv4bits": 16,
     "ipv6bits": 16,
     "poolwarningmsg": "Public Alert - Do Not Use this Pool - It will only pay out on KMD Komodo Coin - All other coins stay in pool wallet",
-    "defaultCoin": "komodo",
+    "defaultCoin": "pirate-chain",
     "poollogo": "/static/icons/entrustcircle-circuit.png",
     "discordtwitterfacebook": "Private Mining Pool",
     "pagetitle": "Dev - Entrust Computer Mining Pool - Nonprofit Charity",
     "pageauthor": "Support...",
-    "pagedesc": "Entrust Computer Technology Center Crypto Mining Project",
-    "pagekeywds": "ASIC,CPU,Hash,Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
+    "pagedesc": "Entrust Computer Technology Center Crypto Mining Project -- Nonpofit Charity Support",
+    "pagekeywds": "komodo mining pool, pirate chain mining pool, pirate chain coin, zcash mining pool, horizen mining pool, mining pool, equihash mining pool, miners, mining, ASIC mining, ASIC Equihash,Hash,ASIC Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
 
-    "btcdonations": "",
+    "btcdonations": "bc1qhsxzlw8nat79swz6naa6zf67upsnc97vjtp6du",
     "ltcdonations": "",
-    "ethdonations": "",
+    "ethdonations": "0x06273002E7CA03ee114f1C7F9fB04d1C6aEa9dc4",
+    "arrrdonations": "zs1gpysaurgl2qce5kdndpw4lsls9kxcfqxzp4ecumueqf3rfz8rfuw25207a9z2xh23zhdcg7getc",
     "xmrdonations": "",
 
     "logger" : {
@@ -33,14 +34,14 @@
     "cliPort": 17120,
 
     "clustering": {
-        "enabled": true,
+        "enabled": false,
         "forks": "auto"
     },
 
     "defaultPoolConfigs": {
         "blockRefreshInterval": 0,
-        "jobRebroadcastTimeout": 55,
-        "connectionTimeout": 1900,
+        "jobRebroadcastTimeout": 75,
+        "connectionTimeout": 2900,
         "emitInvalidBlockHashes": true,
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
@@ -55,7 +56,8 @@
             "host": "127.0.0.1",
             "port": 6379
         },
-	 "poolHex": "706f6f6c2e656e747275737475732e6f7267"
+	 "poolHex": "4d696e65642042793a706f6f6c2e656e747275737475732e6f7267",
+	"_comment_poolHex": "hex = Mined by: pool.entrustus.org"
     },
 
     "website": {

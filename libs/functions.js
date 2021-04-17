@@ -32,7 +32,25 @@ module.exports = {
 
     }
 
-
+/*      function readableSeconds(t) {           var seconds = Math.round(t);
+           var minutes = Math.floor(seconds / 60);
+           var hours = Math.floor(minutes / 60);
+           var days = Math.floor(hours / 24);
+           hours = hours - (days * 24);
+           minutes = minutes - (days * 24 * 60) - (hours * 60);
+           seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+           if (days > 0) {
+               return (days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+           }
+          if (hours > 0) {
+               return (hours + "h " + minutes + "m " + seconds + "s");
+           }
+           if (minutes > 0) {
+              return (minutes + "m " + seconds + "s");
+          }
+          return (seconds + "s");
+      }
+*/
 
 };
 
@@ -55,4 +73,5 @@ module.exports = {
          }
          return (seconds + "s");
      }
+
 

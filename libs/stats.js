@@ -8,6 +8,34 @@ const logger = require('./logger.js').getLogger('Stats', 'system');
 const functions = require('./functions.js');
 var price;
 var found;
+
+function sortProperties(obj, sortedBy, isNumericSort, reverse) {
+     sortedBy = sortedBy || 1; // by default first key
+     isNumericSort = isNumericSort || false; // by default text sort
+     reverse = reverse || false; // by default no reverse
+
+     var reversed = (reverse) ? -1 : 1;
+
+     var sortable = [];
+     for (var key in obj) {
+         if (obj.hasOwnProperty(key)) {
+             sortable.push([key, obj[key]]);
+         }
+     }
+     if (isNumericSort)
+         sortable.sort(function (a, b) {
+             return reversed * (a[1][sortedBy] - b[1][sortedBy]);
+         });
+     else
+         sortable.sort(function (a, b) {
+             var x = a[1][sortedBy].toLowerCase(),
+                 y = b[1][sortedBy].toLowerCase();
+             return x < y ? reversed * -1 : x > y ? reversed : 0;
+        });
+    return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
+
+
 module.exports = function(portalConfig, poolConfigs) {
     logger.info("Starting Stats Module...");
 
@@ -25,6 +53,7 @@ module.exports = function(portalConfig, poolConfigs) {
     var price;
     var retentionTime;
     var found;
+    var canDoStats = true;
     setupStatsRedis();
 
     gatherStatHistory();
@@ -58,6 +87,29 @@ module.exports = function(portalConfig, poolConfigs) {
         });
     }
 
+    this.getBlocks = function (cback) {
+         var allBlocks = {};
+         async.each(_this.stats.pools, function(pool, pcb) {
+
+             if (_this.stats.pools[pool.name].pending && _this.stats.pools[pool.name].pending.blocks) {
+                 for (var i=0; i<_this.stats.pools[pool.name].pending.blocks.length; i++) {
+                     allBlocks[pool.name+"-"+_this.stats.pools[pool.name].pending.blocks[i].split(':')[2]] = _this.stats.poo$
+                 }
+             }
+
+             if (_this.stats.pools[pool.name].confirmed && _this.stats.pools[pool.name].confirmed.blocks) {
+                 for (var i=0; i<_this.stats.pools[pool.name].confirmed.blocks.length; i++) {
+                     allBlocks[pool.name+"-"+_this.stats.pools[pool.name].confirmed.blocks[i].split(':')[2]] = _this.stats.p$
+                 }
+             }
+
+             pcb();
+         }, function(err) {
+             cback(allBlocks);
+         });
+     };
+
+
 
     function gatherStatHistory() {
 
@@ -78,6 +130,39 @@ module.exports = function(portalConfig, poolConfigs) {
             });
         });
     }
+
+
+    function getWorkerStats(address) {
+         address = address.split(".")[0];
+         if (address.length > 0 && address.startsWith('t')) {
+             for (var h in statHistory) {
+                 for(var pool in statHistory[h].pools) {
+
+                     statHistory[h].pools[pool].workers.sort(sortWorkersByHashrate);
+
+                     for(var w in statHistory[h].pools[pool].workers){
+                         if (w.startsWith(address)) {
+                             if (history[w] == null) {
+                                 history[w] = [];
+                             }
+                             if (workers[w] == null && stats.pools[pool].workers[w] != null) {
+                                 workers[w] = stats.pools[pool].workers[w];
+                             }
+                             if (statHistory[h].pools[pool].workers[w].hashrate) {
+                                 history[w].push({time: statHistory[h].time, hashrate:statHistory[h].pools[pool].workers[w].hashrate});
+                             }
+                         }
+                     }
+                 }
+             }
+             return JSON.stringify({"workers": workers, "history": history});
+         }
+         return null;
+     }
+
+
+
+
 
     function addStatPoolHistory(stats) {
         var data = {
@@ -121,6 +206,23 @@ module.exports = function(portalConfig, poolConfigs) {
         }
         return (seconds + "s");
     }
+
+    this.getCoins = function(cback){
+         _this.stats.coins = redisClients[0].coins;
+         cback();
+     };
+
+     this.getPayout = function(address, cback){
+         async.waterfall([
+             function(callback){
+                 _this.getBalanceByAddress(address, function(){
+                     callback(null, 'test');
+                 });
+             }
+         ], function(err, total){
+             cback(coinsRound(total).toFixed(8));
+         });
+    };
 
     function roundTo(n, digits) {
         if (digits === undefined) {
@@ -323,7 +425,9 @@ module.exports = function(portalConfig, poolConfigs) {
                 ['zrevrange', ':lastBlockTime', 0, 0],  //19
 		['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime],  //20
 		['scard', ':blocksRejected'],  // 21
-		['scard', ':blocksDuplicate']  // 22
+		['scard', ':blocksDuplicate'],  // 22
+		['hgetall', ':bigDiff'],  // 23
+		['hgetall', ':shares:timesCurrent'] //24
           ];
             var commandsPerCoin = redisCommandTemplates.length;
             client.coins.map(function(coin) {
@@ -343,8 +447,8 @@ module.exports = function(portalConfig, poolConfigs) {
                         var coinName = client.coins[i / commandsPerCoin | 0];
                         var marketStats = {};
                         if (replies[i + 2]) {
-                            if (replies[i + 2].coinPrices) {
-                                marketStats = replies[i + 2] ? (JSON.parse(replies[i + 2].coinPrices)[0] || 0) : 0;
+                            if (replies[i + 2].coinmarketcap) {
+                                marketStats = replies[i + 2] ? (JSON.parse(replies[i + 2].coinmarketcap)[0] || 0) : 0;
                             }
                         }
                         var coinStats = {
@@ -373,6 +477,7 @@ module.exports = function(portalConfig, poolConfigs) {
                                 poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0,
 				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
                             },
+			    marketStats: marketStats,
                             blocks: {
                                 pending: replies[i + 3],
                                 confirmed: replies[i + 4],
@@ -382,7 +487,9 @@ module.exports = function(portalConfig, poolConfigs) {
                                 lastBlock: replies[i + 18],
                                 lastBlockTime: replies[i + 19],
 				blocksRejected: replies[i + 21],
-				blocksDuplicate: replies[i + 22]
+				blocksDuplicate: replies[i + 22],
+				bigDiff: replies[i + 23]
+				
                             },
                             pending: {
                                 blocks: replies[i + 9].sort(sortBlocks),
@@ -392,7 +499,11 @@ module.exports = function(portalConfig, poolConfigs) {
                                 blocks: replies[i + 11].sort(sortBlocks).slice(0, 50)
                             },
                             payments: [],
-                            currentRoundShares: (replies[i + 8] || {})
+                            currentRoundShares: (replies[i + 8] || {}),
+			    currentRoundTimes: (replies[i + 24] || {}),
+			    maxRoundTime: 0,
+			    shareCount: 0,
+			    shareSort: replies[i + 2] ? (replies[i + 2].validShares || 0) : 0
                         };
                         for (var j = replies[i + 7].length; j > 0; j--) {
                             var jsonObj;
@@ -407,6 +518,7 @@ module.exports = function(portalConfig, poolConfigs) {
                         }
                         allCoinStats[coinStats.name] = (coinStats);
                     }
+		    allCoinStats = sortPoolsByShares(allCoinStats);
                     callback();
                 }
             });
@@ -580,6 +692,29 @@ module.exports = function(portalConfig, poolConfigs) {
         return newObject;
     }
 
+    function sortPoolsByHashrate(objects) {
+         var newObject = {};
+         var sortedArray = sortProperties(objects, 'hashrate', true, true);
+         for (var i = 0; i < sortedArray.length; i++) {
+             var key = sortedArray[i][0];
+             var value = sortedArray[i][1];
+             newObject[key] = value;
+         }
+         return newObject;
+     }
+
+    function sortPoolsByShares(objects) {
+         var newObject = {};
+         var sortedArray = sortProperties(objects, 'shareSort', true, true);
+         for (var i = 0; i < sortedArray.length; i++) {
+             var key = sortedArray[i][0];
+             var value = sortedArray[i][1];
+             newObject[key] = value;
+         }
+         return newObject;
+    }
+
+
     function sortBlocks(a, b) {
         var as = parseInt(a.split(":")[2]);
         var bs = parseInt(b.split(":")[2]);
@@ -608,6 +743,17 @@ module.exports = function(portalConfig, poolConfigs) {
         return newObject;
     }
 
+    function sortMinersByHashrate(objects) {
+         var newObject = {};
+         var sortedArray = sortProperties(objects, 'hashrate', true, true);
+         for (var i = 0; i < sortedArray.length; i++) {
+             var key = sortedArray[i][0];
+             var value = sortedArray[i][1];
+             newObject[key] = value;
+         }
+         return newObject;
+    }
+
 
     function sortWorkersByHashrate(a, b) {
         if (a.hashrate === b.hashrate) {
@@ -617,15 +763,17 @@ module.exports = function(portalConfig, poolConfigs) {
         }
     }
 
-    this.getPoolStats = function(coin, cback) {
-        if (coin.length > 0) {
-            _this.stats.coin = coin;
-            cback({
-                name: coin
-            });
-        }
+   this.getReadableHashRateString = function(hashrate){
+         hashrate = (hashrate * 2);
+         if (hashrate < 1000000) {
+             return (Math.round(hashrate / 1000) / 1000 ).toFixed(2)+' Sol/s';
+         }
+         var byteUnits = [ ' Sol/s', ' KSol/s', ' MSol/s', ' GSol/s', ' TSol/s', ' PSol/s' ];
+         var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);
+         hashrate = (hashrate/1000) / Math.pow(1000, i + 1);
+         return hashrate.toFixed(2) + byteUnits[i];
     };
-
+/*
     this.getReadableHashRateString = function(hashrate) {
         if (hashrate <= 0) {
             return '0 Sols/s';
@@ -640,7 +788,7 @@ module.exports = function(portalConfig, poolConfigs) {
             return hashrate.toFixed(2) + byteUnits[i];
         }
     };
-
+*/
     this.getReadableNetworkHashRateString = function(hashrate) {
         if (hashrate <= 0) {
             return '0 Sols/s';

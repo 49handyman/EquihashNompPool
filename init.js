@@ -1,3 +1,4 @@
+const requireSoSlow = require('require-so-slow');
 var fs = require('fs');
 var path = require('path');
 var os = require('os');
@@ -374,6 +375,7 @@ var startPaymentProcessor = function() {
     for (var pool in poolConfigs) {
         var p = poolConfigs[pool];
         var enabled = p.enabled && p.paymentProcessing && p.paymentProcessing.enabled;
+console.log('\u001b[35m startPaymentProcessor if (Enabled) \u001b[0m '+ p.enabled + ' '+ p.paymentProcessing+ ' ' + p.paymentProcessing.enabled )
         if (enabled) {
             enabledForAny = true;
             break;
@@ -389,7 +391,7 @@ var startPaymentProcessor = function() {
         logger.error('Master', 'Payment Processor', 'Payment processor died, spawning replacement...');
         setTimeout(function() {
             startPaymentProcessor(poolConfigs);
-        }, 2000);
+        }, 3000);
     });
 };
 

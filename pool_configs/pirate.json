@@ -3,17 +3,19 @@
 "coin": "PIRATE.json",
 "address": "RF1ZgZEhEzHiPkYsQV5mhswY78Dvba84JP",
 "zAddress": "zs1k3wnsss29w0vsyp5zq4wjl8sen2xvp7vcj0w206w80k5kau666dnhtvnhequ2mzdn4llywq0wm5",
-"tAddress": "RF1ZgZEhEzHiPkYsQV5mhswY78Dvba84JP",
-"walletInterval": 1,
+"tAddress": "zs1h2v3zl92nz7cfu0qdc5npunxfev4gvc535ast0dtrq7ttm7gpdgwphykdfm7sgy6kdat5nxxm9t",
+"invalidAddress": "zs1knk0a2yv9kz7lhkp4p8jsnp0texn7d5wqm2e5yncnmazfjdemv4lycg7etu2eagcpltnk3zzrat",
+"walletInterval": 2,
+"payOnStart": true,
 "marketStats": true,
 "rewardRecipients": {},
 "tlsOptions": { "enabled": false },
     "paymentProcessing": {
         "minConf": 10,
-        "enabled": false,
+        "enabled": true,
         "paymentMode": "prop",
-        "paymentInterval": 1800,
-        "minimumPayment": 32,
+        "paymentInterval": 180,
+        "minimumPayment": 10,
         "maxBlocksPerPayment": 20,
         "daemon": {
             "host": "127.0.0.1",
@@ -28,9 +30,9 @@
 "ports": {
     "3348": {
         "tls":false,
-        "diff": 800,
+        "diff": 900,
         "varDiff": {
-            "minDiff": 700,
+            "minDiff": 800,
             "maxDiff": 9999,
             "targetTime": 15,
             "retargetTime": 60,
