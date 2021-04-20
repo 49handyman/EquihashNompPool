@@ -13,6 +13,8 @@ var shareGage;
 var invalidGage;
 var workerGage;
 var hashGage;
+var blocks;
+
 
 function getWorkerNameFromAddress(w) {
     var worker = w;
@@ -103,7 +105,7 @@ function displayCharts() {
         levelColorsGradient: true
     });
     var high = 0;
-    console.log(stats.hashrate);
+//    console.log(stats.hashrate);
     hashGage = new JustGage({
         id: "hashDominance",
         value: stats.hashrate > 0 ? (stats.hashrate / stats.poolHashrate) * 100 : 0,
@@ -175,6 +177,8 @@ function updateStats() {
     $("#statsTotalImmature").text(totalImmature);
     $("#statsTotalBal").text(totalBal);
     $("#statsTotalPaid").text(totalPaid);
+
+
 }
 
 function updateWorkerStats() {
@@ -185,23 +189,27 @@ function updateWorkerStats() {
         i++;
         var htmlSafeWorkerName = w.split('.').join('_').replace(/[^\w\s]/gi, '');
         var saneWorkerName = getWorkerNameFromAddress(w);
-//        console.log(stats.miners[w]);
+        console.log(stats.miners[w]);
         $("#statsHashrate" + htmlSafeWorkerName).text(getReadableHashRateString(stats.miners[w].hashrate[stats.miners[w].hashrate.length - 1] || 0));
         $("#statsHashrateAvg" + htmlSafeWorkerName).text(getReadableHashRateString(calculateAverageHashrate(saneWorkerName)));
         $("#statsTotalImmature").text(totalImmature);
         $("#statsTotalBal").text(totalBal);
-        $("#statsTotalPaid").text(totalPaid);
+        $("#statsTotalPaid").text(totalPaid)
+/ $('#blocksFound').text(statData.miners[w].blocksFound);
     }
 }
 
 function addWorkerToDisplay(name, htmlSafeName, workerObj) {
+ //for (var w in stats.miners) {
     var htmlToAdd = "";
     htmlToAdd = '<div class="boxStats" id="boxStatsLeft" style="float:left; margin: 9px; min-width: 260px;"><div class="boxStatsList">';
     htmlToAdd += '<div class="boxLowerHeader">' + name.replace(/[^\w\s]/gi, '') + '</div><div>';
     htmlToAdd += '<div><i class="fas fa-tachometer-alt"></i> <span id="statsHashrate' + htmlSafeName + '">' + getReadableHashRateString(workerObj.hashrate[workerObj.hashrate.length - 1][1] || 0) + '</span> (Now)</div>';
     htmlToAdd += '<div><i class="fas fa-tachometer-alt"></i> <span id="statsHashrateAvg' + htmlSafeName + '">' + getReadableHashRateString(calculateAverageHashrate(name)) + '</span> (Avg)</div>';
+  //  htmlToAdd += '<div><i class="fas fa-tachometer-alt"></i> <span id="blocksFound' + htmlSafeName + '">' + stats.miners[w].blocksFound + '</span> (String)</div>';
     htmlToAdd += '</div></div></div>';
     $("#boxesWorkers").html($("#boxesWorkers").html() + htmlToAdd);
+// }
 }
 
 function calculateAverageHashrate(worker) {
@@ -248,21 +256,27 @@ $.getJSON('/api/worker_stats?' + _miner, function(data) {
 console.log('statDate: ',statData);
             for (var w in statData.workers) {
                 _workerCount++;
+//blocks= statData.blocks;
             }
             displayCharts();
             rebuildWorkerDisplay();
             updateStats();
             updateWorkerStats();
+// top user data
             var totalPaid = statData.paid || 0;
             var totalBal = statData.balance || 0;
             var totalImmature = (statData.immature) || 0;
             var luckDays = statData.luckDays || "unknown";
+	    var blocks = statData.workers[w].blocksFound || "unknown";
             var SYMB = stats.symbol || "unknown symbol";
             $('#total-paid-label').html(totalPaid.toFixed(8) + ' ' + SYMB);
             $('#total-immature-label').html(totalImmature.toFixed(8) + ' ' + SYMB);
             $('#total-balance-label').html(totalBal.toFixed(8) + ' ' + SYMB);
-            $('#total-luckdays-label').html(statData.time);
-
+            $('#blocks').text(blocks);
+console.log(statData.workers[w].blocksFound);
+//$('#blocks').html(statData.workers[w].blocksFound);
+// stats.miners[w].blocksFound
+//hashrateString = statData.workers[w].hashrateString;
 
         });
     });
@@ -279,7 +293,7 @@ statsSource.addEventListener('message', function(e) {
         updateWorkerStats()
         rebuildWorkerDisplay();
         updateStats();
-
+/*
         var totalPaid = statData.paid || 0;
         var totalBal = statData.balance || 0;
         var totalImmature = (statData.immature) || 0;
@@ -289,9 +303,9 @@ statsSource.addEventListener('message', function(e) {
         $('#total-paid-label').html(totalPaid.toFixed(8) + ' ' + SYMB);
         $('#total-immature-label').html(totalImmature.toFixed(8) + ' ' + SYMB);
         $('#total-balance-label').html(totalBal.toFixed(8) + ' ' + SYMB);
-        $('#total-luckdays-label').html(dateNow());
-        //		});
-        //	});
+        $('#total-luckdays-label').html(statData.networkSols);
+	$('#total-luckdays-label').html(statData.networkSols);
+*/
     });
 
 }, false);

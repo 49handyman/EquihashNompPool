@@ -148,7 +148,7 @@ module.exports = function() {
 
                 var authString = authorized ? 'Authorized' : 'Unauthorized ';
 
-                logger.debug('\u001b[32mAUTH>TRUE> authstr [%s] worker [%s] passwd [%s] ip [%s]\u001b[37m', authString, workerName, password, functions.anonymizeIP(ip));
+                logger.debug('\u001b[32mAUTH>TRUE> authstr [%s] ip [%s]\u001b[37m', authString,  functions.anonymizeIP(ip));
                 callback({
                     error: null,
                     authorized: authorized,
@@ -164,10 +164,7 @@ module.exports = function() {
 
             let workerStr = data.worker;
             let workerInfo = workerStr.split('.');
-
             logger.silly('onStratumPoolShare');
-            //    logger.debug("forkId %s", forkId);
-
             var shareDataJsonStr = JSON.stringify(data);
 
             if (data.blockHash && !isValidBlock) {
@@ -190,11 +187,10 @@ module.exports = function() {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
-
-                        logger.warn('\u001b[33mSHARE>WARN> Share was found with diff higher than 1,000,000,000!\u001b[37m error'+redisClient.error);
+			logger.warn('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m ',data.shareDiff);
                     } else if (data.shareDiff > 1000000) {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
-                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1,000,000!\u001b[37m'+redisClient.error);
+			 logger.warn('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000!\u001b[37m ',data.shareDiff);
                     }
                     logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s \u001b[37m', data.job, data.difficulty, data.shareDiff,  workerInfo[1], functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
@@ -203,16 +199,11 @@ module.exports = function() {
             } else {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
-
-//doug
 			redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
-
-//doug
-
-                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1,000,000,000!\u001b[37m'+redisClient.error);
+ 			logger.warn('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m ',data.shareDiff);
                     } else if (data.shareDiff > 1000000) {
 			 redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
-                        logger.warn('\u001b[36mSHARE>WARN> Share was found with diff higher than 1,000,000!\u001b[37m');
+			 logger.warn('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m ',data.shareDiff);
                     }
                     logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none \u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {

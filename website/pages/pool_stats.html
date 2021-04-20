@@ -10,12 +10,36 @@
     min-height: 300px;
   }
 
+  .odd{background-color: #2d333b;} 
+
+//  .even{background-color: #3e444c;} 
+
 </style>
+
+<script>
+function alternate(id){ 
+
+  if(document.getElementsByTagName){  
+    var table = document.getElementById(id);   
+    var rows = table.getElementsByTagName("tr");   
+    for(i = 0; i < rows.length; i++){           
+  //manipulate rows 
+      if(i % 2 == 0){ 
+        rows[i].className = "even"; 
+      }else{ 
+        rows[i].className = "odd"; 
+      }       
+    } 
+  } 
+}
+</script>
+<body onload="alternate('table')"> 
+
 
 <div class="container-fluid p-4">
 	<div class="row">
 	<div class="col-md-12 pl-0 pr-0">
-      <table class="table table-bordered table-responsive-lg">
+      <table id="table" class="table table-bordered table-responsive-lg">
         <thead>
           <tr>
             <th colspan="4" scope="col" style="text-align: center;">General Information</th>
@@ -107,26 +131,28 @@
 		<td style="text-align:center;vertical-align: middle;">Last Blk time:</td>
                 <th id="lastBlockFoundTime" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
                 <td style="text-align:center;vertical-align: middle;">Pool Start Time:</td>
-                <th id="poolStartTime" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-
-                <td style="text-align:center;vertical-align: middle;">Blank:</td>
                 <th id="" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
+		<th id=" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
+		<th id="" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
 
-       	</tr>
+	</tr>
+	</tr>
+
+                <th id="revenue" style="text-align:center;vertical-align:middle;">Revenue</th>
+                <th id="timeToFind" style="text-align:center;vertical-align:middle;">Time to Find<br></th>
+                <th id="poolLuck" style="text-align:center;vertical-align:middle;">Pool Luck</th>
+		<th id="timeSinceBlock" style="text-align:center;vertical-align: middle;">Since Last Blk</th>
+                <th id="rejected" style="text-align:center;vertical-align:middle;">Rejected Blocks</th>
+                <th id="blocksKicked" style="text-align:center;vertical-align: middle;">Kicked Blocks</th>
+		<th id="orphaned" style="text-align:center;vertical-align: middle;">Orphaned Blocks</th>	
+		<th id="duplicated" style="text-align:center;vertical-align: middle;">Duplicate Blocks</th>
+		<th id="" style="text-align:center;vertical-align: middle;">blank1</th>
+		 <th id="" style="text-align:center;vertical-align: middle;">blank2</th>
+		<th id="" style="text-align:center;vertical-align: middle;">blank3</th>
+		<th id="" style="text-align:center;vertical-align: middle;">blank4</th>
+	</tr>
 	<tr>
-		<th id="shortDesc"  colspan="4" style="text-align:center;vertical-align: middle;">Searching for coin description...</th>
-                <th id="timeToFind"  colspan="1" style="text-align:center;vertical-align: middle;">Time to Find<br></th>
-                <th id="poolLuck"  colspan="1" style="text-align:center;vertical-align: middle;">Pool Luck</th>
-		<th id="timeSinceBlock" colspan="1" style="text-align:center;vertical-align: middle;">Since Last Blk</th>
-
-		<th id="bigDiff"  colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-                 <th id="rejected" colspan="1" style="text-align:center;vertical-align: middle;">Rejected Blocks</th>
-
-                <th id="blocksKicked"  colspan="1" style="text-align:center;vertical-align: middle;">Kicked Blocks</th>
-		<th id="orphaned"  colspan="1" style="text-align:center;vertical-align: middle;">Orphaned Blocks</th>	
-		<th id="duplicated"  colspan="1" style="text-align:center;vertical-align: middle;">Duplicate Blocks</th>
-
-
+<th id="shortDesc"  colspan="4" style="text-align:center;vertical-align: middle;">Searching for coin description...</th>
 	</tr>
        	<tr>
                 <td style="text-align:center;vertical-align: middle;">Trade:</td>

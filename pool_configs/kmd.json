@@ -9,7 +9,7 @@
 
 "invalidAddress":"",
 "walletInterval": 1,
-"marketStats": true,
+"marketStats": false,
 "rewardRecipients": {"RGPnLvubvCZK2zpiXNV582oMC3vs5mBZQU": 6.75},
 
 "tlsOptions": { "enabled": false },

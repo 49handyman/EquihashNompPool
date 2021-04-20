@@ -164,7 +164,7 @@ module.exports = function(portalConfig, poolConfigs) {
 
 
 
-    function addStatPoolHistory(stats) {
+    function addStatPoolHistory(stats) { // add itmes here for pool_stats data history stream
         var data = {
             time: stats.time,
             pools: {}
@@ -172,9 +172,10 @@ module.exports = function(portalConfig, poolConfigs) {
         for (var pool in stats.pools) {
             data.pools[pool] = {
                 hashrate: stats.pools[pool].hashrate,
-		poolLuck:  null,
+		poolLuck: stats.pools[pool].luckDays,
                 workerCount: stats.pools[pool].workerCount,
-                blocks: stats.pools[pool].blocks
+                blocks: stats.pools[pool].blocks,
+		networkDiff:  stats.pools[pool].poolStats.networkDiff,
             }
         }
         _this.statPoolHistory.push(data);
@@ -396,7 +397,7 @@ module.exports = function(portalConfig, poolConfigs) {
     };
 
 
-    this.getGlobalStats = function(callback) {
+    this.getGlobalStats = function(callback) { // stats data add here second
         var statGatherTime = Date.now() / 1000 | 0;
         var allCoinStats = {};
         async.each(redisClients, function(client, callback) {
@@ -456,10 +457,13 @@ module.exports = function(portalConfig, poolConfigs) {
                             explorerGetBlock: poolConfigs[coinName].coin.explorerGetBlock,
                             blockTime: poolConfigs[coinName].coin.blockTime,
                             blockChange: poolConfigs[coinName].coin.blockChange,
+			    blockReward:  poolConfigs[coinName].coin.blockReward,
                             explorerGetBlockJSON: poolConfigs[coinName].coin.explorerGetBlockJSON,
                             explorerGetTX: poolConfigs[coinName].coin.explorerGetTX,
                             symbol: poolConfigs[coinName].coin.symbol.toUpperCase(),
                             algorithm: poolConfigs[coinName].coin.algorithm,
+			    PaymentInterval: poolConfigs[coinName].paymentInterval,
+			    minimumPayment: poolConfigs[coinName].minimumPayment,
                             hashrates: replies[i + 1],
                             rewardRecipients: poolConfigs[coinName].rewardRecipients,
                             poolStats: {
@@ -478,6 +482,7 @@ module.exports = function(portalConfig, poolConfigs) {
 				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
                             },
 			    marketStats: marketStats,
+			    networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
                             blocks: {
                                 pending: replies[i + 3],
                                 confirmed: replies[i + 4],
@@ -569,13 +574,15 @@ module.exports = function(portalConfig, poolConfigs) {
                                 luckHours: null,
                                 paid: 0,
                                 balance: 0,
-                                blocksFound: null // doug
+                                blocksFound: 0 // doug
                             };
                         }
                     } else {
                         if (worker in coinStats.workers) {
                             coinStats.workers[worker].invalidshares -= workerShares; // workerShares is negative number!
                             coinStats.workers[worker].diff = diff;
+//			    coinStats.workers[worker].blocks=coinStats.blocks.blocksFound[worker];
+//			    coinStats.workers[worker].blocksFound=coinStats.blocks.blocksFound[worker];
                             //	coinStats.workers[worker].blocks = blocks  // doug
                         } else {
                             coinStats.workers[worker] = {
@@ -591,6 +598,7 @@ module.exports = function(portalConfig, poolConfigs) {
                                 luckHours: null,
                                 paid: 0,
                                 balance: 0,
+				blocksFound:0
                             };
                         }
                     }
@@ -607,7 +615,7 @@ module.exports = function(portalConfig, poolConfigs) {
 		var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
 		var poolLuck = (parseInt(timeSinceLastBlock)  * 1000 / parseInt(coinStats.poolStats.networkSols) / parseInt(coinStats.hashrate*2/1000000)  * parseInt(coinStats.lastblockTime*1000 * 100)).toFixed(2)
 		parseFloat(poolLuck);
-		coinStats.poolLuck=poolLuck;
+		coinStats.poolLuck = poolLuck;
                 coinStats.workerCount = Object.keys(coinStats.workers).length;
                 portalStats.global.workers += coinStats.workerCount;
                 portalStats.global.hashrate += coinStats.hashrate;
@@ -808,7 +816,7 @@ module.exports = function(portalConfig, poolConfigs) {
         request('https://api.coingecko.com/api/v3/simple/price?ids=' + symbol + '&vs_currencies=usd', function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 results = JSON.parse(body);
-                console.log(results);
+                console.log(symbol,results);
                 var statGatherTime = Date.now() / 1000 | 0;
                 redisStats.multi([
                     ['zadd', 'coinPrices', statGatherTime, JSON.stringify(results)],

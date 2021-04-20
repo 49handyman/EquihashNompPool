@@ -2,12 +2,12 @@
   "name": "komodo",
   "symbol": "kmd",
   "algorithm": "equihash",
-  "blockreward": 3,
+  "blockReward": 3,
   "txfee": 0.00001,
   "getMarketStats": true,
   "peerMagic": "f9eee48d",
-"requireShielding": "false",
-"privateChain": "false",
+  "requireShielding": "false",
+  "privateChain": "false",
 
   "sapling": true,
 

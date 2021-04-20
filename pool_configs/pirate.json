@@ -32,9 +32,9 @@
         "tls":false,
         "diff": 900,
         "varDiff": {
-            "minDiff": 800,
+            "minDiff": 500,
             "maxDiff": 9999,
-            "targetTime": 15,
+            "targetTime": 35,
             "retargetTime": 60,
             "variancePercent": 30
         }

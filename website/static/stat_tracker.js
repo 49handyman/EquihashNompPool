@@ -64,7 +64,8 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
         currRoundPoolShares: workerData?.totalShares,
         invalidShares: 0,
         miners: {},
-        blocksFound:{}
+        blocksFound:{},
+	trash: 0
     };
     $.getJSON('/api/stats', function(data) {
         for (var p in data.pools) {
@@ -79,7 +80,8 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
                         validShares: data.pools[p].workers[w].shares,
                         currRoundShares: data.pools[p].workers[w].currRoundShares,
                         invalidShares: data.pools[p].workers[w].invalidshares,
-                        blocksFound: data.pools[p]?.blocks?.blocksFound[w]
+                        blocksFound: data.pools[p]?.blocks?.blocksFound[w],
+			trash: 0
                     });
                     account.invalidShares += data.pools[p].workers[w].invalidshares;
                     account.currRoundShares += data.pools[p].workers[w].currRoundShares;
@@ -108,7 +110,8 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
                 validShares: 0,
                 currRoundShares: 0,
                 invalidShares: 0,
-                blocksFound: data.pools[account.pool]?.blocks?.blocksFound[w]
+                blocksFound: data.pools[account.pool]?.blocks?.blocksFound[w],
+		trash: 0
             });
             for (var wh in workerData.history[w]) {
                 a.hashrate.push([workerData.history[w][wh].time * 1000, workerData.history[w][wh].hashrate]);
@@ -134,11 +137,14 @@ var buildPoolData = function(statData, poolName, callback = null) {
             averagedHashrate: [],
             workers: [],
             averagedWorkers: [],
-            blocks: []
+            blocks: [],
+	    networkDiff: [],
+	    trash: []
         };
         var totalHashrate = 0;
         var totalWorkers = 0;
         var count = 0;
+	
         for (var i = 0; i < statData.length; i++) {
             var time = statData[i].time * 1000;
             if (!statData[i].pools) {
@@ -157,11 +163,15 @@ var buildPoolData = function(statData, poolName, callback = null) {
                 pool.workers.push([time, workers]);
                 pool.averagedWorkers.push([time, averagedWorkers]);
                 pool.blocks.push([time, statData[i].pools[poolName].blocks.pending])
+		pool.networkDiff.push([time, 1]);
+		pool.trash.push([time, 0]);
             } else {
                 pool.hashrate.push([time, 0]);
                 pool.workers.push([time, 0]);
                 pool.averagedWorkers.push([time, 0]);
-                pool.blocks.push([time, 0])
+                pool.blocks.push([time, 0]);
+		pool.networkDiff.push([time, 0]);
+		pool.trash.push([time, 0]);
             }
         }
         var key = 'p_' + poolName;
@@ -184,11 +194,15 @@ var updatePoolData = function(statData, poolName, callback = null) {
                 return a[1] + b[1];
             }) / pool.hashrate.length]);
             pool.workers.push([time, statData.pools[poolName].workerCount]);
-            pool.blocks.push([time, statData.pools[poolName].blocks.pending])
+            pool.blocks.push([time, statData.pools[poolName].blocks.pending]);
+	    pool.networkDiff.push([time, statData.pools[poolName].poolStats.networkDiff]);
+	    pool.trash.push([time, 1]);
         } else {
             pool.hashrate.push([time, 0]);
             pool.workers.push([time, 0]);
-            pool.blocks.push([time, 0])
+            pool.blocks.push([time, 0]);
+	    pool.networkDiff.push([time, 0]);
+	    pool.trash.push([time, 0])
         }
         if (callback != null) {
             callback(pool);

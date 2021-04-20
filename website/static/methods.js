@@ -108,6 +108,26 @@ this.getScaledHashrate = function(hashrate, i) {
     return hashrate.toFixed(2);
 };
 
+this.getScaledNetworkDiff = function(networkDiff) {
+         networkDiff = (networkDiff * 1000000);
+      var byteUnits = [' H', ' K', ' M', ' G', ' T', ' P'];
+      var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
+      networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
+
+      return [networkDiff.toFixed(2), byteUnits[i], i];
+ };
+
+
+/*
+
+this.getScaledNetworkDiff = function(networkDiff, i) {
+	networkDiff = (networkDiff * 1000000);
+     networkDiff = (networkDiff / 1000) / Math.pow(1000, i + 1);
+console.log(networkDiff);
+     return networkDiff.toFixed(2);
+};
+
+*/
 this.getReadableHashRateString = function(hashrate) {
     hashrate = (hashrate * 2);
     if (hashrate < 1000000) {
@@ -120,6 +140,16 @@ this.getReadableHashRateString = function(hashrate) {
     return hashrate.toFixed(2) + ' ' + byteUnits[i];
 };
 
+this.getReadableNetworkDiffString = function(networkDiff) {
+        networkDiff = networkDiff * 1000000;
+    var byteUnits = [' ', ' K', ' M', ' G', ' T', ' P'];
+    var i = Math.max(0, Math.floor((Math.log(networkDiff / 1000) / Math.log(1000)) - 1));
+    networkDiff = (networkDiff / 1000) / Math.pow(1000, i + 1);
+    return networkDiff.toFixed(2) + ' ' + byteUnits[i];
+};
+
+
+
 this.getReadableHashRatePair = function(hashrate) {
     hashrate = (hashrate * 2);
     if (hashrate < 1000000) {
@@ -131,6 +161,16 @@ this.getReadableHashRatePair = function(hashrate) {
 
     return [hashrate.toFixed(2), byteUnits[i], i];
 };
+
+this.getReadableNetworkDiffPair = function(networkDiff) {
+	networkDiff = (networkDiff * 1000000);
+     var byteUnits = [' H', ' K', ' M', ' G', ' T', ' P'];
+     var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
+     networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
+
+     return [networkDiff.toFixed(2), byteUnits[i], i];
+};
+
 
 function createDefaultLineChart(ctx, datasets, xLabel, yLabel) {
     return createLineChart(ctx, datasets, xLabel, yLabel, {

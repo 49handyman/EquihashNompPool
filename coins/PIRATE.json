@@ -2,7 +2,7 @@
 "name": "pirate-chain",
 "comment_name": "use coingecko id for coin to get live stats and avoid errors",
 "symbol": "arrr",
-"blockreward": 3,
+"blockReward": 32,
 "algorithm": "equihash",
 "txfee": 0.0001,
 "getMarketStats": true,

@@ -3,7 +3,7 @@ var Stratum = require('stratum-pool');
 
 const loggerFactory = require('./logger.js');
 
-const logger = loggerFactory.getLogger('ShareProcessor', 'system');
+const logger = loggerFactory.getLogger('Shares', 'system');
 /*
 This module deals with handling shares when in internal payment processing mode. It connects to a redis
 database and inserts shares with the database structure of:

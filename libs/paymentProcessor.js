@@ -6,7 +6,7 @@ var async = require('async');
 const loggerFactory = require('./logger.js');
 var Stratum = require('stratum-pool');
 var util = require('stratum-pool/lib/util.js');
-console.log('paymentProcessor started ');
+console.log('paymentProcessor started ln 9...');
 module.exports = function(logger) {
 var logger = loggerFactory.getLogger('\u001b[32mPaymentProcessing\u001b[0m', 'system');
     var poolConfigs = JSON.parse(process.env.pools);
@@ -39,7 +39,7 @@ var logger = loggerFactory.getLogger('\u001b[32mPaymentProcessing\u001b[0m', 'sy
 };
 
 function SetupForPool(logger, poolOptions, setupFinished) {
-
+ console.log(' SetupForPool Called....')
     var coin = poolOptions.coin.name;
     var processingConfig = poolOptions.paymentProcessing;
     var logSystem = 'Payments';
@@ -52,6 +52,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     var magnitude;
     var minPaymentSatoshis;
     var paymentInterval;
+ console.log(' SetupForPool VARs: '+ coin+ processingConfig+logSystem+logComponent+displayBalances+ coinPrecision + magnitude +minPaymentSatoshis +paymentInterval )
     var getMarketStats = poolOptions.coin.getMarketStats === true;
     // zcash team recommends 10 confirmations for safety from orphaned blocks
     var minConfShield = Math.max((processingConfig.minConf || 10), 1); // Don't allow 0 conf transactions.
@@ -167,6 +168,7 @@ console.log('validateZAddress started '+result.repsonse);
                 minPaymentSatoshis = parseInt(processingConfig.minimumPayment * magnitude);
                 coinPrecision = magnitude.toString().length - 1;
 console.log('getbalance: '+d);
+ console.log('getBalance: '+d+magnitude+minPaymentSatoshis+coinPrecision+result.error);
       } catch(e) {
                 logger.error('Error detecting number of satoshis in a coin, cannot do payment processing. Tried parsing: ' + result.data);
                 return callback(true);
@@ -176,6 +178,7 @@ console.log('getbalance: '+d);
     }
 
     function asyncComplete(err) {
+
         if (err) {
 console.log('paymentProcessor asyncComplete(err): '+err);
             setupFinished(false);
@@ -215,6 +218,7 @@ console.log('paymentInterval started '+paymentInterval);
      */
 var  displayBool = true;
     function listUnspentType(type, zaddr, notAddr, minConf, displayBool, callback) {
+console.log('asyncComplete:function listUnspent Called... ln224'+type);
         if (type == 'Z') {
             return listUnspentZ (zaddr, minConf, displayBool, callback);
         } else {
@@ -224,6 +228,7 @@ var  displayBool = true;
 
     //get t_address coinbalance
     function listUnspent(addr, notAddr, minConf, displayBool, callback) {
+console.log('asyncComplete:function listUnspent Called... ln231');
         if (addr !== null) {
             var args = [minConf, 99999999, [addr]];
         } else {
@@ -232,6 +237,7 @@ var  displayBool = true;
         }
 
         daemon.cmd('listunspent', args, function (result) {
+console.log('asyncComplete:function daemon.cmd listUnspent Called... ln240'+args);
             if (!result || result.error || result[0].error) {
                 logger.error('Error with RPC call listunspent '+addr+' '+JSON.stringify(result[0].error));
                 callback = function (){};
@@ -260,6 +266,7 @@ cacheMarketStats();
     // get z_address coinbalance
     function listUnspentZ(addr, minConf, displayBool, callback) {
         daemon.cmd('z_getbalance', [addr, minConf], function (result) {
+console.log('asyncComplete:function listUnspentZ Called...'+result);
             if (!result || result.error || result[0].error) {
                 logger.error('Error with RPC call z_getbalance '+addr+' '+JSON.stringify(result[0].error));
                 callback = function (){};
@@ -279,6 +286,7 @@ cacheMarketStats();
 
     //send t_address balance to z_address
     function sendTToZ(callback, tBalance) {
+console.log('asyncComplete: sendTToZ Called...ln 279');
         if (callback === true) {
             return;
         }
@@ -335,7 +343,7 @@ cacheMarketStats();
 
                         var data = JSON.parse(body);
                         var price = data[coin].usd
-                        logger.warn('\u001b[36;1m Response Coin Price usd ln 361:\u001b[0m ' + price)
+                        logger.warn('\u001b[36;1m Response '+coin+' Price usd ln 361:\u001b[0m ' + price)
                         marketStatsUpdate.push(['hset', coin + ':stats', 'coinMarketCap', price]);
                         redisClient.multi(marketStatsUpdate).exec(function(err, results) {
                             if (err) {
@@ -412,6 +420,7 @@ cacheMarketStats();
 
     // send z_address balance to t_address
     function sendZToT(callback, zBalance) {
+ console.log('asyncComplete: z_sendmany Called...'+zBalance);
         if (privateChain) {
             return;
         }
@@ -444,6 +453,7 @@ cacheMarketStats();
         var params = [poolOptions.zAddress, [{'address': poolOptions.tAddress, 'amount': amount}]];
         daemon.cmd('z_sendmany', params,
             function (result) {
+console.log('asyncComplete:function ZTOT Called... ln356'+result);
                 //Check if payments failed because wallet doesn't have enough coins to pay for tx fees
                 if (!result || result.error || result[0].error || !result[0].response) {
                     logger.error('Error trying to send z_address coin balance to payout t_address.'+JSON.stringify(result[0].error));
@@ -471,9 +481,11 @@ cacheMarketStats();
             switch (shieldIntervalState) {
                 case 1:
                     listUnspent(poolOptions.address, null, minConfShield, displayBalances, sendTToZ);
+console.log('asyncComplete: requireSheilding case 1: listUnspent Called... ln384'+poolOptions.address);
                     break;
                 default:
                     listUnspentZ(poolOptions.zAddress, minConfShield, displayBalances, sendZToT);
+console.log('asyncComplete: requireSheilding case 1: listUnspentZ Called... ln388'+poolOptions.zAddress);
                     shieldIntervalState = 0;
                     break;
             }
@@ -598,6 +610,7 @@ cacheMarketStats();
                     logger.debug("Running z_operationresult for privateChain");
 
                     batchRPC.push(['z_getoperationresult']);
+console.log('asyncComplete: z_getoperationresult Called... ln 613');
                 }
 
                 // if there are no completed operations
