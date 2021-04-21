@@ -1,6 +1,14 @@
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
 
+[Update 4-21-2021]
+
+Testing Z to Z payments, working for Pirate coin so far. Need to test all parts of payment system now to confirm I didnt break anything on KMD payments.
+
+Im tying to keep this compatible with other nomp forks, new stats and data are appended and previous order not changed, so it should work
+
+but no warranty... 
+
 [Update 4-14-2021]
 
 Thanks to the Knomp code i got z_addresses working in authorization, and payments -- I hope.
