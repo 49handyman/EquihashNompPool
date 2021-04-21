@@ -1,3 +1,5 @@
+![Entrust Computer Technology Center] (website/static/icons/EntrustCenterRound.svg)
+
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
 
@@ -13,7 +15,10 @@ but no warranty...
 
 Thanks to the Knomp code i got z_addresses working in authorization, and payments -- I hope.
 
-Added POSIX module and testing usage with root. I was having problems with rejected blocks and found my system lagging, and not responding as fast as it should. After disabling all the unused services and background processes I resolved the issue.
+Added POSIX module and testing usage with root. How can we run as root with PM2 without manually sudo - like at reboot. It must be 
+100% automatically loaded at reboot --cron - ?? 
+
+I was having problems with rejected blocks and found my system lagging, and not responding as fast as it should. After disabling all the unused services and background processes I resolved the issue.
 
 Testing the system with only Pirate chain full node wallet running to decrease RPC  response times
 
@@ -37,8 +42,16 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 #### Pool Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EquihashNomp1.PNG)<br /><br />
 
- #### Worker Stats<br />
+#### Worker Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EquihashNomp2.PNG)<br /><br />
+
+#### Miner Wallets<br />
+![Miner's Wallets](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/wallets.PNG)<br /><br />
+
+#### Miners<br />
+![Miner's Wallets](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/miners.PNG)<br /><br />
+
+
 #### Block Explorer<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-3.PNG)<br /><br />
 
