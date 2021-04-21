@@ -30,9 +30,45 @@
         width: 100%;
     }
 
+ .chartLabel {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 300;
+    
+  }
+  .chartHolder {
+    min-height: 300px;
+  }
+
+  .odd{background-color: #2d333b;} 
+
+//  .even{background-color: #3e444c;} 
+
 </style>
 
-<table class="pure-table">
+<script>
+function alternate(id){ 
+
+  if(document.getElementsByTagName){  
+    var table = document.getElementById(id);   
+    var rows = table.getElementsByTagName("tr");   
+    for(i = 0; i < rows.length; i++){           
+  //manipulate rows 
+      if(i % 2 == 0){ 
+        rows[i].className = "even"; 
+      }else{ 
+        rows[i].className = "odd"; 
+      }       
+    } 
+  } 
+}
+</script>
+<body onload="alternate('table')"> 
+
+<div class="container-fluid p-4">
+	<div class="row">
+	<div class="col-md-12 pl-0 pr-0">
+      <table id="table" class="table table-bordered table-responsive-lg">
     <thead>
     <tr>
         <th>Pool</th>
@@ -62,3 +98,8 @@
     </tr>
     {{ } }}
 </table>
+</div>
+ </div>
+ </div>
+ </div>
+

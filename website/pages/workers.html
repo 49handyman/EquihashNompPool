@@ -30,17 +30,40 @@
         width: 100%;
     }
 
+.odd{background-color: #2d333b;} 
+
+//  .even{background-color: #3e444c;} 
+
 </style>
+<script>
 
 
-<div id="topCharts">
+function alternate(id){ 
 
+  if(document.getElementsByTagName){  
+    var table = document.getElementById(id);   
+    var rows = table.getElementsByTagName("tr");   
+    for(i = 0; i < rows.length; i++){           
+  //manipulate rows 
+      if(i % 2 == 0){ 
+        rows[i].className = "even"; 
+      }else{ 
+        rows[i].className = "odd"; 
+      }       
+    } 
+  } 
+}
+
+</script>
+ <div class="alertbar"><BR><BR> </div>
+<body onload="alternate('table')">
+<div class="container-fluid pt-4">
+ <div class="row">
+  <div class="col-md-12 pl-0 pr-0">
 {{ for(var pool in it.stats.pools) { }}
 
-    <div class="chartWrapper">
         <div class="chartLabel">{{=it.stats.pools[pool].name}}</div>
-        <div class="chartHolder">
-            <table class="pure-table">
+   	 <table id="table" class="table table-bordered table-responsive-lg">
                 <thead>
                 <tr>
                     <th>Address</th>
@@ -73,4 +96,8 @@
             </table>
         </div>
     </div>
+ </div>
+ </div>
+ </div>
+
 {{ } }}

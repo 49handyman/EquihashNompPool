@@ -1,26 +1,89 @@
+<style>
+#topCharts {
+        padding: 18px;
+    }
+
+    #topCharts > div > div > svg {
+        display: block;
+        height: 280px;
+    }
+
+    .chartWrapper {
+        border: solid 1px #c7c7c7;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 18px;
+    }
+
+    .chartLabel {
+        font-size: 1.2em;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .chartHolder {
+
+    }
+
+    table {
+        width: 90%;
+    }
+
+ .odd{background-color: #2d333b;} 
+
+//  .even{background-color: #3e444c;} 
+
+</style>
+<script>
+function alternate(id){ 
+
+  if(document.getElementsByTagName){  
+    var table = document.getElementById(id);   
+    var rows = table.getElementsByTagName("tr");   
+    for(i = 0; i < rows.length; i++){           
+  //manipulate rows 
+      if(i % 2 == 0){ 
+        rows[i].className = "even"; 
+      }else{ 
+        rows[i].className = "odd"; 
+      }       
+    } 
+  } 
+}
+</script>
+   <div class="alertbar"><BR><BR> </div>
+
+
 <div id="pagePayments">
-    <div class="alertbar">
-        <!-- Payout frequency has been changed to 4 hours because miners have been mining to exchange addresses&#8230;-->
-        <!-- Block Reward Halving occured at block <a href="https://explorer.pirate.black/block/00000000004332fdca73719414e6e595c5f9f909bf39df5ff68f56b008b29790" target="_blank" rel="nofollow noreferrer noopener">388,885</a>!! Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸 -->
-        Payout strategy changed to PPLNT with 1 hour payout frequency! Join <a href="https://discord.gg/ASMfX7B" target="_blank" rel="nofollow noreferrer noopener" class="highlight">#piratepool</a> for support and discussion! 🐸
-    </div>
+<!--
     {{ for(var pool in it.stats.pools) { }}
         <div class="poolLabel">
             {{=it.stats.pools[pool].name}} Payments<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
             <small>
                 Lifetime<br class="responsiveonly" />
-                <i class="fas fa-link fa-fw"></i> <span id="statsValidBlocks{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.validBlocks).toLocaleString('en')}}</span> Blocks Found<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
-                <i class="fas fa-money-bill-wave fa-fw"></i> <span id="statsTotalPaid{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.totalPaid).toLocaleString('en')}}</span> {{=it.stats.pools[pool].symbol}} Paid<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+                <th class="fas fa-link fa-fw"></i> <span id="statsValidBlocks{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.validBlocks).toLocaleString('en')}}</span> Blocks Found<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
+                <th class="fas fa-money-bill-wave fa-fw"></i> <span id="statsTotalPaid{{=pool}}">{{=parseInt(it.stats.pools[pool].poolStats.totalPaid).toLocaleString('en')}}</span> {{=it.stats.pools[pool].symbol}} Paid<span class="responsivehide"> &#160;&#160;</span><br class="responsiveonly" />
             </small>
         </div>
-        <table class="pure-table" id="paymentTable{{=pool}}">
+-->
+
+
+<body onload="alternate('table')">
+
+
+<div class="container-fluid pt-4">
+ <div class="row">
+  <div class="col-md-12 pl-0 pr-0">
+   <table id="table" class="table table-bordered table-responsive-lg">
+
+<!--paymentTable{{=pool}}-->
             <thead>
                 <tr>
-                    <th>Blocks</th>
-                    <th>Time</th>
-                    <th>Miners</th>
-                    <th>Shares</th>
-                    <th>Amount</th>
+                    <th colspan="1" scope="col" style="text-align: center;">Blocks</th>
+                    <th colspan="1" scope="col" style="text-align: center;">Time</th>
+                    <th colspan="1" scope="col" style="text-align: center;">Miners</th>
+                    <th colspan="1" scope="col" style="text-align: center;">Shares</th>
+                    <th colspan="1" scope="col" style="text-align: center;">Amount</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +109,9 @@
             </tbody>
         </table>
     {{ } }}
-
+		</div>
+	</div>
+</div>
     <script>
         document.querySelector('main').appendChild(document.createElement('script')).src = '/static/payments.js';
     </script>
