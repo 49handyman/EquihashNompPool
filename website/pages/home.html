@@ -1,4 +1,7 @@
 <style>
+	#body {
+	line-height: 1.5;
+	}
     #boxWelcome{
         background-color: #0eafc7;
         color: white;
@@ -105,6 +108,7 @@
     .features-boxed {
       color: #313437;
       background-color: #eef4f7;
+
     }
 
     .features-boxed p {
@@ -138,7 +142,7 @@
     }
 
     .features-boxed .item .box {
-      text-align: center;
+      text-align: left;
       padding: 30px;
       background-color: #fff;
       margin-bottom: 30px;
@@ -155,6 +159,7 @@
       -webkit-text-fill-color: transparent;
       margin-top: 20px;
       margin-bottom: 35px;
+	 text-align: center;
     }
 
 
@@ -184,8 +189,7 @@
  
 <section class="title">
   <div>
-      <div class="header-blue">
-          <div class="container hero" style="margin-left: 5px;">
+<BR><BR><BR><BR>          <div class="container hero" style="margin-left: 5px;">
             <div class="row">
               <div class="col-12 col-lg-12 col-xl-12 offset-xl-1">
                 <h1 class="display-4" style="margin:0 15px 5px 0;">Entrust's Private Mining Pool</h1>
@@ -193,6 +197,7 @@
                 <div class="row">
                   <div class="col-lg-4 col-md-8">
                     <a class="btn btn-light btn-lg action-button header-button" href="/getting_started">Get Started Now!</a>
+<BR><BR><BR><BR>
                   </div>
                   <div class="col-lg-4 col-md-8">
                     <a class="btn btn-light btn-lg action-button" href="/learn_more">Want To Learn More?</a>
@@ -200,7 +205,6 @@
                 </div>
               </div>
           </div>
-      </div>
   </div>
 </section>
 <section class="features">
@@ -236,7 +240,7 @@
               <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 item">
                   <div class="box"><i class="fa fa-superscript icon"></i>
                       <h3 class="name">Coins Supported</h3>
-                      {{ for(var pool in it.stats.pools) { }}
+                     <div class="text-align left"> {{ for(var pool in it.stats.pools) { }}</div>
                   <div>
                      <div><i class="fa fa-dot-circle"></i> {{=pool}}</div>
                      <div><i class="fa fa-users"></i><span id="statsMiners{{=pool}}"> {{=it.stats.pools[pool].workerCount}}</span> Miners</div>

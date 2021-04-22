@@ -5,7 +5,7 @@
 "zAddress": "zs1k3wnsss29w0vsyp5zq4wjl8sen2xvp7vcj0w206w80k5kau666dnhtvnhequ2mzdn4llywq0wm5",
 "tAddress": "RLdddne52NzYbbXBKC9uDFtQwGg1SPetxV",
 "invalidAddress": "zs1knk0a2yv9kz7lhkp4p8jsnp0texn7d5wqm2e5yncnmazfjdemv4lycg7etu2eagcpltnk3zzrat",
-"walletInterval": 2,
+"walletInterval": 10,
 "payOnStart": true,
 "marketStats": true,
 "rewardRecipients": {},
@@ -14,7 +14,7 @@
         "minConf": 10,
         "enabled": true,
         "paymentMode": "prop",
-        "paymentInterval": 180,
+        "paymentInterval": 600,
         "minimumPayment": 10,
         "maxBlocksPerPayment": 20,
         "daemon": {

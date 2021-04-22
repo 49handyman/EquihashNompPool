@@ -195,7 +195,6 @@ function updateWorkerStats() {
         $("#statsTotalImmature").text(totalImmature);
         $("#statsTotalBal").text(totalBal);
         $("#statsTotalPaid").text(totalPaid)
-/ $('#blocksFound').text(statData.miners[w].blocksFound);
     }
 }
 

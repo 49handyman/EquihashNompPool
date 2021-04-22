@@ -1,3 +1,6 @@
+{{ function bigNumber(x){ return (x > 1000000000000) ? (x / 1000000000000).toFixed(1) + 'T' : (x > 1000000000) ? (x / 1000000000).toFixed(1) + 'B' : (x > 1000000) ? (x / 1000000).toFixed(1) + 'M' : (x > 1000) ? (x / 1000).toFixed(1) + 'K' : x.toFixed(1); } }}
+
+{{ function readableDate(a){ return new Date(parseInt(a)).toLocaleTimeString().substring(0, 16).replace('T', ' ') + ' CST'; } }}
 <style>
 #topCharts {
         padding: 18px;
@@ -100,7 +103,7 @@ function alternate(id){
                         {{ } }}
                         <div class="fade">&#9660;</div>
                     </td>
-                    <td><span class="responsiveTableLabel"><i class="far fa-clock fa-fw"></i> Time: </span>{{=it.stats.pools[pool].payments[p].time}}</td>
+                    <td><span class="responsiveTableLabel"><i class="far fa-clock fa-fw"></i> Time: </span>{{= readableDate(it.stats.pools[pool].payments[p].time)}}</td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-users fa-fw"></i> Miners: </span>{{=it.stats.pools[pool].payments[p].miners}}</td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-cog fa-fw"></i> Shares: </span>{{=it.stats.pools[pool].payments[p].shares}}</td>
                     <td><span class="responsiveTableLabel"><i class="fas fa-money-bill-wave fa-fw"></i> Amount: </span>{{=it.stats.pools[pool].payments[p].paid}} {{=it.stats.pools[pool].symbol}}</td>

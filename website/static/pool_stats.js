@@ -3,47 +3,29 @@ var poolHashrateChart;
 var poolBlockChart;
 var price;
 var netDiff;
+var networkDiffChart;
 
-
-var mmt = moment();
-
-// Your moment at midnight
-var mmtMidnight = mmt.clone().startOf('day');
-
-// Difference in minutes
+var mmt = moment().utc().local();
+var endMidnight = mmt.clone().endOf('day').local();
+var startMidnight = mmt.clone().startOf('day').local();
+sinceMidnight = moment("00:00:00", "hh:mm:ss").diff(moment().local());
+midnightdiff=startMidnight -endMidnight;
 var diffMinutes = mmt.diff(mmtMidnight, 'minutes');
-
-// Your moment
-var mmt = moment();
-
-// Your moment at midnight
-var mmtMidnight = mmt.clone().startOf('day');
-
-sinceMidnight = moment("24:00:00", "hh:mm:ss").diff(moment(), 'seconds');
-var diffSeconds = mmt.diff(mmtMidnight, 'milliseconds');
-console.log('moment: '+mmt+' midNight: '+mmtMidnight+' Date.now: '+Date.now()+' sinceMidnight: '+sinceMidnight+' diffMinutes: '+diffMinutes*1000*60*60*60)
+var mmt = moment().utc().local();
+var date = moment().utc().local();
+var mmtMidnight = mmt.clone().endOf('day');
+sinceMidnight = moment("00:00:00", "hh:mm:ss").diff(moment());
 
 
-
-///
-
- var now = new Date();
+  var diffSeconds = mmt.diff(mmtMidnight, 'milliseconds');
+  var now = new Date();
   let yesterday=new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
   let last7Days=new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
- // var data=obj.filter(p => new Date(p.LastSeenDate) <= yesterday && new Date(p.LastSeenDate) >= last3Days);  
-//console.log('yesterday : '+yesterday+' '+last7Days)
-
-/// revenue = luck hours /24 * coin price
 
 function displayCharts() {
     var stats = getPoolStats(poolName);
     var maxScale = getReadableHashRatePair(Math.max.apply(null, stats.hashrate.map(x => x[1])));
-//  pool.networkDiff.map(x => x[1]
-//
     var maxScaleDiff = getReadableNetworkDiffPair(Math.max.apply(null, stats.networkDiff.map(x => x[1])));
-
-//console.log('max & map ', stats.networkDiff,stats.networkDiff.map(x => x[1]))
-
 
     poolHashrateChart = createDefaultLineChart(
       document.getElementById("poolHashChart").getContext('2d'),
@@ -53,7 +35,7 @@ function displayCharts() {
           data: stats.hashrate.map(x => {
             return {
               t: x[0],
-              y: getScaledHashrate(x[1], maxScale[2])
+              y: getReadableHashRate(x[1])
             }
           }),
           borderWidth: 2,
@@ -67,45 +49,69 @@ function displayCharts() {
           borderColor: '#348EA9'
         },
 
-         {
-           label: 'Difficulty',
-           fill: false,
-           data: stats.networkDiff.map(x => {
-              return {
-               t: x[0],
-                y: getScaledNetworkDiff(x[1],  maxScaleDiff[2])
-              }
-            }),
-            borderWidth: 2,
-            backgroundColor: '#E81D62',
-          pointHoverRadius: 6,
-          pointHitRadius: 9,
-            borderColor: '#E81D62'
-        },
+
         {
           label: 'Averaged',
           fill: false,
           data: stats.averagedHashrate.map(x => {
             return {
               t: x[0],
-              y: getScaledHashrate(x[1], maxScale[2])
-            }
+              y: getReadableHashRate(x[1])
+             }
           }),
           borderWidth: 2,
           backgroundColor: '#E81D62',
-	pointHoverRadius: 6,
-	pointHitRadius: 9,
+          pointHoverRadius: 6,
+          pointHitRadius: 9,
           borderColor: '#E81D62'
-      }],
+         },
+
+
+         {
+           label: 'Difficulty',
+           fill: true,
+           data: stats.networkDiff.map(x => {
+              return {
+               t: x[0],
+                y: getScaledNetworkDiff(x[1],maxScaleDiff[0])
+              }
+            }),
+            borderWidth: 2,
+            backgroundColor: '#343a40',
+          pointHoverRadius: 6,
+          pointHitRadius: 9,
+            borderColor: '#081D62'
+        }],
       'Time',
       'Hash Rate & Net Diff',
+   );
+  networkDiffChart = createLineChart(
+     document.getElementById("networkDiffChart").getContext('2d'),
+     [{
+         label: 'diff',
+         fill: false,
+         data: stats.networkDiff.map(x => {
+           return {
+             t: x[0],
+             y: getScaledNetworkDiff(x[1],maxScaleDiff[0])
+           }
+         }),
+         borderWidth: 1,
+         backgroundColor: '#FBA41F',
+         borderColor: '#FBA41F'
+     }],
+     'Time',
+     'diff',
+     {
+   //   beginAtZero: true,
+   //   fixedStepSize: 1
+    }
+
    );
 }
 $.get({
     url: "https://api.coingecko.com/api/v3/coins/" + poolName,
     success: function(data) {
-   //     console.log(data);
-//        $("#priceUsd").html('$' + parseFloat(data.market_data.current_price.usd).toFixed(5) + ' USD');
         price = parseFloat(data.market_data.current_price.usd).toFixed(5);
         $("#priceBtc").html(parseFloat(data.market_data.current_price.btc) + ' BTC');
         $("#rank").html(data.market_cap_rank) + ' th';
@@ -157,35 +163,22 @@ statsSource.addEventListener('message', function(e) {
     var stats = JSON.parse(e.data);
     updatePoolData(stats, poolName, function(pool) {
         var max = 	Math.max.apply(null, pool.hashrate.map(x => x[1]));
-
+var poolDiff = stats.pools[poolName].networkDiff;
 	var diffMax = 	Math.max.apply(null, pool.networkDiff.map(x => x[1]));
 	var diffPair =	getReadableNetworkDiffPair(diffMax);
 	var diffScaled	= getScaledNetworkDiff(stats.pools[poolName].networkDiff);
 	var diff =	getScaledNetworkDiff(poolName in stats.pools ? stats.pools[poolName].poolStats.networkDiff : 0);
-
-        var pair = 	getReadableHashRatePair(max);
+        var pair = 	getReadableHashRatePair(poolName in stats.pools ? stats.pools[poolName].hashrate:0);
         var hash = 	getScaledHashrate(poolName in stats.pools ? stats.pools[poolName].hashrate : 0, pair[2]);
         var sols = 	getScaledHashrate(poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0, pair[2]);
         var pairsols = 	getReadableHashRatePair(sols);
-//	var avg = pool.averagedHashrate;
-dificulty =  pool.networkDiff.map(x => x[1])
-console.log('diff:' + diff);
-console.log('diffMax:' + diffMax);
-console.log('diffScaled: ' + diffScaled );
-console.log('diffPair ' + diffPair);
-console.log('pool.networkDiff.map ' +  pool.networkDiff.map(x => x[1]));
- console.log('-------------------------------');
-
-
 	var networkPercent = (poolName in stats.pools ? stats.pools[poolName].hashrate : 0)*2/1000000/(poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0)
         var timeSinceLastBlock = Date.now() - (stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000 || 0
 	var timeSinceLastBlock2 = Date.now() - (parseFloat(poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlockTime : 0)*1000*100) || 0 
 	var poolLuck = 	parseFloat(parseInt(timeSinceLastBlock)  * 1000 / parseInt(stats.pools[poolName].poolStats.networkSols) / parseInt(stats.pools[poolName].hashrate*2/1000000) * parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
-
 	var revenue = 	(poolName in stats.pools ? parseFloat(stats.pools[poolName].poolStats.coinMarketCap) : 0) * 
 			(poolName in stats.pools ? parseFloat(stats.pools[poolName].blockReward) : 0) * 
 			(24/ stats.pools[poolName].luckHours);
-
 
 
 	$("#revenue").html( 'Est Revenue<br> $'  + parseFloat(revenue).toFixed(2)  );
@@ -221,21 +214,10 @@ console.log('pool.networkDiff.map ' +  pool.networkDiff.map(x => x[1]));
 //	$("#bigDiff").html(poolName in stats.pools ?   'BigDiff Blocks</br>'+ parseInt(stats.pools[poolName]?.bigDiff) : 0);
         var time = stats.time * 1000;
         var avg = pool.averagedHashrate;
-        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[0], {
-            t: time,
-            y: hash
-        }, false);
-        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[1], {
-            t: time,
-            y: getScaledHashrate(avg[avg.length - 1][1], pair[2])
-        }, true);
-
-
-
- //       addChartData(poolHashrateChart, poolNetworkDiffChart.data.datasets[3], { 
- //           t: time,
- //           y: poolName in stats.pools ? stats.pools[poolName].networkDiff : 0
- //       }, true);
+        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[0], {t: time,y: hash}, false);
+        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[1], {t: time,y: getReadableHashRate(avg)}, true);
+        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[2], {t: time,y: diff}, true);
+	addChartData(networkDiffChart, networkDiffChart.data.datasets[0], {t: time, y: getScaledNetworkDiff(stats.pools[poolName].poolStats.networkDiff)}, true);
 
     });
 }, false);
@@ -246,10 +228,8 @@ $.getJSON('/api/stats', function(data) {
         for (var w in data.pools[p].workers) {
             var worker = getWorkerNameFromAddress(w);
             miner = w.split('.')[1];
-            //console.log('worker in w, miner :', worker, w, miner);
             var miner = worker + ' ' + 'Blocks : ' + parseInt((data.pools[p].blocks.blocksFound[w]) || 0) + ' | '
             array.push(miner);
-            //          $("#blocks").text( worker+': '+data.pools[p].blocks.blocksFound[w]);
         }
     }
     $("#blocks").html(array);

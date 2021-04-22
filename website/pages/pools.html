@@ -1,3 +1,5 @@
+<BR><BR> <BR><BR>
+
 <div id="container-fluid">
 	<table class="table table-bordered table-striped">
 	  <thead>
@@ -6,13 +8,13 @@
 	      	<th style="text-align:center;vertical-align: middle;">Symbol</th>
 	      	<th style="text-align:center;vertical-align: middle;">Algo</th>
 	     		<th style="text-align:center;vertical-align: middle;">Ports</th>
-		  		<th style="text-align:center;vertical-align: middle;">N. Hash Rate</th>
+		  		<th style="text-align:center;vertical-align: middle;">blank</th>
 		  		<th style="text-align:center;vertical-align: middle;">Hash Rate</th>
 		  		<th style="text-align:center;vertical-align: middle;">Mature</th>
 		  		<th style="text-align:center;vertical-align: middle;">Pending</th>
 	      	<th style="text-align:center;vertical-align: middle;">Workers</th>
 	     		<th style="text-align:center;vertical-align: middle;">Difficulty</th>
-	     		<th style="text-align:center;vertical-align: middle;">Change In</th>
+	     		<th style="text-align:center;vertical-align: middle;">Block Time Secs.</th>
         	<th style="text-align:center;vertical-align: middle;">Fee</th>
 		<th style="text-align:center;vertical-align: middle;">Donations:</th>
 	    </tr>
@@ -26,7 +28,7 @@
 			{{ for(var pool in it.stats.pools) { }}
 
 				<th style="text-align:center;vertical-align: middle;">
-				<a class="bg-light text-dark pl-3" href="/stats/{{=it.stats.pools[pool].name}}">
+				<a  href="/stats/{{=it.stats.pools[pool].name}}">
 				<img src="/static/icons/{{=it.stats.pools[pool].name}}.png" alt="icon" style="height: 25px;"/> {{=it.stats.pools[pool].name.charAt(0).toUpperCase() + it.stats.pools[pool].name.slice(1)}} </a>
 				</th>
 				<th style="text-align:center;vertical-align: middle;"><a href="/stats/{{=it.stats.pools[pool].name}}">{{=it.stats.pools[pool].symbol}}</a></th>
@@ -50,7 +52,7 @@
 			
 	 			<td style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].workerCount}}</td>
 			
-				<td d id="networkDiff" scope="row" style="text-align:center;vertical-align: middle;"></td>
+		<td id="networkDiff" scope="row" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].workerCount}}</td>
 			
 				{{ var blocktime = it.stats.pools[pool].blockTime || 0; }}
 				{{ var blockchange = it.stats.pools[pool].blockChange || 0; }}				
@@ -59,7 +61,7 @@
                 {{ var changehours = Number.parseFloat((((blockchange) - (blockheight % blockchange)) / blocktime)).toFixed(2) || 0; }}
                 {{ var changeblocks = ((blockchange) - (blockheight % blockchange)) || 0; }}
 			    
-				<td scope="row" style="text-align:center;vertical-align: middle;">{{=changeblocks}} blocks (appx. {{=changehours}} hours)</td>
+				<td scope="row" style="text-align:center;vertical-align: middle;">{{=blocktime}}</td>
             				
 				{{ var total = 0.0; }}
         		{{ var rewardRecipients = it.stats.pools[pool].rewardRecipients || {}; }}
@@ -78,7 +80,7 @@
 </div>
 <script>
    //use doT to get the name of the pool (a.k.a. name of coin)
-//   var poolName = "{{=it.stats.coin}}";
+   var poolName = "{{=it.stats.coin}}";
    //Used for tracking stats used in graphs and tables
    document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stat_tracker.js';
    //Used for EMA calculations and other misc. fucntions

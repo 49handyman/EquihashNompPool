@@ -33,6 +33,7 @@ function alternate(id){
   } 
 }
 </script>
+<script src="/static/highcharts.js"></script>
 <body onload="alternate('table')"> 
 
 
@@ -172,7 +173,11 @@ function alternate(id){
 		<td style="text-align:center;">Miner's Blocks</td>
 		<th id="blocks"  colspan="11" style="text-align:center;vertical-align: middle;"></th>
 	</tr>
+<TR>
 
+
+
+</TR>
 
               {{ break; }}
             {{ } }}
@@ -189,18 +194,26 @@ function alternate(id){
       <div class="chartHolder"><canvas id="poolHashChart" height="50"></canvas></div>
   </div>
   </div>
-<!--
+
+
+
+
   <div class="row">&nbsp;<br /></div>
 
+  <div class="row justify-content-center">
+    <div class="col-md-12 chartWrapper">
+      <div class="chartLabel">Network Difficulty History</div>
+      <div class="chartHolder"><canvas id="networkDiffChart" height="50"></div>
+    </div>
+  </div>
+</div>
+<!--
   <div class="row justify-content-center">
     <div class="col-md-12 chartWrapper">
       <div class="chartLabel">Pending Block History</div>
       <div class="chartHolder"><canvas id="blockChart" height="50"></div>
     </div>
-  <
-</div>
--->
-<!--
+  </div>
   <div class="row">&nbsp;<br /></div>
 
   <div class="row justify-content-center">
@@ -224,3 +237,5 @@ document.querySelector('main').appendChild(document.createElement('script')).src
   //Then connect the graph handler
   document.querySelector('main').appendChild(document.createElement('script')).src = '/static/pool_stats.js';
 </script>
+
+

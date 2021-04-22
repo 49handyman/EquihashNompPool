@@ -110,11 +110,10 @@ this.getScaledHashrate = function(hashrate, i) {
 
 this.getScaledNetworkDiff = function(networkDiff) {
          networkDiff = (networkDiff * 1000000);
-      var byteUnits = [' H', ' K', ' M', ' G', ' T', ' P'];
       var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
       networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
 
-      return [networkDiff.toFixed(2), byteUnits[i], i];
+      return networkDiff.toFixed(2);
  };
 
 
@@ -168,7 +167,7 @@ this.getReadableNetworkDiffPair = function(networkDiff) {
      var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
      networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
 
-     return [networkDiff.toFixed(2), byteUnits[i], i];
+     return [networkDiff.toFixed(2), byteUnits[i]];
 };
 
 
