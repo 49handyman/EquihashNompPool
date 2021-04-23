@@ -1,4 +1,4 @@
-![Entrust Computer Technology Center] (https://github.com/49handyman/equihashnomppool/blob/main/website/static/icons/EntrustCenterRound.svg)
+![Entrust Computer Technology Center](https://github.com/49handyman/equihashnomppool/blob/main/website/static/icons/EntrustCenterRound.svg)
 
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
