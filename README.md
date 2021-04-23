@@ -1,4 +1,4 @@
-![Entrust Computer Technology Center] (website/static/icons/EntrustCenterRound.svg)
+[Entrust Computer Technology Center] (website/static/icons/EntrustCenterRound.svg)
 
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
