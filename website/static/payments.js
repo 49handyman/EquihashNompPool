@@ -1,5 +1,5 @@
 $(function() {
-    initStatData();
+  //  initStatData();
 
     statsSource.addEventListener('message', function (e) {
         if (document.querySelector('#pagePayments') !== null) {
@@ -81,3 +81,12 @@ $(function() {
         }
     });
 });
+
+function timeOfDayFormat(timestamp) {
+     return new Date(parseInt(timestamp)).toLocaleString()
+}
+
+function readableDate(a) {
+    return new Date(parseInt(a)).toLocaleTimeString()
+}
+

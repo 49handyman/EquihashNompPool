@@ -176,6 +176,7 @@ module.exports = function(portalConfig, poolConfigs) {
                 workerCount: stats.pools[pool].workerCount,
                 blocks: stats.pools[pool].blocks,
 		networkDiff:  stats.pools[pool].poolStats.networkDiff,
+		networkSols: stats.pools[pool].poolStats.networkSols
             }
         }
         _this.statPoolHistory.push(data);
@@ -483,6 +484,7 @@ module.exports = function(portalConfig, poolConfigs) {
                             },
 			    marketStats: marketStats,
 			    networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
+			    networkSols: replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0,
                             blocks: {
                                 pending: replies[i + 3],
                                 confirmed: replies[i + 4],

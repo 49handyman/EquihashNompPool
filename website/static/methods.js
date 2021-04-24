@@ -58,6 +58,15 @@ function addChartData(chart, dataset, data, update) {
     }
 }
 
+function timeOfDayFormat(timestamp) {
+    return new Date(parseInt(timestamp)).toLocaleTimeString()
+}
+
+function readableDate(a) {
+    return new Date(parseInt(a)).toLocaleString();  //.substring(0, 16).replace('T', ' ') + ' CST';
+}
+
+
    function readableSeconds(t) {
          var seconds = Math.round(t);
          var minutes = Math.floor(seconds / 60);
@@ -171,13 +180,13 @@ this.getReadableNetworkDiffPair = function(networkDiff) {
 };
 
 
-function createDefaultLineChart(ctx, datasets, xLabel, yLabel) {
+function createDefaultLineChart(ctx, datasets, xLabel, yLabel, annotations) {
     return createLineChart(ctx, datasets, xLabel, yLabel, {
         beginAtZero: true
     });
 }
 
-function createLineChart(ctx,  datasets, xLabel, yLabel, ticks) {
+function createLineChart(ctx,  datasets, xLabel, yLabel, ticks, annotations) {
     return new Chart(ctx, {
         type: 'line',
         data: {
@@ -185,9 +194,10 @@ function createLineChart(ctx,  datasets, xLabel, yLabel, ticks) {
         },
         options: {
             spanGaps: false,
+	    annotation: annotations,
             animation: {
                 easing: 'easeInExpo',
-                duration: 1000,
+                duration: 400,
                 xAxis: true,
                 yAxis: true,
             },

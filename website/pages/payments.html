@@ -1,61 +1,269 @@
-<script type="text/javascript">
-  $(function () {
-    $(document).tooltip({
-        content: function () {
-            return $(this).prop('title');
-        },
-        show: null, 
-        close: function (event, ui) {
-            ui.tooltip.hover(
+<style>
 
-            function () {
-                $(this).stop(true).fadeTo(400, 1);
-            },
+  #bottomNotes {
+    display: block;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 18px;
+  }
 
-            function () {
-                $(this).fadeOut("400", function () {
-                    $(this).remove();
-                })
-            });
-        }
-    });
-});
-</script>
-{{ function readableDate(a){ return new Date(parseInt(a)).toISOString().substring(0, 16).replace('T', ' ') + ' UTC'; } }}
-{{ for(var pool in it.stats.pools) { }}
-    <table class="pure-table">
-        <thead>
-            <tr>
-                <th>Blocks</th>
-                <th>Time</th>
-                <th>Miners</th>
-                <th>Shares</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        {{ for(var p in it.stats.pools[pool].payments) { }}
-            <tr>
-                <td class="paymentblocks" title="{{=it.stats.pools[pool].payments[p].opid}}">
-                    {{if (String(it.stats.pools[pool].name).startsWith("zcash")) { }}
-                        <a href="https://explorer.zcha.in/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
-                    {{ } else if (String(it.stats.pools[pool].name).startsWith("zclassic")) { }}
-                        <a href="https://classic.zcha.in/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
-                    {{ } else if (String(it.stats.pools[pool].name).startsWith("hush")) { }}
-                        <a href="https://explorer.myhush.org/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
-                    {{ } else if (String(it.stats.pools[pool].name).startsWith("zen")) { }}
-                        <a href="http://node1.zenchain.info:8886/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
-                    {{ } else if (typeof it.stats.pools[pool].payments[p].txid !== 'undefined' && (String(it.stats.pools[pool].name).startsWith("pirate") || String(it.stats.pools[pool].name).startsWith("arrr")) ) { }}
-                    <a href="https://explorer.pirate.black/tx/{{=it.stats.pools[pool].payments[p].txid}}"  title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
-                    {{ } else { }}
-                        {{=it.stats.pools[pool].payments[p].blocks}}
-                    {{ } }}
-            </td>
-            <td>{{=readableDate(it.stats.pools[pool].payments[p].time)}}</td>
-            <td>{{=it.stats.pools[pool].payments[p].miners}}</td>
-            <td>{{=Math.round(it.stats.pools[pool].payments[p].shares)}}</td>
-            <td>{{=it.stats.pools[pool].payments[p].paid}} {{=it.stats.pools[pool].symbol}}</td>
+  #topPool {
+    padding-top: 18px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  #topPool>div>div>svg {
+    display: block;
+    height: 280px;
+  }
+
+  .poolWrapper {
+    border: solid 1px #c7c7c7;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 18px;
+  }
+
+  .poolLabel {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 4px;
+  }
+
+  .poolMinerTable {}
+
+table {
+    width: 100%;
+  }
+
+/*    kthx css    */
+
+.vmiddle { vertical-align: middle; }
+.vhmiddle { vertical-align: middle; text-align: -webkit-center; }
+
+.tableHeaderStyle { vertical-align: middle; text-align: -webkit-center; font-size: 14px; color: grey; font-size: 16px; color: grey; padding: 0 0 0 0; margin: 0 0 0 0; }
+.tableRowStyle { vertical-align: middle; text-align: -webkit-center; font-size: 14px; color: grey; padding: 0 0 0 0; margin: 0 0 0 0; height:25px; line-height:0px; }
+
+/*    kthx css   */
+
+</style>
+
+
+<div style="margin-top: 36px;" >
+
+  {{ var sortedPools = Object.keys(it.stats.pools); }}
+
+
+
+  {{ sortedPools.sort(function(a, b) { return a.workerCount - b.workerCount; }); }}
+
+
+
+  <div class="col-md-5 table-responsive">
+    <table class="table table-bordered" style="width:100%">
+      <thead>
+        <tr>
+          <th class="vmiddle" style="width: 200px;"><i class="fa fa-history"></i> Payment History For</th>
+          <th class="vmiddle">
+            <select class="form-control" id="coinSelect" style="width:100%;">
+              <option class="btn btn-primary dropdown-toggle" value="all" id="coinDropDown" data-toggle="dropdown" aria-haspopup="true">
+		All Coins
+              </option>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		{{ for(var i = 0; i < sortedPools.length; i++) { }}
+                  <option class="dropdown-item" value="{{=sortedPools[i]}}">{{=sortedPools[i].charAt(0).toUpperCase() + sortedPools[i].slice(1)}}</option>
+                {{ } }}
+              </div>
+            
+          </select>
+          </th>
         </tr>
-        {{ } }}
+<!--        <tr>
+          <th class="vmiddle" colspan="2">{{=sortedPools[0].charAt(0).toUpperCase() + sortedPools[0].slice(1)}} History</th>
+        </tr>-->
+      </thead>
+      <tbody>
+        <tr>
+          <th class="vmiddle" width="225px"><i class="fa fa-hourglass-2"></i> Pending Blocks:</th>
+          <td id="tdHistoryPending" class="vhmiddle tdHistoryPending"></td>
+        </tr>
+        <tr>
+          <th class="vmiddle"><i class="fa fa-check"></i> Confirmed Blocks:</th>
+          <td id="tdHistoryConfirmed" class="vhmiddle tdHistoryConfirmed"></td>
+        </tr>
+        <tr>
+          <th class="vmiddle"><i class="fa fa-money"></i> Paid:</th>
+          <td id="tdHistoryPaid" class="vhmiddle tdHistoryPaid"></td>
+        </tr>
+      </tbody>
     </table>
-    </div>
-{{ } }}
+  </div>
+
+  <div>&nbsp;<br /><br /></div>
+
+  <h4 class="display-4 ml-3 mt-0 mb-3" style="font-size: 24px;">Last 50 Payments</h4>
+  <fieldset>
+
+  <form action="#" class="form-group" method="post">
+  <div class="col-md-12 table-responsive">
+    <table id="blockTable" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+	      <th class="vhmiddle tableHeaderStyle">Coin</th>
+          <th class="vhmiddle tableHeaderStyle">Height</th>
+          <th class="vhmiddle tableHeaderStyle">Time</th>
+          <th class="vhmiddle tableHeaderStyle">Transaction</th>
+          <th class="vhmiddle tableHeaderStyle">Shares</th>
+          <th class="vhmiddle tableHeaderStyle">Miners</th>
+          <th class="vhmiddle tableHeaderStyle">Paid</th>
+          <th class="vhmiddle tableHeaderStyle">Status</th>
+        </tr>
+      </thead>
+      <tbody id="blockTableBody">
+      </tbody>
+    </table>
+  </div>
+  </form>            <!--END OF FORM ^^-->
+  </fieldset>
+</div>
+
+  <script>
+
+    "{{ var totalPending = parseInt('0'); }}";
+    "{{ var totalConfirmed = parseInt('0'); }}";
+    "{{ var totalPaidOut = parseInt('0'); }}";
+
+    var dataTable = $("#blockTable").DataTable({
+        "order": [[ 2, "desc" ]],
+    	"columnDefs": [
+    	      { "width": "150px", "targets": 0 },
+              { "width": "150px", "targets": 1 },
+              { "width": "125px", "targets": 2 },
+//              { "width": "125px", "targets": 3 }, //commented so transaction hash cell takes all left over space             
+              { "width": "125px", "targets": 4 },
+              { "width": "100px", "targets": 5 },
+              { "width": "125px", "targets": 6 },
+              { "width": "100px", "targets": 7 }
+    	],
+    	"pageLength": 50,
+    	"pagingType": "full_numbers",
+    	"lengthMenu": [ 25, 50, 100, 150, 300, 500 ]
+    });
+
+    $("#coinSelect").ready(function() {
+      updateTable("all", true);
+    });
+
+    $("#coinSelect").change(function() {
+      updateTable(this.value, true);
+    });
+
+    function updateTable(value, updateText){
+    
+      var options = {
+        hour12: false, year: "numeric", month: "numeric",
+        day: "numeric", hour: "2-digit", minute: "2-digit"
+      };
+      
+      "{{ var sortedPools = Object.keys(it.stats.pools); }}";
+      
+      
+      
+      
+      "{{ sortedPools.sort(function(a, b) { return a.workerCount - b.workerCount; }); }}";
+      
+      
+      if(updateText && (dataTable.row)) {
+        dataTable.clear().draw(true);
+      }
+      
+      
+      "{{ for(i in sortedPools) { }}";
+      
+          "{{ var pool = sortedPools[i]; }}";
+        
+          if(updateText){
+          
+                 if (("all" !== value) && ("{{=pool}}" === value)) {  
+                    
+			"{{ var tmpPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}').toFixed(8); }}";
+			
+                            $('#tdHistoryPending').text("{{=it.stats.pools[pool].blocks.pending}}");
+                            $('#tdHistoryConfirmed').text("{{=it.stats.pools[pool].blocks.confirmed}}");                            
+                            $('#tdHistoryPaid').text("{{=tmpPaid}}");
+        		     
+    		     }
+    		     else {
+
+                    // Create temp variable
+                    "{{ var tmpPending = parseInt('{{=it.stats.pools[pool].blocks.pending}}'); }}";
+                    "{{ var tmpConfirmed = parseInt('{{=it.stats.pools[pool].blocks.confirmed}}'); }}";
+                    "{{ var tmpPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}'); }}";
+
+                    // Count totals :)
+                    "{{ var totalPending = parseInt(totalPending) + parseInt(tmpPending); }}";
+                    "{{ var totalConfirmed = parseInt(totalConfirmed) + parseInt(tmpConfirmed); }}";
+                    
+                    /* Future convert to BTC just total for now */
+                    "{{ var totalPaidOut = parseFloat(totalPaidOut) + parseFloat(tmpPaid); }}";
+    		     
+    		     }
+    		     
+                     
+
+                              
+                
+              /* SHOW ALL PAYMENTS MADE FROM BLOCKS FOUND! */
+              
+              "{{ for(p in it.stats.pools[pool].payments) { }}";
+                  
+                  "{{ var payment = it.stats.pools[pool].payments[p]; }}";
+                  
+//                    alert("{{=payment.blkid}}");
+
+                  // IF STATEMENT HERE
+                  if (("{{=pool}}" === value) || ("all" === value)) {
+                  
+                        // Get the date, check if its within the last X days/hours. Yes: Display No: No display
+                        // We are inside JavaScript here. Prolly better to do this in the API
+
+                        dataTable.row.add([
+                        
+                        '<div class="vhmiddle"><span class="tableRowStyle"><img src="/static/icons/{{=it.stats.pools[pool].name}}.png" style="height: 24px;" /> <a class="" href="/stats/{{=it.stats.pools[pool].name}}">{{=it.stats.pools[pool].name.charAt(0).toUpperCase() + it.stats.pools[pool].name.slice(1)}}</a></span></div>',
+                        
+                                
+                        
+                        '<div class="vhmiddle"><span class="tableRowStyle"><a href="{{=it.stats.pools[pool].explorerGetBlock + payment.blkid}}" target="_blank">{{=Math.max.apply(null, payment.blocks)}}</th></a>&nbsp;&nbsp;<a href="{{=it.stats.pools[pool].explorerGetBlockJSON + payment.blkid}}" target="_blank"></a><span></div>',
+                        
+                        '<div class="vhmiddle"><span class="tableRowStyle">' + new Date(parseInt("{{=payment.time}}")).toLocaleTimeString("en-US", {timeZone: "America/Chicago", }) + '</span></div>',
+                        
+                        '<div class="vhmiddle"><span class="tableRowStyle"><a href="{{=it.stats.pools[pool].explorerGetTX + payment.txid}}" target="_blank">{{=payment.txid}}</a></span></div>',
+                        '<div class="vhmiddle"><span class="tableRowStyle">' + parseInt('{{=payment.shares}}') + '</span></div>',
+                        '<div class="vhmiddle"><span class="tableRowStyle">{{=payment.miners}}</span></div>',
+                        '<div class="vhmiddle"><span class="tableRowStyle">{{=parseFloat(payment.paid).toFixed(8)}}</span></div>',
+                        '<div class="vhmiddle"><span class="tableRowStyle"><span class="badge badge-success">Paid</span></span></div>',
+                        
+                        ]).draw(true);
+  
+                  }
+    
+              "{{ } }}";
+          
+          }
+        
+      "{{ } }}";
+
+        // PRINT TOTALS FOR ALL COINS    
+        if ("all" === value) {
+              
+              var tmpOutVar = parseFloat("{{=totalPaidOut}}").toFixed(8);            
+              
+         	  $('#tdHistoryPending').text("{{=totalPending}}");
+              $('#tdHistoryConfirmed').text("{{=totalConfirmed}}");                        
+              $('#tdHistoryPaid').text(tmpOutVar);
+      }      
+      
+    }
+  </script>
+<!--

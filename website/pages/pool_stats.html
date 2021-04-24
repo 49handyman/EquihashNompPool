@@ -117,25 +117,26 @@ function alternate(id){
 		<th id="lastBlockFound" style="text-align:center;vertical-align: middle;"></th>
 		<td style="text-align:center;vertical-align: middle;">Valid Blocks:</td>
 		<th id="validBlocks" style="text-align:center;vertical-align: middle;">{{=it.coin}}</th>
-		<td style="text-align:center;vertical-align: middle;">All Time High:</td>
-		<th id="ath" style="text-align:center;vertical-align: middle;">calc</th>
-                <td style="text-align:center;vertical-align: middle;">24 Hour High:</td>
-                <th id="24h_high" style="text-align:center;vertical-align: middle;"></th>	
+		<th id="blockReward" style="text-align:center;vertical-align: middle;">Block Reward</th>
+		<th id="rank" style="text-align:center;vertical-align: middle;">Rank</th>
+		<th id="price_change24h" style="text-align:center;vertical-align: middle;">Price Change</th>
+		<th id="" style="text-align:center;vertical-align: middle;">blank</th>
+
 	</tr>
        	<tr>
-		<td style="text-align:center;vertical-align: middle;">Current Price:</td>
-		<th id="priceUsd" style="text-align:center;vertical-align: middle;"></th>
-		<td style="text-align:center;vertical-align: middle;">BTC Exchange Rate:</td>
-		<th id="priceBtc" style="text-align:center;vertical-align: middle;"></th>
-		<td style="text-align:center;vertical-align: middle;">Total Paid:</td>
-		<th id="poolPaidOut" style="text-align:center;vertical-align: middle;"></th>
-		<td style="text-align:center;vertical-align: middle;">Last Blk time:</td>
-                <th id="lastBlockFoundTime" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-                <td style="text-align:center;vertical-align: middle;">Pool Start Time:</td>
-                <th id="" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-		<th id=" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-		<th id="" colspan="1" style="text-align:center;vertical-align: middle;">calc</th>
-
+		<th id="change1h" style="text-align:center;vertical-align: middle;">1 Hr. Change</th>
+		<th id="change24h" style="text-align:center;vertical-align: middle;">23 Hr. Change</th>
+		<th id="priceUSD"  style="text-align:center;vertical-align: middle;">Price USD</th>
+		<th id="priceBtc" style="text-align:center;vertical-align: middle;">Price BTC</th>
+		<th id="volume24" style="text-align:center;vertical-align: middle;">Volume</th>
+		<th id="poolPaidOut" style="text-align:center;vertical-align: middle;">Paid Out</th>
+                <th id="lastBlockFoundTime" colspan="1" style="text-align:center;vertical-align: middle;">Last Block<BR>Time</th>
+                <th id="poolStartTime" colspan="1" style="text-align:center;vertical-align: middle;">Pool Start<BR>Time</th>
+		<th id="" colspan="1" style="text-align:center;vertical-align: middle;">blank</th>
+		<th id="" colspan="1" style="text-align:center;vertical-align: middle;">blank</th>
+		<th id="ath" style="text-align:center;vertical-align: middle;">All Time High</th>
+		<th id="atl" style="text-align:center;vertical-align: middle;">All Time Low</th>
+		
 	</tr>
 	</tr>
 
@@ -147,13 +148,25 @@ function alternate(id){
                 <th id="blocksKicked" style="text-align:center;vertical-align: middle;">Kicked Blocks</th>
 		<th id="orphaned" style="text-align:center;vertical-align: middle;">Orphaned Blocks</th>	
 		<th id="duplicated" style="text-align:center;vertical-align: middle;">Duplicate Blocks</th>
-		<th id="" style="text-align:center;vertical-align: middle;">blank1</th>
-		 <th id="" style="text-align:center;vertical-align: middle;">blank2</th>
-		<th id="" style="text-align:center;vertical-align: middle;">blank3</th>
-		<th id="" style="text-align:center;vertical-align: middle;">blank4</th>
+		<th id="blank1" style="text-align:center;vertical-align: middle;">blank1</th>
+		<th id="blank2" style="text-align:center;vertical-align: middle;">blank2</th>
+		<th id="blank3" style="text-align:center;vertical-align: middle;">blank3</th>
+		<th id="blank4" style="text-align:center;vertical-align: middle;">blank4</th>
 	</tr>
 	<tr>
-<th id="shortDesc"  colspan="4" style="text-align:center;vertical-align: middle;">Searching for coin description...</th>
+		<th id="shortDesc"  colspan="4" style="text-align:center;vertical-align: middle;">Searching for coin description...</th>
+		<th id="blank5" style="text-align:center;vertical-align: middle;">blank5</th>
+                <th id="blank6" style="text-align:center;vertical-align: middle;">blank6</th>
+                <th id="blank7" style="text-align:center;vertical-align: middle;">blank7</th>
+                <th id="blank8" style="text-align:center;vertical-align: middle;">blank8</th>
+                <th id="blank9" style="text-align:center;vertical-align: middle;">blank9</th>
+                <th id="blank10" style="text-align:center;vertical-align: middle;">blank10</th>
+                <th id="blank11" style="text-align:center;vertical-align: middle;">blank11</th>
+                <th id="blank12" style="text-align:center;vertical-align: middle;">blank12</th>
+
+
+
+
 	</tr>
        	<tr>
                 <td style="text-align:center;vertical-align: middle;">Trade:</td>
@@ -202,7 +215,7 @@ function alternate(id){
 
   <div class="row justify-content-center">
     <div class="col-md-12 chartWrapper">
-      <div class="chartLabel">Network Difficulty History</div>
+      <div class="chartLabel">Network Hashrate  History</div>
       <div class="chartHolder"><canvas id="networkDiffChart" height="50"></div>
     </div>
   </div>
