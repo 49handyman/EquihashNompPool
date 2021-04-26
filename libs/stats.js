@@ -1,4 +1,5 @@
 var zlib = require('zlib');
+var tradeOgre = require('tradeogre-api');
 var request = require('request');
 var redis = require('redis');
 var async = require('async');
@@ -8,6 +9,10 @@ const logger = require('./logger.js').getLogger('Stats', 'system');
 const functions = require('./functions.js');
 var price;
 var found;
+
+const apiconfig = require('../../tradeogre.json');
+ if(!apiconfig){throw  new Error("Config file tradeogre.json does not exist")}
+
 
 function sortProperties(obj, sortedBy, isNumericSort, reverse) {
      sortedBy = sortedBy || 1; // by default first key
@@ -93,13 +98,13 @@ module.exports = function(portalConfig, poolConfigs) {
 
              if (_this.stats.pools[pool.name].pending && _this.stats.pools[pool.name].pending.blocks) {
                  for (var i=0; i<_this.stats.pools[pool.name].pending.blocks.length; i++) {
-                     allBlocks[pool.name+"-"+_this.stats.pools[pool.name].pending.blocks[i].split(':')[2]] = _this.stats.poo$
+                     allBlocks[pool.name+"-"+_this.stats.pools[pool.name].pending.blocks[i].split(':')[2]] = _this.stats.pools[pool.name].pending.blocks[i];
                  }
              }
 
              if (_this.stats.pools[pool.name].confirmed && _this.stats.pools[pool.name].confirmed.blocks) {
                  for (var i=0; i<_this.stats.pools[pool.name].confirmed.blocks.length; i++) {
-                     allBlocks[pool.name+"-"+_this.stats.pools[pool.name].confirmed.blocks[i].split(':')[2]] = _this.stats.p$
+                     allBlocks[pool.name+"-"+_this.stats.pools[pool.name].confirmed.blocks[i].split(':')[2]] = _this.stats.pools[pool.name].confirmed.blocks[i];
                  }
              }
 
@@ -429,7 +434,8 @@ module.exports = function(portalConfig, poolConfigs) {
 		['scard', ':blocksRejected'],  // 21
 		['scard', ':blocksDuplicate'],  // 22
 		['hgetall', ':bigDiff'],  // 23
-		['hgetall', ':shares:timesCurrent'] //24
+		['hgetall', ':shares:timesCurrent'], //24
+		['zrangebyscore', ':lastBlockTime', windowTime, '+inf']  //25
           ];
             var commandsPerCoin = redisCommandTemplates.length;
             client.coins.map(function(coin) {
@@ -481,6 +487,7 @@ module.exports = function(portalConfig, poolConfigs) {
                                 networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0,
                                 poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0,
 				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
+		//		poolLuck:
                             },
 			    marketStats: marketStats,
 			    networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
@@ -495,8 +502,8 @@ module.exports = function(portalConfig, poolConfigs) {
                                 lastBlockTime: replies[i + 19],
 				blocksRejected: replies[i + 21],
 				blocksDuplicate: replies[i + 22],
-				bigDiff: replies[i + 23]
-				
+				bigDiff: replies[i + 23],
+				lastBlockTimeWindow: replies[i + 25]
                             },
                             pending: {
                                 blocks: replies[i + 9].sort(sortBlocks),
@@ -615,7 +622,15 @@ module.exports = function(portalConfig, poolConfigs) {
                 coinStats.luckHours = ((_networkHashRate / _myHashRate * _blocktime) / (60 * 60)).toFixed(3);
                 coinStats.timeToFind = readableSeconds(_networkHashRate / _myHashRate * _blocktime);
 		var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
-		var poolLuck = (parseInt(timeSinceLastBlock)  * 1000 / parseInt(coinStats.poolStats.networkSols) / parseInt(coinStats.hashrate*2/1000000)  * parseInt(coinStats.lastblockTime*1000 * 100)).toFixed(2)
+  var timeSinceLastBlock2 = Date.now() - (coinStats.blocks.lastBlock[0].split(':')[4]) * 1000 || 0
+		var poolLuck = (parseInt(timeSinceLastBlock2)  * 1000 / parseInt(_networkHashRate) / 
+			parseInt(_myHashRate)  * parseInt(coinStats.blockTime) * 1000 * 100|| 0).toFixed(2)
+//doug poolLuck
+/* var poolLuck =  parseFloat(parseInt(timeSinceLastBlock)  * 1000 /
+parseInt(stats.pools[poolName].poolStats.networkSols) /
+parseInt(stats.pools[poolName].hashrate*2/1000000) *
+parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
+*/
 		parseFloat(poolLuck);
 		coinStats.poolLuck = poolLuck;
                 coinStats.workerCount = Object.keys(coinStats.workers).length;
@@ -691,9 +706,15 @@ module.exports = function(portalConfig, poolConfigs) {
 
     };
 
+
+
+
+
+
     function sortPoolsByName(objects) {
         var newObject = {};
-        var sortedArray = sortProperties(objects, 'name', false, false);
+  
+      var sortedArray = sortProperties(objects, 'name', false, false);
         for (var i = 0; i < sortedArray.length; i++) {
             var key = sortedArray[i][0];
             var value = sortedArray[i][1];

@@ -7,7 +7,7 @@
     
   }
   .chartHolder {
-    min-height: 300px;
+    min-height: 500px;
   }
 
   .odd{background-color: #2d333b;} 
@@ -95,7 +95,7 @@ function alternate(id){
                 <th id="poolWorkers" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].workerCount}}</th>
                 <td style="text-align:center;vertical-align: middle;">Pool Paid Out:</td>
 		{{ var totalPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}').toFixed(2);}}
-                <th style="text-align:center;"vertical-align: middle;>{{=totalPaid}} {{=it.stats.pools[pool].symbol}}</th>
+                <th style="text-align:center; vertical-align: middle;"vertical-align: middle;>{{=totalPaid}} {{=it.stats.pools[pool].symbol}}</th>
                 <td style="text-align:center;vertical-align: middle;">Last Paid Blk:</td>
 		<th id="blockFound" style="text-align:center;vertical-align: middle;"></th>
  		<td style="text-align:center;vertical-align: middle;">Last Payment:</td>
@@ -115,8 +115,8 @@ function alternate(id){
                 <th id="luckHours" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].luckHours || 0}} Hours</th>
                 <td style="text-align:center;vertical-align: middle;">Last Block Found:</td>
 		<th id="lastBlockFound" style="text-align:center;vertical-align: middle;"></th>
-		<td style="text-align:center;vertical-align: middle;">Valid Blocks:</td>
-		<th id="validBlocks" style="text-align:center;vertical-align: middle;">{{=it.coin}}</th>
+		<th id="" style="text-align:center;vertical-align: middle;">blank</th>
+		<th id="validBlocks" style="text-align:center;vertical-align: middle;">Valid Blocks</th>
 		<th id="blockReward" style="text-align:center;vertical-align: middle;">Block Reward</th>
 		<th id="rank" style="text-align:center;vertical-align: middle;">Rank</th>
 		<th id="price_change24h" style="text-align:center;vertical-align: middle;">Price Change</th>
@@ -132,7 +132,7 @@ function alternate(id){
 		<th id="poolPaidOut" style="text-align:center;vertical-align: middle;">Paid Out</th>
                 <th id="lastBlockFoundTime" colspan="1" style="text-align:center;vertical-align: middle;">Last Block<BR>Time</th>
                 <th id="poolStartTime" colspan="1" style="text-align:center;vertical-align: middle;">Pool Start<BR>Time</th>
-		<th id="" colspan="1" style="text-align:center;vertical-align: middle;">blank</th>
+		<th id="blockValue" colspan="1" style="text-align:center;vertical-align: middle;">Block Value</th>
 		<th id="" colspan="1" style="text-align:center;vertical-align: middle;">blank</th>
 		<th id="ath" style="text-align:center;vertical-align: middle;">All Time High</th>
 		<th id="atl" style="text-align:center;vertical-align: middle;">All Time Low</th>
@@ -155,13 +155,13 @@ function alternate(id){
 	</tr>
 	<tr>
 		<th id="shortDesc"  colspan="4" style="text-align:center;vertical-align: middle;">Searching for coin description...</th>
-		<th id="blank5" style="text-align:center;vertical-align: middle;">blank5</th>
-                <th id="blank6" style="text-align:center;vertical-align: middle;">blank6</th>
-                <th id="blank7" style="text-align:center;vertical-align: middle;">blank7</th>
-                <th id="blank8" style="text-align:center;vertical-align: middle;">blank8</th>
-                <th id="blank9" style="text-align:center;vertical-align: middle;">blank9</th>
-                <th id="blank10" style="text-align:center;vertical-align: middle;">blank10</th>
-                <th id="blank11" style="text-align:center;vertical-align: middle;">blank11</th>
+		<th id="{{=it.stats.pools[pool].symbol}}-WalletBal" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].symbol}}<BR>Wallet Balance</th>
+                <th id="exchangeRate" style="text-align:center;vertical-align: middle;">TradeOgre<BR>Exchange Rate</th>
+                <th id="exchangeTo" style="text-align:center;vertical-align: middle;">Exchange All<BR>Rewards to<BR>BTC</th>
+                <th id="{{=it.stats.pools[pool].symbol}}-WalletBal" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].symbol}}<BR>Wallet Balance</th>
+                <th id="convertToAddress" style="text-align:center;vertical-align: middle;">BTC<BR>Conversion Address</th>
+                <th id="convertedBalance" style="text-align:center;vertical-align: middle;">{{=it.stats.pools[pool].symbol}}<BR>Balance</th>
+                <th id="convertedBalance" style="text-align:center;vertical-align: middle;">BTC<BR>Balance</th>
                 <th id="blank12" style="text-align:center;vertical-align: middle;">blank12</th>
 
 

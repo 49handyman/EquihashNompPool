@@ -760,6 +760,7 @@ logger.debug('                                  processPayments Started         
             Step 1 - build workers and rounds objects from redis
                         * removes duplicate block submissions from redis
         */
+ logger.debug('------------------------------------- Step 1  ---------------------------------');
         var buildWorkers = function(callback) {
             startRedisTimer();
             redisClient.multi([
@@ -887,6 +888,7 @@ logger.debug('rounds:blocksPending ln 786: '+details);
                         * adds block reward to rounds object
                         * adds block confirmations count to rounds object
         */
+ logger.debug('------------------------------------- Step 2  ---------------------------------');
         var checkMined = function(workers, rounds, callback) {
             // get pending block tx details
             var batchRPCcommand = rounds.map(function(r){
@@ -1021,8 +1023,10 @@ logger.debug('rounds:blocksPending ln 786: '+details);
                         * calculate rewards
                         * pplnt share reductions if needed
         */
+ logger.debug('------------------------------------- Step 3  ---------------------------------');
         var calculateRewards = function(workers, rounds, addressAccount, callback) {
             // pplnt times lookup
+ logger.debug('------------------------------------- Step 3  ---------------------------------');
             var timeLookups = rounds.map(function(r){
                 return ['hgetall', coin + ':shares:times' + r.height]
             });
@@ -1180,7 +1184,7 @@ logger.debug('rounds:blocksPending ln 786: '+details);
                                         totalShares += shares;
                                     }
 
-                                    //logger.debug('--IMMATURE DEBUG--------------');
+                                    logger.debug('--IMMATURE DEBUG--------------');
                                     logger.debug('performPayment: '+performPayment);
                                     logger.debug('blockHeight: '+round.height);
                                     logger.debug('blockReward: '+Math.round(immature));
@@ -1286,7 +1290,7 @@ logger.debug('rounds:blocksPending ln 786: '+details);
             If not sending the balance, the differnce should be +(the amount they earned this round)
         */
         var sendPayments = function(workers, rounds, addressAccount, callback) {
-logger.debug('------------ STEP 4 -----------');
+ logger.debug('------------------------------------- Step 4  ---------------------------------');
             var tries = 0;
             var trySend = function (withholdPercent) {
 

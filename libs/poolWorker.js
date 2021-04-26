@@ -169,9 +169,9 @@ module.exports = function() {
 
             if (data.blockHash && !isValidBlock) {
                 if (workerInfo.length === 2) {
-                    logger.info('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: %s\u001b[37m' + shareDataJsonStr);
+                    logger.warn('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: %s\u001b[37m' + shareDataJsonStr);
                 } else {
-                    logger.info('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: %s\u001b[37m' + shareDataJsonStr);
+                    logger.warn('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: %s\u001b[37m' + shareDataJsonStr);
                 }
             } else if (isValidBlock) {
                 if (workerInfo.length === 2) {
@@ -192,9 +192,9 @@ module.exports = function() {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
 			 logger.warn('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000!\u001b[37m ',data.shareDiff);
                     }
-                    logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s \u001b[37m', data.job, data.difficulty, data.shareDiff,  workerInfo[1], functions.anonymizeIP(data.ip));
+                    logger.warn('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: %s \u001b[37m', data.job, data.difficulty, data.shareDiff,  workerInfo[1], functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED1!isValidShare> job: %s diff: %s by %s worker: %s reason: %s \u001b[37m', data.job, data.difficulty, workerInfo[1], data.error, functions.anonymizeIP(data.ip));
+                    logger.warn('\u001b[31mSHARE>REJECTED1!isValidShare> job: %s diff: %s by %s worker: %s reason: %s \u001b[37m', data.job, data.difficulty, workerInfo[1], data.error, functions.anonymizeIP(data.ip));
                 }
             } else {
                 if (isValidShare) {
@@ -205,9 +205,9 @@ module.exports = function() {
 			 redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
 			 logger.warn('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m ',data.shareDiff);
                     }
-                    logger.info('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none \u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
+                    logger.warn('\u001b[32mSHARE>ACCEPTED> job: %s req: %s res: %s by %s worker: none \u001b[37m', data.job, data.difficulty, data.shareDiff, workerStr, functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED>2 job: %s diff: %s by %s worker: none reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerStr, data.error, functions.anonymizeIP(data.ip));
+                    logger.warn('\u001b[31mSHARE>REJECTED>2 job: %s diff: %s by %s worker: none reason: %s [%s]\u001b[37m', data.job, data.difficulty, workerStr, data.error, functions.anonymizeIP(data.ip));
                 }
             }
 

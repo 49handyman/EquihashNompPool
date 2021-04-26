@@ -18,6 +18,8 @@
     "pageauthor": "Support...",
     "pagedesc": "Entrust Computer Technology Center Crypto Mining Project -- Nonpofit Charity Support",
     "pagekeywds": "komodo mining pool, pirate chain mining pool, pirate chain coin, zcash mining pool, horizen mining pool, mining pool, equihash mining pool, miners, mining, ASIC mining, ASIC Equihash,Hash,ASIC Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
+    "convertTo": "BTC",
+    "conversionAddress": "3PYDq4MD4XdybRVhikTK4WHDKF6nPcskQZ",
 
     "btcdonations": "bc1qhsxzlw8nat79swz6naa6zf67upsnc97vjtp6du",
     "ltcdonations": "",
@@ -42,7 +44,7 @@
         "blockRefreshInterval": 0,
         "jobRebroadcastTimeout": 75,
         "connectionTimeout": 2900,
-        "emitInvalidBlockHashes": true,
+        "emitInvalidBlockHashes": false,
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
         "banning": {
