@@ -1,4 +1,4 @@
-![Entrust Computer Technology Center](https://github.com/49handyman/equihashnomppool/blob/main/website/static/icons/EntrustCenterRound.svg)
+![Entrust Computer Technology Center]
 
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
@@ -55,13 +55,13 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-1.PNG)<br /><br />
 
 #### Worker Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EquihashNomp2.PNG)<br /><br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/workers.PNG)<br /><br />
 
 #### Miner Wallets<br />
 ![Miner's Wallets](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/wallets.PNG)<br /><br />
 
 #### Miners<br />
-![Miner's Wallets](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/miners.PNG)<br /><br />
+![Miner's Wallets](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EquihashNomp2.PNG)<br /><br />
 
 
 #### Block Explorer<br />
