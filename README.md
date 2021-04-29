@@ -3,6 +3,18 @@
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
 
+This is a badly hacked version that no one should use without modifications and bug/security  checking.
+
+[Update 4-27-2021]
+I should change my for to EquiHash Nomp Dashboard. Added about 10 more stats and live balances from exchange. So far using TradeOrgre, but im trying to keep it generic so it works with many exchanges api. 
+
+added: node wallet balances
+added: tradeOgre wallet balances
+added: tradeOgre BTC converted balances & values
+
+
+Automated exchange conversion to BTC is next.
+
 [Update 4-21-2021]
 
 Testing Z to Z payments, working for Pirate coin so far. Need to test all parts of payment system now to confirm I didnt break anything on KMD payments.

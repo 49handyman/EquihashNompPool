@@ -266,7 +266,7 @@ console.log('statDate: ',statData);
             var totalBal = statData.balance || 0;
             var totalImmature = (statData.immature) || 0;
             var luckDays = statData.luckDays || "unknown";
-	    var blocks = statData.workers[w].blocksFound || "unknown";
+	        var blocks = statData.workers[w].blocksFound || "unknown";
             var SYMB = stats.symbol || "unknown symbol";
             $('#total-paid-label').html(totalPaid.toFixed(8) + ' ' + SYMB);
             $('#total-immature-label').html(totalImmature.toFixed(8) + ' ' + SYMB);

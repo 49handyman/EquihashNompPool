@@ -738,8 +738,8 @@ cacheMarketStats();
        when rounding and whatnot. When we are storing numbers for only humans to see, store in whole coin units. */
 
     var processPayments = function() {
-logger.debug('------------------------------------- processPayments ---------------------------------');
-logger.debug('                                  processPayments Started                              ');
+logger.debug('------------------------------- processPayments ---------------------------------');
+logger.debug('                            processPayments Started                              ');
         var startPaymentProcess = Date.now();
 
         var poolperc = 0;
@@ -760,8 +760,9 @@ logger.debug('                                  processPayments Started         
             Step 1 - build workers and rounds objects from redis
                         * removes duplicate block submissions from redis
         */
- logger.debug('------------------------------------- Step 1  ---------------------------------');
+ 
         var buildWorkers = function(callback) {
+            logger.debug('------------------------------------- Step 1  ---------------------------------');
             startRedisTimer();
             redisClient.multi([
                 ['hgetall', coin + ':balances'],
@@ -888,8 +889,9 @@ logger.debug('rounds:blocksPending ln 786: '+details);
                         * adds block reward to rounds object
                         * adds block confirmations count to rounds object
         */
- logger.debug('------------------------------------- Step 2  ---------------------------------');
+ 
         var checkMined = function(workers, rounds, callback) {
+            logger.debug('------------------------------------- Step 2  ---------------------------------');
             // get pending block tx details
             var batchRPCcommand = rounds.map(function(r){
                 return ['gettransaction', [r.txHash]];
@@ -1023,7 +1025,7 @@ logger.debug('rounds:blocksPending ln 786: '+details);
                         * calculate rewards
                         * pplnt share reductions if needed
         */
- logger.debug('------------------------------------- Step 3  ---------------------------------');
+
         var calculateRewards = function(workers, rounds, addressAccount, callback) {
             // pplnt times lookup
  logger.debug('------------------------------------- Step 3  ---------------------------------');
@@ -1710,6 +1712,7 @@ logger.debug('worker.address : '+address+' minerTotal '+minerTotals[address]);
             logger.debug('Finished interval - time spent: '
                 + paymentProcessTime + 'ms total, ' + timeSpentRedis + 'ms redis, '
                 + timeSpentRPC + 'ms daemon RPC');
+                logger.debug('------------------------------------- Finished  ---------------------------------');
         });
     };
 }

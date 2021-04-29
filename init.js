@@ -13,9 +13,11 @@ var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
 var Website = require('./libs/website.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
+
 const loggerFactory = require('./libs/logger.js');
 const logger = loggerFactory.getLogger('init.js', 'system');
 var algos = require('stratum-pool/lib/algoProperties.js');
+const marketStats = require('./libs/marketStats.js');
 JSON.minify = JSON.minify || require("node-json-minify");
 
 
@@ -70,6 +72,10 @@ if (cluster.isWorker) {
             //        case 'profitSwitch':
             //            new ProfitSwitch();
             //            break;
+        case 'wallet':
+            new marketStats();
+            break;
+            
     }
 
     return;
@@ -401,7 +407,7 @@ var startmarketStats = function() {
         var p = poolConfigs[pool];
         var enabled = p.enabled && p.marketStats;
         if (enabled) {
-            console.log('\u001b[35m startmarketStats if (Enabled) ', pool, enabled, p.enabled, p.marketStats)
+            console.log('\u001b[35m start marketStats if (Enabled) ', pool, enabled, p.enabled, p.marketStats)
             enabledForAny = true;
             break;
         }
@@ -409,11 +415,12 @@ var startmarketStats = function() {
     if (!enabledForAny)
         return;
     var worker = cluster.fork({
-        workerType: 'marketStats',
+        workerType: 'wallet',
         pools: JSON.stringify(poolConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger.error('\u001b[35m Master marketStats Processor MarketStats died, spawning replacement...', code, signal);
+        logger.error('Master marketStats Processor MarketStats died, spawning replacement...', code, signal);
+        console.log('start marketStats DIED...');
         setTimeout(function() {
             startmarketStats(poolConfigs);
         }, 2000);
@@ -463,7 +470,7 @@ var startWebsite = function() {
 
 var startProfitSwitch = function() {
     if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled) {
-        logger.error('\u001b[31m Master Profit Profit auto switching disabled\u001b[37m');
+        logger.error('Master Profit Profit auto switching disabled');
         return;
     }
 
@@ -485,9 +492,10 @@ var startProfitSwitch = function() {
     poolConfigs = buildPoolConfigs();
     auxConfigs = buildAuxConfigs();
     spawnPoolWorkers();
+    
 
     setTimeout(function() {
-        //      startmarketStats();
+        startmarketStats();
         startPaymentProcessor();
         startAuxPaymentProcessor();
         startWebsite();

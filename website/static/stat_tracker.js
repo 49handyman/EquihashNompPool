@@ -70,6 +70,7 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
     $.getJSON('/api/stats', function(data) {
         for (var p in data.pools) {
             for (var w in data.pools[p].workers) {
+                var fullWorkerName = w;
                 var worker = getWorkerNameFromAddress(w);
                 if (w.split(".")[0] === _miner) {
                     var a = account.miners[w] = (account.miners[worker] || {
@@ -80,8 +81,8 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
                         validShares: data.pools[p].workers[w].shares,
                         currRoundShares: data.pools[p].workers[w].currRoundShares,
                         invalidShares: data.pools[p].workers[w].invalidshares,
-                        blocksFound: data.pools[p]?.blocks?.blocksFound[w],
-			trash: 0
+                        blocksFound: data.pools[p]?.blocks?.blocksFound[fullWorkerName],
+			            trash: 0
                     });
                     account.invalidShares += data.pools[p].workers[w].invalidshares;
                     account.currRoundShares += data.pools[p].workers[w].currRoundShares;
@@ -98,10 +99,13 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
             for (var w in data.pools[account.pool].workers) {
                 account.poolHashrate += data.pools[account.pool].workers[w].hashrate;
                 account.currRoundPoolShares += data.pools[account.pool].workers[w].currRoundShares;
+            //    account.blocksFound += data.pools[account.pool].blocksFound[w];
+                
             }
         }
         for (var w in workerData.history) {
             var worker = getWorkerNameFromAddress(w);
+          //  console.log(data.pools[account.pool]?.blocks?.blocksFound[w])
             var a = account.miners[w] = (account.miners[worker] || {
                 key: worker,
                 paid: 0,
@@ -111,7 +115,7 @@ var buildWorkerData = function(statData, workerData, address, callback = null) {
                 currRoundShares: 0,
                 invalidShares: 0,
                 blocksFound: data.pools[account.pool]?.blocks?.blocksFound[w],
-		trash: 0
+		        trash: 0
             });
             for (var wh in workerData.history[w]) {
                 a.hashrate.push([workerData.history[w][wh].time * 1000, workerData.history[w][wh].hashrate]);
@@ -138,8 +142,8 @@ var buildPoolData = function(statData, poolName, callback = null) {
             workers: [],
             averagedWorkers: [],
             blocks: [],
-	    networkDiff: [],
-	    networkSols: []
+	        networkDiff: [],
+	        networkSols: []
 
         };
         var totalHashrate = 0;
@@ -154,27 +158,27 @@ var buildPoolData = function(statData, poolName, callback = null) {
             if (poolName in statData[i].pools) {
                 var hash = statData[i].pools[poolName].hashrate;
                 var workers = statData[i].pools[poolName].workerCount;
-		var diff = statData[i].pools[poolName].networkDiff;
-		var networkSols = statData[i].pools[poolName].networkSols;
+		        var diff = statData[i].pools[poolName].networkDiff;
+		        var networkSols = statData[i].pools[poolName].networkSols;
                 totalHashrate += hash;
                 totalWorkers += workers;
                 count++;
                 var averaged = (totalHashrate > 0 && count > 1) ? totalHashrate / count : hash;
                 var averagedWorkers = (totalWorkers > 0 && count > 1) ? totalWorkers / count : workers;
                 pool.hashrate.push([time, hash]);
-		pool.networkSols.push([time, statData[i].pools[poolName].networkSols]);
+		        pool.networkSols.push([time, statData[i].pools[poolName].networkSols]);
                 pool.averagedHashrate.push([time, averaged]);
                 pool.workers.push([time, workers]);
                 pool.averagedWorkers.push([time, averagedWorkers]);
                 pool.blocks.push([time, statData[i].pools[poolName].blocks.pending])
-		pool.networkDiff.push([time, diff]);
+		        pool.networkDiff.push([time, diff]);
             } else {
                 pool.hashrate.push([time, 0]);
-		pool.networkSols.push([time, 0]);
+		        pool.networkSols.push([time, 0]);
                 pool.workers.push([time, 0]);
                 pool.averagedWorkers.push([time, 0]);
                 pool.blocks.push([time, 0]);
-		pool.networkDiff.push([time, 0]);
+		        pool.networkDiff.push([time, 0]);
             }
         }
         var key = 'p_' + poolName;
@@ -192,23 +196,23 @@ var updatePoolData = function(statData, poolName, callback = null) {
         var time = statData.time * 1000;
         if (poolName in statData.pools) {
             var hash = statData.pools[poolName].hashrate;
-	    var diff = statData.pools[poolName].networkDiff;
-	    var networkSols = statData.pools[poolName].networkSols;
+	        var diff = statData.pools[poolName].networkDiff;
+	        var networkSols = statData.pools[poolName].networkSols;
             pool.hashrate.push([time, hash]);
-	    pool.networkSols.push([time, statData.pools[poolName].networkSols]);
+	        pool.networkSols.push([time, statData.pools[poolName].networkSols]);
             pool.averagedHashrate.push([time, pool.hashrate.reduce(function(a, b) {
                 return a[1] + b[1];
             }) / pool.hashrate.length]);
             pool.workers.push([time, statData.pools[poolName].workerCount]);
             pool.blocks.push([time, statData.pools[poolName].blocks.pending]);
-	    pool.networkDiff.push([time, diff]);
+	        pool.networkDiff.push([time, diff]);
         } else {
             pool.hashrate.push([time, 0]);
-	    pool.netSols.push([time, 0]);
-	    pool.averagedHashrate.push([time,0]);
+	        pool.netSols.push([time, 0]);
+	        pool.averagedHashrate.push([time,0]);
             pool.workers.push([time, 0]);
             pool.blocks.push([time, 0]);
-	    pool.networkDiff.push([time, 0]);
+	        pool.networkDiff.push([time, 0]);
         }
         if (callback != null) {
             callback(pool);

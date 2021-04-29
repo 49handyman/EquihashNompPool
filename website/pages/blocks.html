@@ -48,7 +48,7 @@ table {
 /*    kthx css   */
 
 </style>
-div style="margin-top: 36px;" >
+<div style="margin-top: 36px;" >
 {{function readableDate(a) { return new Date(parseInt(a)).toLocaleString(); } }}
   {{ var sortedPools = Object.keys(it.stats.pools); }}
 
@@ -77,21 +77,21 @@ div style="margin-top: 36px;" >
           </select>
           </th>
         </tr>
-<!--        <tr>
-          <th class="vmiddle" colspan="2">{{=sortedPools[0].charAt(0).toUpperCase() + sortedPools[0].slice(1)}} History</th>
-        </tr>-->
+       <tr>
+       
+        </tr>
       </thead>
       <tbody>
         <tr>
-          <th class="vmiddle" width="225px"><i class="fa fa-hourglass-2"></i> Pending Blocks:</th>
+          <th class="vmiddle" width="225px"><i class="fa fa-lock"></i> Pending Blocks:</th>
           <td id="tdHistoryPending" class="vhmiddle tdHistoryPending"></td>
         </tr>
         <tr>
-          <th class="vmiddle"><i class="fa fa-check"></i> Confirmed Blocks:</th>
+          <th class="vmiddle"><i class="fa fa-lock-open"></i> Confirmed Blocks:</th>
           <td id="tdHistoryConfirmed" class="vhmiddle tdHistoryConfirmed"></td>
         </tr>
         <tr>
-          <th class="vmiddle"><i class="fa fa-money"></i> Paid:</th>
+          <th class="vmiddle"><i class="fa fa-money-bill"></i> Paid:</th>
           <td id="tdHistoryPaid" class="vhmiddle tdHistoryPaid"></td>
         </tr>
       </tbody>
@@ -187,7 +187,7 @@ div style="margin-top: 36px;" >
                     
 			"{{ var tmpPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}').toFixed(8); }}";
 			
-                            $('#tdHistoryPending').text("{{=it.stats.pools[pool].blocks.pending}}");
+                            $('#tdHistoryPending').text("{{=it.stats.pools[pool].blocks.pending || 0}}");
                             $('#tdHistoryConfirmed').text("{{=it.stats.pools[pool].blocks.confirmed}}");                            
                             $('#tdHistoryPaid').text("{{=tmpPaid}}");
         		     
@@ -195,12 +195,12 @@ div style="margin-top: 36px;" >
     		     else {
 
                     // Create temp variable
-                    "{{ var tmpPending = parseInt('{{=it.stats.pools[pool].blocks.pending}}'); }}";
+                    "{{ var tmpPending = parseInt('{{=it.stats.pools[pool].blocks.pending || 0}}'); }}";
                     "{{ var tmpConfirmed = parseInt('{{=it.stats.pools[pool].blocks.confirmed}}'); }}";
                     "{{ var tmpPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}'); }}";
 
                     // Count totals :)
-                    "{{ var totalPending = parseInt(totalPending) + parseInt(tmpPending); }}";
+                    "{{ var totalPending = parseInt(totalPending) + parseInt(tmpPending) || 0; }}";
                     "{{ var totalConfirmed = parseInt(totalConfirmed) + parseInt(tmpConfirmed); }}";
                     
                     /* Future convert to BTC just total for now */

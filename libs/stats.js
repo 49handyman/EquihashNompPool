@@ -430,12 +430,14 @@ module.exports = function(portalConfig, poolConfigs) {
                 ['scard', ':blocksKicked'],  // 17
                 ['zrevrange', ':lastBlock', 0, 0],  //18
                 ['zrevrange', ':lastBlockTime', 0, 0],  //19
-		['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime],  //20
-		['scard', ':blocksRejected'],  // 21
-		['scard', ':blocksDuplicate'],  // 22
-		['hgetall', ':bigDiff'],  // 23
-		['hgetall', ':shares:timesCurrent'], //24
-		['zrangebyscore', ':lastBlockTime', windowTime, '+inf']  //25
+		        ['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime],  //20
+		        ['scard', ':blocksRejected'],  // 21
+		        ['scard', ':blocksDuplicate'],  // 22
+		        ['hgetall', ':bigDiff'],  // 23
+		        ['hgetall', ':shares:timesCurrent'], //24
+		        ['zrangebyscore', ':lastBlockTime', windowTime, '+inf'],  //25
+                ['hgetall', ':wallet'], //26
+                
           ];
             var commandsPerCoin = redisCommandTemplates.length;
             client.coins.map(function(coin) {
@@ -464,15 +466,23 @@ module.exports = function(portalConfig, poolConfigs) {
                             explorerGetBlock: poolConfigs[coinName].coin.explorerGetBlock,
                             blockTime: poolConfigs[coinName].coin.blockTime,
                             blockChange: poolConfigs[coinName].coin.blockChange,
-			    blockReward:  poolConfigs[coinName].coin.blockReward,
+			                blockReward:  poolConfigs[coinName].coin.blockReward,
                             explorerGetBlockJSON: poolConfigs[coinName].coin.explorerGetBlockJSON,
                             explorerGetTX: poolConfigs[coinName].coin.explorerGetTX,
                             symbol: poolConfigs[coinName].coin.symbol.toUpperCase(),
                             algorithm: poolConfigs[coinName].coin.algorithm,
-			    PaymentInterval: poolConfigs[coinName].paymentInterval,
-			    minimumPayment: poolConfigs[coinName].minimumPayment,
+			                PaymentInterval: poolConfigs[coinName].paymentInterval,
+			                minimumPayment: poolConfigs[coinName].minimumPayment,
                             hashrates: replies[i + 1],
                             rewardRecipients: poolConfigs[coinName].rewardRecipients,
+                            exchangeEnabled: poolConfigs[coinName].exchangeEnabled,
+                            exchangeWalletAddress: poolConfigs[coinName].exchangeWalletAddress,
+                            exchangeUrl: poolConfigs[coinName].exchangeUrl,
+                            exchangeToCoin: poolConfigs[coinName].exchangeToCoin,
+                            exchangeCoinPair: poolConfigs[coinName].exchangeCoinPair,
+                            exchangeToCoinWallet: poolConfigs[coinName].exchangeToCoinWallet,
+                            
+
                             poolStats: {
                                 validShares: replies[i + 2] ? (replies[i + 2].validShares || 0) : 0,
                                 validBlocks: replies[i + 2] ? (replies[i + 2].validBlocks || 0) : 0,
@@ -486,12 +496,21 @@ module.exports = function(portalConfig, poolConfigs) {
                                 networkVersion: replies[i + 2] ? (replies[i + 2].networkSubVersion || 0) : 0,
                                 networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0,
                                 poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0,
-				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
-		//		poolLuck:
+				                coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
+		                        //		poolLuck:
                             },
-			    marketStats: marketStats,
-			    networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
-			    networkSols: replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0,
+			                marketStats: marketStats,
+                            wallet: {
+                                transparent: replies[i + 26] ? (replies[i + 26].transparent || 0) : 0,
+                                private: replies[i + 26] ? (replies[i + 26].private || 0) : 0,
+                                exchangeWallet: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeWallet) : 0,
+                                exchangeTicker: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeTicker) : 0,
+                                exchangeWalletConverted: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeWalletConverted) : 0,
+                                exchangeToCoinTicker: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeToCoinTicker) : 0,
+
+                            },
+			                networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
+			                networkSols: replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0,
                             blocks: {
                                 pending: replies[i + 3],
                                 confirmed: replies[i + 4],
@@ -500,10 +519,10 @@ module.exports = function(portalConfig, poolConfigs) {
                                 blocksFound: replies[i + 16],
                                 lastBlock: replies[i + 18],
                                 lastBlockTime: replies[i + 19],
-				blocksRejected: replies[i + 21],
-				blocksDuplicate: replies[i + 22],
-				bigDiff: replies[i + 23],
-				lastBlockTimeWindow: replies[i + 25]
+				                blocksRejected: replies[i + 21],
+				                blocksDuplicate: replies[i + 22],
+				                bigDiff: replies[i + 23],
+				                lastBlockTimeWindow: replies[i + 25]
                             },
                             pending: {
                                 blocks: replies[i + 9].sort(sortBlocks),
@@ -514,10 +533,10 @@ module.exports = function(portalConfig, poolConfigs) {
                             },
                             payments: [],
                             currentRoundShares: (replies[i + 8] || {}),
-			    currentRoundTimes: (replies[i + 24] || {}),
-			    maxRoundTime: 0,
-			    shareCount: 0,
-			    shareSort: replies[i + 2] ? (replies[i + 2].validShares || 0) : 0
+			                currentRoundTimes: (replies[i + 24] || {}),
+			                maxRoundTime: 0,
+			                shareCount: 0,
+			                shareSort: replies[i + 2] ? (replies[i + 2].validShares || 0) : 0
                         };
                         for (var j = replies[i + 7].length; j > 0; j--) {
                             var jsonObj;

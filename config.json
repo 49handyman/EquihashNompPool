@@ -1,7 +1,6 @@
 {
     
     "poolname": "Development Site - Entrust Equihash Private Pool",
-    
     "devmode": false,
     "devmodePayMinimim": 0.25,
     "devmodePayInterval": 120,
@@ -10,7 +9,7 @@
     "anonymizeips": false,
     "ipv4bits": 16,
     "ipv6bits": 16,
-    "poolwarningmsg": "Public Alert - Do Not Use this Pool - It will only pay out on KMD Komodo Coin - All other coins stay in pool wallet",
+    "poolwarningmsg": "Public Alert - Do Not Use this Pool - This is a private mining pool and you may not receive any payouts.",
     "defaultCoin": "pirate-chain",
     "poollogo": "/static/icons/entrustcircle-circuit.png",
     "discordtwitterfacebook": "Private Mining Pool",
@@ -18,7 +17,7 @@
     "pageauthor": "Support...",
     "pagedesc": "Entrust Computer Technology Center Crypto Mining Project -- Nonpofit Charity Support",
     "pagekeywds": "komodo mining pool, pirate chain mining pool, pirate chain coin, zcash mining pool, horizen mining pool, mining pool, equihash mining pool, miners, mining, ASIC mining, ASIC Equihash,Hash,ASIC Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
-    "convertTo": "BTC",
+    "convertTo": "USDT-BTC",
     "conversionAddress": "3PYDq4MD4XdybRVhikTK4WHDKF6nPcskQZ",
 
     "btcdonations": "bc1qhsxzlw8nat79swz6naa6zf67upsnc97vjtp6du",
@@ -74,8 +73,8 @@
         "stratumHost": "pool.entrustus.org",
         "stats": {
             "updateInterval": 5,
-            "historicalRetention": 14400,
-            "hashrateWindow": 300
+            "historicalRetention": 21600,
+            "hashrateWindow": 600
         },
         "adminCenter": {
             "enabled": false,
