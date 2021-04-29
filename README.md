@@ -6,7 +6,7 @@ Forked from Raven coin Updated to use Equihash
 This is a badly hacked version that no one should use without modifications and bug/security  checking.
 
 [Update 4-27-2021]
-I should change my for to EquiHash Nomp Dashboard. Added about 10 more stats and live balances from exchange. So far using TradeOrgre, but im trying to keep it generic so it works with many exchanges api. 
+I should change my fork to EquiHash Nomp Dashboard. Added about 10 more stats and live balances from exchange. So far using TradeOrgre, but im trying to keep it generic so it works with many exchanges api. 
 
 added: node wallet balances
 added: tradeOgre wallet balances
