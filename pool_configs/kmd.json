@@ -1,42 +1,53 @@
 {
-"enabled": false,
+"enabled": true,
 "coin": "komodo.json",
 "address": "RWi6u5i3QBqkw2HNfj6QHdygcYGtmUzhsr",
-
- "zAddress": "",
- "tAddress": "",
-
-
-"invalidAddress":"",
-"walletInterval": 1,
-"marketStats": false,
-"rewardRecipients": {"RGPnLvubvCZK2zpiXNV582oMC3vs5mBZQU": 6.75},
+"zAddress": "",
+"tAddress": "RSp6Vos2BtQjtkcgrHidqef8SypHr4NuS6",
+"exchangeEnabled": true,
+"exchangeName": "TradeOgre",
+"exchangeUrl": "https://tradeogre.com/exchange/BTC-ARRR",
+"exchangeCoinPair": "BTC-KMD",
+"exchangeWalletAddress": "",
+"exchangeToCoin": "USDT-BTC",
+"exchangeToCoin2": "BTC-ETH",
+"exchangeWalletAddress2": "",
+"exchangeToCoinWallet2": "ETH",
+"exchangeToCoinWallet": "BTC",
+"exchangeCoinbaseProEnabled": true,
+"exchangeCoinbaseProQuote": "BTC-USD",
+"exchangeCoinbaseProQuote2": "ETh-USD",
+"exchangeWalletConverted2":"",
+"invalidAddress":"RSp6Vos2BtQjtkcgrHidqef8SypHr4NuS6",
+"walletInterval": 300,
+"marketStats": true,
+"rewardRecipients": {},
 
 "tlsOptions": { "enabled": false },
-    "paymentProcessing": {
-        "minConf": 10,
-        "enabled": true,
-        "paymentMode": "prop",
-        "_comment_paymentMode":"only prop workin",
-        "paymentInterval": 1400,
-        "minimumPayment": 7.00,
-        "maxBlocksPerPayment": 100,
-        "daemon": {
-            "host": "127.0.0.1",
-            "port": 8770,
-            "user": "entrust",
-            "password": "entrust"
-        }
-    },
+"paymentProcessing": {
+    "minConf": 3,
+    "enabled": true,
+    "paymentMode": "prop",
+    "_comment_paymentMode":"only prop working",
+    "paymentInterval": 180,
+    "minimumPayment": 3.00,
+    "maxBlocksPerPayment": 100,
+    "daemon": {
+        "host": "127.0.0.1",
+        "port": 8770,
+        "user": "entrust",
+        "password": "entrust"
+    }
+},
 
 "trackShares": { "disable": false },
 "ports": {
-    "3331": {
+    "3334": {
        "tls":false,
         "diff": 900,
-          "varDiff": {"minDiff": 600, "maxDiff": 1500, "targetTime": 15, "retargetTime": 60, "variancePercent": 30}
+          "varDiff": {"minDiff": 600, "maxDiff": 999999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
     },
-    "3332": {
+    "3335": {
         "tls":false,
          "diff": 900
      }

@@ -27,7 +27,7 @@
     "xmrdonations": "",
 
     "logger" : {
-        "level" : "debug",
+        "level" : "warn",
         "file" : "logs/nomp_debug.log"
     },
 
@@ -60,6 +60,39 @@
 	 "poolHex": "4d696e65642042793a706f6f6c2e656e747275737475732e6f7267",
 	"_comment_poolHex": "hex = Mined by: pool.entrustus.org"
     },
+    "api": {
+		"enabled": true,
+		"hashrateWindow": 600,
+		"updateInterval": 60,
+		"bindIp": "127.0.0.1",
+		"port": 8229,
+		"blocks": 30,
+		"payments": 30,
+		"password": "password",
+		"ssl": false,
+		"sslPort": 8119,
+		"sslCert": "cert.pem",
+		"sslKey": "privkey.pem",
+		"sslCA": "chain.pem",
+		"trustProxyIP": true
+	},
+
+
+	"monitoring": {
+		"daemon": {
+			"checkInterval": 60,
+			"rpcMethod": "getblockcount"
+		},
+		"wallet": {
+			"checkInterval": 60,
+			"rpcMethod": "getbalance"
+		}
+	},
+
+	"prices": {
+		"source": "tradeogre",
+		"currency": "USD"
+	},
 
     "website": {
         "enabled": true,
@@ -73,7 +106,7 @@
         "stratumHost": "pool.entrustus.org",
         "stats": {
             "updateInterval": 5,
-            "historicalRetention": 21600,
+            "historicalRetention": 14400,
             "hashrateWindow": 600
         },
         "adminCenter": {
@@ -88,7 +121,7 @@
     },
 
     "switching": {
-        "Equihash": {
+        "switch1": {
             "enabled": true,
             "algorithm": "equihash",
             "ports": {
@@ -142,10 +175,10 @@
         "enabled": true,
         "updateInterval": 60,
         "depth": 0.90,
-        "usePoloniex": false,
+        "usePoloniex": true,
         "useCryptsy": false,
-        "useMintpal": false,
-        "useBittrex": false
+        "useTradeOgre": true,
+        "useBittrex": true
     }
 
 }

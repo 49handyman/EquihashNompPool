@@ -1,4 +1,4 @@
-const requireSoSlow = require('require-so-slow');
+//const requireSoSlow = require('require-so-slow');
 var fs = require('fs');
 var path = require('path');
 var os = require('os');
@@ -46,6 +46,7 @@ try {
         // Set our server's uid to that user
         if (uid) {
             process.setuid(uid);
+            logger.warn('Pool Server Starting...')
             logger.debug('POSIX Connection Limit Raised to 100K concurrent connections, now running as non-root user: %s', process.getuid());
         }
     }
@@ -69,10 +70,10 @@ if (cluster.isWorker) {
         case 'website':
             new Website();
             break;
-            //        case 'profitSwitch':
-            //            new ProfitSwitch();
-            //            break;
-        case 'wallet':
+        case 'profitSwitch':
+            new ProfitSwitch();
+            break;
+        case 'marketStats':
             new marketStats();
             break;
             
@@ -199,7 +200,7 @@ var buildAuxConfigs = function() {
             }
         }
         if (!(poolProfile.algorithm in algos)) {
-            logger.warn('Master', coinProfile.name, 'Cannot run a pool for unsupported algorithm "' + coinProfile.algorithm + '"');
+            logger.warn('Master'+ coinProfile.name+ 'Cannot run a pool for unsupported algorithm "' + coinProfile.algorithm + '"');
             delete configs[poolOptions.coin.name];
         }
     });
@@ -268,7 +269,7 @@ var spawnPoolWorkers = function() {
         i++;
         if (i === numForks) {
             clearInterval(spawnInterval);
-            logger.debug('Master', 'PoolSpawner', 'Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
+            logger.debug('Master PoolSpawner Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
         }
     }, 250);
 };
@@ -284,7 +285,7 @@ var startCliListener = function() {
     var cliPort = portalConfig.cliPort;
     var listener = new CliListener(cliHost, cliPort);
     listener.on('log', function(text) {
-        logger.debug('Master', 'CLI', text);
+        
     }).on('command', function(command, params, options, reply) {
         switch (command) {
             case 'blocknotify':
@@ -299,6 +300,7 @@ var startCliListener = function() {
                 break;
             case 'coinswitch':
                 processCoinSwitchCommand(params, options, reply);
+                
                 break;
             case 'reloadpool':
                 Object.keys(cluster.workers).forEach(function(id) {
@@ -322,7 +324,7 @@ var processCoinSwitchCommand = function(params, options, reply) {
     var logComponent = 'coinswitch';
     var replyError = function(msg) {
         reply(msg);
-        logger.error(logSystem, logComponent, msg);
+        logger.error('CLI: msg ' + msg+' params: '+JSON.stringify(params)+' options: ' +JSON.stringify(options));
     };
     if (!params[0]) {
         replyError('Coin name required');
@@ -381,7 +383,7 @@ var startPaymentProcessor = function() {
     for (var pool in poolConfigs) {
         var p = poolConfigs[pool];
         var enabled = p.enabled && p.paymentProcessing && p.paymentProcessing.enabled;
-console.log('\u001b[35m startPaymentProcessor if (Enabled) \u001b[0m '+ p.enabled + ' '+ p.paymentProcessing+ ' ' + p.paymentProcessing.enabled )
+        logger.info('Master \u001b[35m startPaymentProcessor if (Enabled) \u001b[0m '+ p.enabled + ' '+ p.paymentProcessing+ ' ' + p.paymentProcessing.enabled )
         if (enabled) {
             enabledForAny = true;
             break;
@@ -394,7 +396,7 @@ console.log('\u001b[35m startPaymentProcessor if (Enabled) \u001b[0m '+ p.enable
         pools: JSON.stringify(poolConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger.error('Master', 'Payment Processor', 'Payment processor died, spawning replacement...');
+        logger.error('Master Payment processor died, spawning replacement...');
         setTimeout(function() {
             startPaymentProcessor(poolConfigs);
         }, 3000);
@@ -407,7 +409,7 @@ var startmarketStats = function() {
         var p = poolConfigs[pool];
         var enabled = p.enabled && p.marketStats;
         if (enabled) {
-            console.log('\u001b[35m start marketStats if (Enabled) ', pool, enabled, p.enabled, p.marketStats)
+            logger.info('\u001b[35m start marketStats if (Enabled) '+ pool+ enabled+ p.enabled+ p.marketStats)
             enabledForAny = true;
             break;
         }
@@ -415,12 +417,11 @@ var startmarketStats = function() {
     if (!enabledForAny)
         return;
     var worker = cluster.fork({
-        workerType: 'wallet',
+        workerType: 'marketStats',
         pools: JSON.stringify(poolConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger.error('Master marketStats Processor MarketStats died, spawning replacement...', code, signal);
-        console.log('start marketStats DIED...');
+        logger.error('Master marketStats Processor MarketStats died, spawning replacement...'+ code+ signal);
         setTimeout(function() {
             startmarketStats(poolConfigs);
         }, 2000);
@@ -446,7 +447,7 @@ var startAuxPaymentProcessor = function() {
         pools: JSON.stringify(auxConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger.error('Master', 'Auxilliary Payment Processor', 'Auxilliary Payment processor died, spawning replacement...');
+        logger.error('Master Auxilliary Payment Processor Auxilliary Payment processor died, spawning replacement...');
         setTimeout(function() {
             startPaymentProcessor(auxConfigs);
         }, 2000);
@@ -455,13 +456,14 @@ var startAuxPaymentProcessor = function() {
 
 var startWebsite = function() {
     if (!portalConfig.website.enabled) return;
+    logger.warn('Pool Server Starting...');
     var worker = cluster.fork({
         workerType: 'website',
         pools: JSON.stringify(poolConfigs),
         portalConfig: JSON.stringify(portalConfig)
     });
     worker.on('exit', function(code, signal) {
-        logger.error('Master', 'Website', 'Website process died, spawning replacement...');
+        logger.error('Master Website process died, spawning replacement...');
         setTimeout(function() {
             startWebsite(portalConfig, poolConfigs);
         }, 2000);
@@ -469,10 +471,11 @@ var startWebsite = function() {
 };
 
 var startProfitSwitch = function() {
-    if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled) {
-        logger.error('Master Profit Profit auto switching disabled');
-        return;
-    }
+    logger.info(' profit switch called: '+ JSON.stringify(portalConfig.profitSwitch) + portalConfig.profitSwitch.enabled)
+  //  if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled) {
+  //      logger.error('Master Profit Profit auto switching disabled');
+  //      return;
+   // }
 
     var worker = cluster.fork({
         workerType: 'profitSwitch',
@@ -480,9 +483,9 @@ var startProfitSwitch = function() {
         portalConfig: JSON.stringify(portalConfig)
     });
     worker.on('exit', function(code, signal) {
-        logger.error('Master', 'Profit', 'Profit switching process died, spawning replacement...');
+        logger.error('Profit switching process died, spawning replacement...');
         setTimeout(function() {
-            startWebsite(portalConfig, poolConfigs);
+            startProfitSwitch(portalConfig, poolConfigs);
         }, 2000);
     });
 };

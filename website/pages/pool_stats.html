@@ -7,7 +7,7 @@
   }
 
   .chartHolder {
-    min-height: 500px;
+    min-height: 200px;
   }
 
   .odd {
@@ -98,7 +98,7 @@
               <th id="poolStartTime" colspan="1" style="text-align:center;vertical-align: middle;">Pool Start<BR>Time</th>
               <th style="text-align:center;vertical-align: middle;">Node Connectons<BR>{{=it.stats.pools[pool].poolStats.networkConnections}}</th>
                 <th id="netTime" style="text-align:center;vertical-align: middle;">Net Time</th>
-              <th id=""  style="text-align:center;vertical-align: middle;">blank1</th>
+              <th id="synced"  style="text-align:center;vertical-align: middle;">Wallet Synced</BR?</th>
               <th id="" style="text-align:center;vertical-align: middle;">blank2</th>
             </tr>
             {{ var sortedPools = Object.keys(it.stats.pools); }}
@@ -160,6 +160,9 @@
               
               
               <th id="convertedValueUSD" style="text-align:center;vertical-align: middle;">convertedValueUSD<BR></th>
+                
+                <th id="coinbaseProBTCUSD" style="text-align:center;vertical-align: middle;">coinbaseProBTCUSD<BR></th>
+                  <th id="coinbaseProBTCUSDOpen" style="text-align:center;vertical-align: middle;">coinbaseProBTCUSD<BR>Open<BR></th>
             </tr>
             </tr>
 
@@ -185,7 +188,8 @@
               
               <th id="exchangeWalletBal" style="text-align:center;vertical-align: middle;">Exchange Balance</th>
               <th id="exchangeValueUSD" style="text-align:center;vertical-align: middle;">Exchange Value</th>
-              
+              <th id="" style="text-align:center;vertical-align: middle;"></th>
+              <th id="coinbaseProETHUSD" style="text-align:center;vertical-align: middle;">ETC Price</th>
             </tr>
             <tr>
               <td style="text-align:center;vertical-align: middle;">Trade:</td>
@@ -234,29 +238,29 @@
 
     <div class="row justify-content-center">
       <div class="col-md-12 chartWrapper">
-        <div class="chartLabel">Network Hashrate History</div>
+        <div class="chartLabel">Network Difficulty History</div>
         <div class="chartHolder"><canvas id="networkDiffChart" height="50"></div>
       </div>
     </div>
   </div>
-  <!--
+  
   <div class="row justify-content-center">
     <div class="col-md-12 chartWrapper">
-      <div class="chartLabel">Pending Block History</div>
-      <div class="chartHolder"><canvas id="blockChart" height="50"></div>
+      <div class="chartLabel">Network Hashrate History</div>
+      <div class="chartHolder"><canvas id="networkHashrateChart" height="50"></div>
     </div>
   </div>
   <div class="row">&nbsp;<br /></div>
-
+<!--
   <div class="row justify-content-center">
     <div class="col-md-12 chartWrapper">
       <div class="chartLabel">Worker History</div>
       <div class="chartHolder"><canvas id="poolWorkerChart" height="50"></canvas></div>
     </div>
   </div>
-
-</div>
 -->
+</div>
+
 
   <script>
     //use doT to get the name of the pool (a.k.a. name of coin)

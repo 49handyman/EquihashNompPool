@@ -4,30 +4,25 @@ var poolBlockChart;
 var price;
 var netDiff;
 var networkDiffChart;
+var networkHashrateChart;
 
 function displayCharts() {
     var stats = getPoolStats(poolName);
     var maxScale = getReadableHashRatePair(Math.max.apply(null, stats.hashrate.map(x => x[1])));
-    var maxScaleDiff = getReadableNetworkDiffPair(Math.max.apply(null, stats.networkDiff.map(x => x[1])));
-    var maxScaleNetwork = getReadableNetworkPair(Math.max.apply(null, stats.networkSols.map(x => x[1])));
 
+    console.log('getReadableHashRatePair.maxScale 11: '+maxScale)
+    
+
+    var maxScaleDiff = getReadableNetworkDiffPair(Math.max.apply(null, stats.networkDiff.map(x => x[1])));
+    console.log('maxScaleDiff.maxScaleDiff: '+maxScaleDiff)
+
+    var maxScaleNetwork = getReadableNetworkPair(Math.max.apply(null, stats.networkSols.map(x => x[1])));
+    console.log('maxScaleNetwork.maxScaleNetwork: '+maxScaleNetwork)
 
     poolHashrateChart = createDefaultLineChart(
         document.getElementById("poolHashChart").getContext('2d'),
 
-        [{
-            label: 'diff',
-            fill: false,
-            data: stats.networkDiff.map(x => {
-                return {
-                    t: x[0],
-                    y: getScaledNetworkDiff(x[1], maxScaleDiff[0])
-                }
-            }),
-            borderWidth: 1,
-            backgroundColor: '#343a40',
-            borderColor: '#747a70'
-        },
+        [
         {
                 label: 'Pool Actual',
                 fill: false,
@@ -45,8 +40,6 @@ function displayCharts() {
                 pointHitRadius: 1,
                 borderColor: '#348EA9'
             },
-
-
             {
                 label: 'Pool Averaged',
                 fill: false,
@@ -62,17 +55,17 @@ function displayCharts() {
                 pointHitRadius: 1,
                 borderColor: '#E81D62'
             }
-
         ],
         'Time',
-        'Hash Rates & Net Diff',
+        'Pool Hash Rate',
     );
 
     networkDiffChart = createLineChart(
         document.getElementById("networkDiffChart").getContext('2d'),
-        [{
-                label: 'diff',
-                fill: false,
+        [  
+            {
+                label: 'Diff ',
+                fill: true,
                 data: stats.networkDiff.map(x => {
                     return {
                         t: x[0],
@@ -82,7 +75,21 @@ function displayCharts() {
                 borderWidth: 1,
                 backgroundColor: '#343a40',
                 borderColor: '#747a70'
-            },
+            }
+
+        ],
+        'Time',
+        'G', {
+            //   beginAtZero: true,
+            //   fixedStepSize: 1
+        }
+
+    );
+
+
+    networkHashrateChart = createLineChart(
+        document.getElementById("networkHashrateChart").getContext('2d'),
+        [
             {
                 label: 'Network Hashrate',
                 fill: false,
@@ -96,6 +103,7 @@ function displayCharts() {
                 backgroundColor: '#FBA41F',
                 borderColor: '#FBA41F'
             }
+
         ],
         'Time',
         'GSols/s', {
@@ -106,12 +114,6 @@ function displayCharts() {
     );
 
 }
-
-
-
-
-
-
 
 $.get({
     url: "https://api.coingecko.com/api/v3/coins/" + poolName,
@@ -162,7 +164,7 @@ $.get({
         $("#change24h").html('24h Change<br>' + parseFloat(change24).toFixed(2) + '%<BR>' + '$' + parseFloat(data.market_data.price_change_24h));
         $("#priceUSD").html('Price USD<br>$' + parseFloat(data.market_data.current_price.usd));
         $("#marketCap").html(parseFloat(data.market_data.market_cap.usd));
-        $("#volume24").html('24h Volume<br>$' + parseInt(data.market_data.total_volume.usd).toLocaleString());
+        $("#volume24").html('24h Volume<br>$' + parseInt(data.market_data.total_volume.usd).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
         
         $("#genesis_date").html('Genesis Date<br>' + data.genesis_date);
         $("#circulating_supply").html('Coin Supply<br>' + parseInt(data.market_data.circulating_supply).toLocaleString());
@@ -213,6 +215,9 @@ $.getJSON('/api/pool_stats', function(data) {
         displayCharts();
     });
 });
+
+
+
 statsSource.addEventListener('message', function(e) {
     var stats = JSON.parse(e.data);
     updatePoolData(stats, poolName, function(pool) {
@@ -220,32 +225,47 @@ statsSource.addEventListener('message', function(e) {
         var exchangeCoinPair = (poolName in stats.pools ? (stats.pools[poolName].exchangeCoinPair) : 0)
         var exchangeToCoin = (poolName in stats.pools ? (stats.pools[poolName].exchangeToCoin) : 0)
         var exchangeToCoinWallet = (poolName in stats.pools ? (stats.pools[poolName].exchangeToCoinWallet) : 0)
-        var max = Math.max.apply(null, pool.hashrate.map(x => x[1]));
+        //console.log(pool.hashrate)
+        //console.log(pool.averagedHashrate)
+        var max = Math.max.apply(null, (pool.hashrate).map(x => x[1]));
+        var pair = getReadableHashRatePair(max);
+        console.log('getReadableHashRatePair.pair: '+ pair)
         var poolDiff = stats.pools[poolName].networkDiff;
         var maxSols = Math.max.apply(null, pool.networkSols.map(x => x[1]));
-        var pairSols = getReadableNetworkDiffPair(maxSols);
-        var scaledSols = getScaledNetworkDiff(maxSols);
+        console.log('maxSols: '+ maxSols)
+        var pairSols = getReadableNetworkDiffPair(maxSols); // maxSols
+        console.log('getReadableNetworkDiffPair.pairSols: ' + pairSols)
+        var scaledSols = getScaledNetworkDiff(maxSols); // maxSols
+        console.log('getScaledNetworkDiff.scaledSols: '+scaledSols)
         var diffMax = Math.max.apply(null, pool.networkDiff.map(x => x[1]));
-        var diffPair = getReadableNetworkDiffPair(diffMax);
+        var diffPair = getReadableNetworkDiffPair(stats.pools[poolName].networkDiff); // diffMax
         var diffScaled = getScaledNetworkDiff(stats.pools[poolName].networkDiff);
         var diff = getScaledNetworkDiff(poolName in stats.pools ? stats.pools[poolName].poolStats.networkDiff : 0);
-        var pair = getReadableHashRatePair(max);
-        var hash = getReadableHashRate(poolName in stats.pools ? stats.pools[poolName].hashrate : 0, pair[2]);
+      //  var pair = getReadableHashRatePair(hash); // max
+      //  var hash = getReadableHashRate(poolName in stats.pools ? stats.pools[poolName].hashrate : 0, pair[2]);
+        var hash = getScaledHashrate(poolName in stats.pools ? stats.pools[poolName].hashrate : 0, pair[2]);
+        console.log('getScaledHashrate.hash2: '+hash)
         var sols = getReadableNetworkPair(poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0, pair[2]);
         var pairsols = getReadableHashRatePair(sols);
         var networkPercent = (poolName in stats.pools ? stats.pools[poolName].hashrate : 0) * 2 / 1000000 / (poolName in stats.pools ? stats.pools[poolName].poolStats.networkSols : 0)
-        var timeSinceLastBlock = Date.now() - (stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000 || 0
-        var timeSinceLastBlock2 = Date.now() - (parseFloat(poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlock[0].split(':')[4] : 0) * 1000) || 0
-        var poolLuck = parseFloat(parseInt(timeSinceLastBlock) * 1000 / parseInt(stats.pools[poolName].poolStats.networkSols) /
+        var timeSinceLastBlock = (poolName in stats.pools ? Date.now() - (parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4])) * 1000 || 0 : 0)
+    
+    //parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4])
+    //    var timeSinceLastBlock2 = Date.now() - (parseFloat(poolName in stats.pools ? stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4] : 0) * 1000) || 0
+    
+        var poolLuck =       parseFloat(parseInt(timeSinceLastBlock) * 1000 / parseInt(stats.pools[poolName].poolStats.networkSols) /
             parseInt(stats.pools[poolName].hashrate * 2 / 1000000) * parseInt(stats.pools[poolName].blockTime) * 1000 * 100).toFixed(12)
-        var revenue = (poolName in stats.pools ? parseFloat(stats.pools[poolName].poolStats.coinMarketCap) : 0) *
+        var revenue =       (poolName in stats.pools ? parseFloat(stats.pools[poolName].poolStats.coinMarketCap) : 0) *
             (poolName in stats.pools ? parseFloat(stats.pools[poolName].blockReward) : 0) *
             (24 / stats.pools[poolName].luckHours);
-        var reward = (poolName in stats.pools ? parseFloat(stats.pools[poolName].blockReward) : 0).toFixed(2)
+        var reward =        (poolName in stats.pools ? parseFloat(stats.pools[poolName].blockReward) : 0).toFixed(2)
         var exchangeRate =  (poolName in stats.pools ? parseFloat(stats.pools[poolName].wallet.exchangeTicker.price) : 0);
-        var BTCUSD =        (poolName in stats.pools ? parseFloat(stats.pools[poolName].wallet.exchangeToCoinTicker.price).toFixed(2) : 0);
-        console.log('ARRR-BTCUSD: '+ exchangeRate +' '+BTCUSD+' '+parseFloat(BTCUSD) * exchangeRate)
+        
+        var BTCUSD =        (poolName in stats.pools ? parseFloat(stats.pools[poolName].wallet.btcusd.price).toFixed(2) : 0);
+
+      //  console.log('ARRR-BTCUSD: '+ exchangeRate +' '+BTCUSD+' '+parseFloat(BTCUSD) * exchangeRate)
         var exchangeName = stats.pools[poolName]?.wallet.exchangeWallet.exchange;
+	$("#synced").html('Wallet Synced</br>' + stats.pools[poolName].poolStats.synced);
         $("#blockReward").html(poolName + '<BR>Block Reward<BR>' + reward + ' ' + stats.pools[poolName].symbol);
         $("#revenue").html('Est Daily<BR>Revenue<br>$' + parseFloat(revenue).toFixed(2));
         $("#poolLuck").html(parseFloat(poolLuck).toFixed(2) + ' %' + '<br> Pool Luck ');
@@ -253,12 +273,13 @@ statsSource.addEventListener('message', function(e) {
         $("#timeSinceBlock").html(readableSeconds(timeSinceLastBlock / 1000) + '<BR>Since Blk');
         $("#networkPercent").html('Our Percent<BR>of Network<BR>'+(parseFloat(networkPercent * 100)).toFixed(4) + ' %');
         $("#validShares").html(poolName in stats.pools ? 'Vaild Shares</br>' + parseFloat(stats.pools[poolName].poolStats.validShares).toLocaleString() : 0);
-        $("#poolHashRate").html('Pool Hashrate</br>' + (!isNaN(hash) ? hash : 0) + ' ' + (pair[1] ? pair[1] : 'Sols/s'));
+     //   $("#poolHashRate").text((!isNaN(hash) ? hash : 0) + ' ' + (pair[1] ? pair[1] : 'Sols/s'));
+        $("#poolHashRate").html('Pool Hashrate</br>' + (!isNaN(hash) ? hash : 0) + ' ' + (pair[1] ? pair[1] +'Sols/s': 'Sols/s'));
         $("#luckDays").html(poolName in stats.pools ? 'Luck Days<BR>'+stats.pools[poolName].luckDays + ' Days' : 0);
         $("#luckHours").html(poolName in stats.pools ? 'Luck Hours<BR>'+stats.pools[poolName].luckHours + ' Hours' : 0);
         $("#lastBlockPaid").html(poolName in stats.pools ? 'Last Block Paid</br>' + parseFloat(stats.pools[poolName]?.payments[0]?.blocks[0]).toLocaleString() : 0);
         $("#lastBlockFound").html(poolName in stats.pools ? 'Last Block Found<BR><a href="' + stats.pools[poolName].explorerGetBlock + stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[0] + '" target="_blank">' + parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[3]).toLocaleString() + '</a>' : 0);
-        $("#lastBlockFoundTime").html(poolName in stats.pools ? 'Last Block Time</br>' + readableDate(stats.pools[poolName]?.blocks?.lastBlock[0].split(':')[4] * 1000) : 0) //[0]?.split(':')[4] * 1000) || 0 : 0);
+        $("#lastBlockFoundTime").html(poolName in stats.pools ? 'Last Block Time</br>' + readableDate(parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000) : 0) //[0]?.split(':')[4] * 1000) || 0 : 0);
         $("#lastBlockAmt").html(poolName in stats.pools ? 'Last Block Paid</br>' + (parseFloat((stats.pools[poolName]?.payments[0] || 0).paid).toFixed(4) || 0) : 0);
         $("#poolWorkers").html(poolName in stats.pools ? 'Workers<BR>'+stats.pools[poolName].workerCount : 0);
         $("#pendingBlocks").html(poolName in stats.pools ? 'Pending Blocks</br>' + stats.pools[poolName]?.blocks?.pending : 0);
@@ -270,21 +291,22 @@ statsSource.addEventListener('message', function(e) {
         $("#networkTime").html(poolName in stats.pools ? timeOfDayFormat(Date.now()) : 0);
         $("#blocksKicked").html(poolName in stats.pools ? 'Kicked Blocks</br>' + parseInt(stats.pools[poolName]?.blocks.kicked) : 0);
         var totalPaid = (poolName in stats.pools ? parseFloat((stats.pools[poolName].poolStats?.totalPaid) || 0) : 0);
-        $("#totalPaidOut").html('Total Paid</br>' + totalPaid + ' ' + stats.pools[poolName].symbol);
-        var payout = (totalPaid * parseFloat(stats.pools[poolName].poolStats.coinMarketCap)).toLocaleString();
+        $("#totalPaidOut").html('Total Paid</br>' + parseFloat(totalPaid).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + stats.pools[poolName].symbol);
+        var payout = (totalPaid * parseFloat(stats.pools[poolName].poolStats.coinMarketCap)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         payout = 'Payout Value<BR>$' + payout + ' USD';
         $("#poolPaidOut").html(payout);
         $("#blocksFound").html(poolName in stats.pools ? 'Blocks Found</br>' + parseInt(stats.pools[poolName]?.blocks?.blocksFound).toLocaleString() : 0);
         $("#blockFound").html(poolName in stats.pools ? 'Last Block Paid</br><a href="' + stats.pools[poolName].explorerGetBlock + stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[0] + '" target="_blank">' + parseInt(stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[2]).toLocaleString() + '</a>' : 0);
-        var BlockFoundConfirmations = parseInt(stats.pools[poolName].poolStats.networkBlocks - parseInt(stats.pools[poolName]?.confirmed?.blocks[0]?.split(':')[2]))
+        var BlockFoundConfirmations = parseInt(stats.pools[poolName].poolStats.networkBlocks - 
+            parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[3])+1)
         $("#BlockFoundConfirmations").html('Last Block<BR>Confirmations<BR>' + BlockFoundConfirmations);
         $("#poolStartTime").html(poolName in stats.pools ? 'Pool Restarted</br>' + readableDate(stats.pools[poolName].poolStats.poolStartTime * 1000) : 0);
         $("#timeToFind").html('Time To find</br>' + stats.pools[poolName].timeToFind);
-        $("#priceUsd").html(poolName in stats.pools ? poolName + '<br>Price USD<BR>$' + stats.pools[poolName].poolStats.coinMarketCap : 0);
+        $("#priceUsd").html(poolName in stats.pools ? poolName + '<br>Price USD<BR>$' + parseFloat(stats.pools[poolName].poolStats.coinMarketCap).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : 0);
         $("#rejected").html(poolName in stats.pools ? 'Rejected Blocks</br>' + parseInt(stats.pools[poolName]?.blocks.blocksRejected) : 0);
         $("#orphaned").html(poolName in stats.pools ? 'Orphaned Blocks</br>' + parseInt(stats.pools[poolName]?.blocks.orphaned) : 0);
         $("#duplicated").html(poolName in stats.pools ? 'Duplicated Blocks</br>' + parseInt(stats.pools[poolName]?.blocks.blocksDuplicate) : 0);
-        $("#blockValue").html(poolName in stats.pools ? 'Block Value</br>$' + stats.pools[poolName].poolStats.coinMarketCap * reward : 0);
+        $("#blockValue").html(poolName in stats.pools ? 'Block Value</br>$' + parseFloat(stats.pools[poolName].poolStats.coinMarketCap * reward).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : 0);
         $("#transparent").html(poolName in stats.pools ? symbol + '<BR>Transparent<BR>Node Balance</br>' + parseFloat(stats.pools[poolName]?.wallet.transparent || 0)  : 0);
         $("#private").html(poolName in stats.pools ? symbol + '<BR>Private</br>Node Balance<BR>' + parseFloat(stats.pools[poolName]?.wallet.private || 0) : 0);
         $("#netTime").html('Current <BR>Network Time</br>' + readableDate(Date.now()));
@@ -299,10 +321,12 @@ statsSource.addEventListener('message', function(e) {
         var change = parseFloat(stats.pools[poolName]?.wallet.exchangeToCoinTicker.price)
         if (parseFloat(change) > parseFloat(stats.pools[poolName]?.wallet.exchangeToCoinTicker.initialprice)) {
              $("#exchangeToCoinCurrent").attr("class", "text-success");
+             
+             $("#convertedValueUSD").attr("class", "text-success");
 
         } else {
                 $("#exchangeToCoinCurrent").attr("class", "text-danger");
-
+                $("#convertedValueUSD").attr("class", "text-danger");
         }
 
         var xchange = parseFloat(stats.pools[poolName]?.wallet.exchangeTicker.price)
@@ -320,43 +344,62 @@ statsSource.addEventListener('message', function(e) {
         $("#exchangeToCoinOpen").html(poolName in stats.pools ? exchangeToCoin +' <BR>Opening Price<BR>$' + parseFloat(stats.pools[poolName]?.wallet.exchangeToCoinTicker.initialprice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})  : 0);
         $("#exchangeToCoinExchange").html(poolName in stats.pools ? link +'<BR>Selected Exchange Trade Time (5 Sec. Updates)<BR>' + Date(stats.pools[poolName]?.wallet.exchangeToCoinTicker.time*1000) : 0);
         $("#exchangeToCoinTicker").html(poolName in stats.pools ? exchangeName +' <BR>' + stats.pools[poolName]?.wallet.exchangeToCoinTicker.coin  : 0);
-        
         $("#exchangeLow").html(poolName in stats.pools ? exchangeCoinPair +'<BR>Low<BR>' + parseFloat(stats.pools[poolName]?.wallet.exchangeTicker.low).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
         $("#exchangeHigh").html(poolName in stats.pools ? exchangeCoinPair +'<BR>High<BR>' + parseFloat(stats.pools[poolName]?.wallet.exchangeTicker.high).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
         $("#exchangeCurrent").html(poolName in stats.pools ?  exchangeCoinPair +' <BR>Current Price<BR>' + parseFloat(stats.pools[poolName]?.wallet.exchangeTicker.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})   : 0);
         $("#exchangeOpen").html(poolName in stats.pools ? exchangeCoinPair +' <BR>Opening Price<BR>' + parseFloat(stats.pools[poolName]?.wallet.exchangeTicker.initialprice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
         $("#exchangeExchange").html(poolName in stats.pools ? link +'<BR>Selected Exchange Trade Time (5 Sec. Updates)<BR>' + Date(stats.pools[poolName]?.wallet.exchangeTicker.time*1000) : 0);
         $("#exchangeTicker").html(poolName in stats.pools ? exchangeName +' <BR>' + stats.pools[poolName]?.wallet.exchangeToCoinTicker.coin  : 0);
-       
-        // .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        var BTCUSDChange = parseFloat(poolName in stats.pools ? stats.pools[poolName]?.wallet.btcusd.price : 0) - parseFloat(poolName in stats.pools ? stats.pools[poolName]?.wallet.btcusd24hr.open : 0) 
+        BTCUSDChange = parseFloat(BTCUSDChange).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        
+        if (parseFloat(BTCUSDChange) > 0) {
+             $("#coinbaseProBTCUSD").attr("class", "text-success");
 
-        $("#bigDiff").html(poolName in stats.pools ?   'BigDiff Blocks</br>'+ parseInt(stats.pools[poolName]?.bigDiff) : 0);
+        } else {
+                $("#coinbaseProBTCUSD").attr("class", "text-danger");
+
+        }
+        
+        $("#coinbaseProBTCUSD").html(poolName in stats.pools ? 'BTC-USD<BR>Coinbase Pro<BR>$' + parseFloat(stats.pools[poolName]?.wallet.btcusd.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8}) +'<BR>$'+BTCUSDChange : 0);
+        $("#coinbaseProETHUSD").html(poolName in stats.pools ? 'ETH-USD<BR>Coinbase Pro <BR>$' + parseFloat(stats.pools[poolName]?.wallet.ethusd.price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8}) : 0);
+        
+        $("#coinbaseProBTCUSDOpen").html(poolName in stats.pools ? 'BTC-USD Open<BR>Coinbase Pro<BR>$' + parseFloat(stats.pools[poolName]?.wallet.btcusd24hr.open).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
+        $("#coinbaseProBTCUSDLow").html(poolName in stats.pools ? 'BTC-USD Low<BR>Coinbase Pro<BR>$' + parseFloat(stats.pools[poolName]?.wallet.btcusd24hr.low).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
+        $("#coinbaseProBTCUSDHigh").html(poolName in stats.pools ? 'BTC-USD High<BR>Coinbase Pro<BR>$' + parseFloat(stats.pools[poolName]?.wallet.btcusd24hr.high).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
+        $("#coinbaseProBTCUSDVolume").html(poolName in stats.pools ? 'BTC-USD <BR>Coinbase Pro<BR>$' + parseFloat(stats.pools[poolName]?.wallet.btcusd24hr.volume).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
+        $("#coinbaseProBTCUSDlast").html(poolName in stats.pools ? 'BTC-USD <BR>Coinbase Pro <BR>$' + parseFloat(stats.pools[poolName]?.wallet.btcusd24hr.last).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})  : 0);
+       
+        // usd fix: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+      //  $("#bigDiff").html(poolName in stats.pools ?   'BigDiff Blocks</br>'+ parseInt(stats.pools[poolName]?.bigDiff) : 0);
         var time = stats.time * 1000;
-        var avg = pool.averagedHashrate;
+        var avg = pool.averagedHashrate; //pool
+        
+        var averagedhashrate = calculateExpMovingAvg(pool.averagedHashrate, hash)
+        
+        console.log('averaged: '+ getReadableHashRate(averagedhashrate[averagedhashrate.length-1].slice(-1)))
+       console.log('pool.averagedHashrate: '+ avg)
+       
         addChartData(poolHashrateChart, poolHashrateChart.data.datasets[0], {
             t: time,
             y: hash
         }, true);
-        //addChartData(poolHashrateChart, poolHashrateChart.data.datasets[1], {t: time,y: getScaledHashrate(avg[avg.length - 1][1], pair[2])}, true); //getReadableHashRatePair(avg)}, true);
-        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[2], {t: time,y: getScaledNetworkDiff(stats.pools[poolName].poolStats.networkDiff)}, true);
-        
-        
-        
-        
-        
+
+        // working on average hashrate to add to chart
+        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[1], {t: time, y: getReadableHashRate(averagedhashrate[averagedhashrate.length-1].slice(-1))}, true);
+       console.log('networkDiff: '+ getScaledNetworkDiff(stats.pools[poolName].networkDiff))
         addChartData(networkDiffChart, networkDiffChart.data.datasets[0], {
             t: time,
-            y: getScaledNetworkDiff(stats.pools[poolName].poolStats.networkDiff)
+            y: getScaledNetworkDiff(stats.pools[poolName].networkDiff)
         }, true);
         
-        
-        addChartData(networkDiffChart, networkDiffChart.data.datasets[1], {
+        console.log('networkSols: '+ getScaledNetworkDiff(stats.pools[poolName].networkSols))
+        addChartData(networkHashrateChart, networkHashrateChart.data.datasets[0], {
             t: time,
-            y: getScaledNetworkDiff(stats.pools[poolName].poolStats.networkSols)
+            y: getScaledNetworkDiff(stats.pools[poolName].networkSols)
         }, true);
-        //var text = 'block';
-        //var now=Date.now();
-        //var then=now-60*60;
+        
         //addAnnotationVertical(poolHashrateChart, then, text);
 
     });
@@ -419,7 +462,7 @@ this.getReadableHashRate = function(hashrate) {
     hashrate = (hashrate / 1000) / Math.pow(1000, i + 1);
     return hashrate.toFixed(2);
 };
-
+/*
 this.getScaledHashrate = function(hashrate, i) {
     hashrate = (hashrate * 2);
     if (hashrate < 1000000) {
@@ -428,27 +471,28 @@ this.getScaledHashrate = function(hashrate, i) {
     hashrate = (hashrate / 1000) / Math.pow(1000, i + 1);
     return hashrate.toFixed(2);
 };
-
+*/
 this.getReadableHashRateString = function(hashrate) {
     hashrate = (hashrate * 2);
     if (hashrate < 1000000) {
         hashrate = hashrate * 100000;
     }
-    var byteUnits = [' Sol/s', ' KSol/s', ' MSol/s', ' GSol/s', ' TSol/s', ' PSol/s'];
+    var byteUnits = [' Sol/s', ' KSol/s', ' MSol/s', ' GSol/s', ' TSol/s', ' PSol/s', 'undefined'];
     var i = Math.max(0, Math.floor((Math.log(hashrate / 1000) / Math.log(1000)) - 1));
     hashrate = (hashrate / 1000) / Math.pow(1000, i + 1);
 
     return hashrate.toFixed(2) + ' ' + byteUnits[i];
 };
-
+/*
 this.getReadableHashRatePair = function(hashrate) {
     hashrate = (hashrate * 2);
     if (hashrate < 1000000) {
         hashrate = hashrate * 100000;
     }
-    var byteUnits = [' Sol/s', ' KSol/s', ' MSol/s', ' GSol/s', ' TSol/s', ' PSol/s'];
+    var byteUnits = [' Sol/s', ' KSol/s', ' MSol/s', ' GSol/s', ' TSol/s', ' PSol/s', 'undefined'];
     var i = Math.max(0, Math.floor((Math.log(hashrate / 1000) / Math.log(1000)) - 1));
     hashrate = (hashrate / 1000) / Math.pow(1000, i + 1);
 
     return [hashrate.toFixed(2), byteUnits[i], i];
 };
+*/

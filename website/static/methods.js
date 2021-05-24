@@ -103,7 +103,7 @@ this.getReadableNetworkHashratePair = function(networkPair) {
       var byteUnits = [' H', ' K', ' M', ' G', ' T', ' P'];
       var i = Math.max(0, Math.floor((Math.log(networkPair /1000) / Math.log(1000)) - 1));
       networkDiff = (networkPair /1000) / Math.pow(1000, i + 1);
-      return [networkPaie.toFixed(2), byteUnits[i]];
+      return [networkPaie.toFixed(2), byteUnits[i], i];
 };
 
 
@@ -169,7 +169,7 @@ this.getReadableNetworkDiffPair = function(networkDiff) {
       var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
       networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
 
-      return [networkDiff.toFixed(2), byteUnits[i]];
+      return [networkDiff.toFixed(2), byteUnits[i], i];
 };
 
 this.getReadableNetworkPair = function(networkDiff) {
@@ -178,7 +178,7 @@ this.getReadableNetworkPair = function(networkDiff) {
        var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
        networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
 
-      return [networkDiff.toFixed(2), byteUnits[i]];
+      return [networkDiff.toFixed(2), byteUnits[i], i];
 };
 
 
@@ -205,7 +205,7 @@ this.getReadableNetworkPair = function(networkDiff) {
         var i = Math.max(0, Math.floor((Math.log(networkDiff /1000) / Math.log(1000)) - 1));
         networkDiff = (networkDiff /1000) / Math.pow(1000, i + 1);
 
-       return [networkDiff.toFixed(2), byteUnits[i]];
+       return [networkDiff.toFixed(2), byteUnits[i], i];
 };
 
 
@@ -226,11 +226,12 @@ this.getScaledHashrate = function(hashrate, i) {
     if (hashrate < 1000000) {
         hashrate = hashrate * 100000;
     }
-    var byteUnits = [' Sols/s', ' KSols/s', ' MSols/s', ' GSols/s', ' TSols/s', ' PSols/s'];
+    var byteUnits = [' H', ' K', ' M', ' G', ' T', ' P'];
+  //  var byteUnits = [' Sols/s', ' KSols/s', ' MSols/s', ' GSols/s', ' TSols/s', ' PSols/s'];
     var i = Math.max(0, Math.floor((Math.log(hashrate / 1000) / Math.log(1000)) - 1));
     hashrate = (hashrate / 1000) / Math.pow(1000, i + 1);
 
-    return hashrate.toFixed(2) + ' ' + byteUnits[i];
+    return [hashrate.toFixed(2), byteUnits[i], i];
 };
 
 /*

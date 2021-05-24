@@ -12,11 +12,11 @@
 "privateChain": true,
   "sapling": true,
 
-   "explorer":"https://explorer.pirate.black/",
+   "explorer":"http://pool.entrustus.org:7782/",
 
-    "explorerGetBlockJSON": "https://explorer.pirate.black/api/getrawtransaction?decrypt=1&txid=",
-    "explorerGetBlock": "https://explorer.pirate.black/block/",
-    "explorerGetTX": "https://explorer.pirate.black/tx/",
+    "explorerGetBlockJSON": "http://pool.entrustus.org:7782/api/getrawtransaction?decrypt=1&txid=",
+    "explorerGetBlock": "http://pool.entrustus.org:7782/block/",
+    "explorerGetTX": "http://pool.entrustus.org:7782/tx/",
 
     "blockTime": 60,
     "blockChange": 1
