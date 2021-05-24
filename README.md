@@ -3,7 +3,8 @@
 # EquihashNompPool
 Forked from Raven coin Updated to use Equihash
 
-This is a badly hacked version that no one should use without modifications and bug/security  checking.
+This is a badly hacked version that no one should use without modifications and bug/security checking.
+
 [Update 5-24-2021]
 
 added: coinbase pro reference btc prices, 
