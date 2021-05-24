@@ -8,8 +8,11 @@ This is a badly hacked version that no one should use without modifications and 
 [Update 5-24-2021]
 
 added: coinbase pro reference btc prices, 
+
 added: new charts for network hash & network difficulty 
+
 WIP: to get coin switching working again, all the current modules for prices are defuct or not working.
+
 
 
 [Update 4-27-2021]
