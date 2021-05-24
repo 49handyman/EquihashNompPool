@@ -3,21 +3,33 @@ var net = require('net');
 var bignum = require('bignum');
 var algos = require('stratum-pool/lib/algoProperties.js');
 var util = require('stratum-pool/lib/util.js');
+require('dotenv').config();
+const tradeOgre_api_key = process.env.tradeOgre_api_key
+const tradeOgre_api_secret = process.env.tradeOgre_api_secret
+const bittrex_api_key = process.env.bittrex_api_key
+const bittrex_api_secret = process.env.bittrex_api_secret
+const poloniex_api_key = process.env.poloniex_api_key
+const poloniex_api_secret = process.env.poloniex_api_secret
 
-var Cryptsy = require('./apiCryptsy.js');
+
+
 var Poloniex = require('./apiPoloniex.js');
-var Mintpal = require('./apiMintpal.js');
+//var tradeOgre = require('./apiTradeOgre.js');
+var TradeOgre = require('tradeogre-api');
 var Bittrex = require('./apiBittrex.js');
 var Stratum = require('stratum-pool');
 
-module.exports = function(logger) {
+var PoolLogger = require('./logUtil.js');
+const loggerFactory = require('./logger.js');
+let componentStr = `\u001b[35mProfitSwitch \u001b[0m`;
+let logger = loggerFactory.getLogger(componentStr, 'system');
 
+
+module.exports = function() {
+logger.debug('profit swtich called')
     var _this = this;
-
     var portalConfig = JSON.parse(process.env.portalConfig);
     var poolConfigs = JSON.parse(process.env.pools);
-
-    var logSystem = 'Profit';
 
     //
     // build status tracker for collecting coin market information
@@ -39,8 +51,10 @@ module.exports = function(logger) {
             reward: 0,
             exchangeInfo: {}
         };
+        logger.debug('coinStatus: '+JSON.stringify(coinStatus))
         profitStatus[algo][poolConfig.coin.symbol] = coinStatus;
         symbolToAlgorithmMap[poolConfig.coin.symbol] = algo;
+        logger.debug('algo: '+JSON.stringify(algo))
     });
 
 
@@ -49,40 +63,43 @@ module.exports = function(logger) {
     //
     Object.keys(profitStatus).forEach(function(algo) {
         if (Object.keys(profitStatus[algo]).length <= 1) {
+            logger.debug('profitStatus[algo]: '+JSON.stringify(profitStatus[algo]))
             delete profitStatus[algo];
             Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
+                logger.debug('symbolToAlgorithmMap[symbol] : '+JSON.stringify(symbolToAlgorithmMap[symbol] ))
                 if (symbolToAlgorithmMap[symbol] === algo)
                     delete symbolToAlgorithmMap[symbol];
             });
         }
     });
     if (Object.keys(profitStatus).length == 0) {
-        logger.debug(logSystem, 'Config', 'No alternative coins to switch to in current config, switching disabled.');
+        logger.error('Config, No alternative coins to switch to in current config, switching disabled.');
+        logger.error('profitStatus keys called...' + JSON.stringify(profitStatus))
         return;
     }
-
+// Helper methods
+function joinCurrencies(currencyA, currencyB) {
+    return currencyA + '-' + currencyB;
+}
 
     // 
     // setup APIs
     //
     var poloApi = new Poloniex(
-        // 'API_KEY',
-        // 'API_SECRET'
+         poloniex_api_key,
+         poloniex_api_secret
     );
-    var cryptsyApi = new Cryptsy(
-        // 'API_KEY',
-        // 'API_SECRET'
-    );
-    var mintpalApi = new Mintpal(
-        // 'API_KEY',
-        // 'API_SECRET'
+  
+    var tradeOgreApi = new TradeOgre(
+        tradeOgre_api_key,
+        tradeOgre_api_secret
     );
 
     var bittrexApi = new Bittrex(
-        'd4889c33eb3346ddad775a888adc219e',
-        '54032ecc4fa64a9a85782bfd7dc76520',
+        bittrex_api_key,
+        bittrex_api_secret
     );
-    console.log('bittrexApi Called...');
+    logger.debug('profitSwitch Called...');
     // 
     // market data collection from Poloniex
     //
@@ -90,6 +107,7 @@ module.exports = function(logger) {
         async.series([
             function(taskCallback) {
                 poloApi.getTicker(function(err, data) {
+                    logger.debug('getProfitDataPoloniex called...'+err)
                     if (err) {
                         taskCallback(err);
                         return;
@@ -97,6 +115,7 @@ module.exports = function(logger) {
 
                     Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
                         var exchangeInfo = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo;
+                        logger.debug('exchangeInfo called...'+JSON.stringify(exchangeInfo))
                         if (!exchangeInfo.hasOwnProperty('Poloniex'))
                             exchangeInfo['Poloniex'] = {};
                         var marketData = exchangeInfo['Poloniex'];
@@ -172,6 +191,7 @@ module.exports = function(logger) {
     };
     this.getMarketDepthFromPoloniex = function(symbolA, symbolB, coinPrice, callback) {
         poloApi.getOrderBook(symbolA, symbolB, function(err, data) {
+            logger.debug('getMarketDepthFromPoloniex called...'+err)
             if (err) {
                 callback(err);
                 return;
@@ -200,132 +220,47 @@ module.exports = function(logger) {
     };
 
 
-    this.getProfitDataCryptsy = function(callback) {
+
+    this.getProfitDatatradeOgre = function(callback) {
+        logger.debug('getProfitData tradeOgre called...')
         async.series([
             function(taskCallback) {
-                cryptsyApi.getTicker(function(err, data) {
-                    if (err || data.success != 1) {
+                tradeOgreApi.getTicker(joinCurrencies(symbolA,symbolB), function(err, response) {
+                    logger.debug('tradeOgre getTicker called...'+err+response)
+                    if (err || !response.result) {
                         taskCallback(err);
                         return;
                     }
 
                     Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
-                        var exchangeInfo = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo;
-                        if (!exchangeInfo.hasOwnProperty('Cryptsy'))
-                            exchangeInfo['Cryptsy'] = {};
-
-                        var marketData = exchangeInfo['Cryptsy'];
-                        var results = data.return.markets;
-
-                        if (results && results.hasOwnProperty(symbol + '/BTC')) {
-                            if (!marketData.hasOwnProperty('BTC'))
-                                marketData['BTC'] = {};
-
-                            var btcData = results[symbol + '/BTC'];
-                            marketData['BTC'].last = new Number(btcData.lasttradeprice);
-                            marketData['BTC'].baseVolume = new Number(marketData['BTC'].last / btcData.volume);
-                            marketData['BTC'].quoteVolume = new Number(btcData.volume);
-                            if (btcData.sellorders != null)
-                                marketData['BTC'].ask = new Number(btcData.sellorders[0].price);
-                            if (btcData.buyorders != null) {
-                                marketData['BTC'].bid = new Number(btcData.buyorders[0].price);
-                                var limit = new Number(marketData['BTC'].bid * portalConfig.profitSwitch.depth);
-                                var depth = new Number(0);
-                                var totalQty = new Number(0);
-                                btcData['buyorders'].forEach(function(order) {
-                                    var price = new Number(order.price);
-                                    var qty = new Number(order.quantity);
-                                    if (price >= limit) {
-                                        depth += (qty * price);
-                                        totalQty += qty;
-                                    }
-                                });
-                                marketData['BTC'].depth = depth;
-                                if (totalQty > 0)
-                                    marketData['BTC'].weightedBid = new Number(depth / totalQty);
-                            }
-                        }
-
-                        if (results && results.hasOwnProperty(symbol + '/LTC')) {
-                            if (!marketData.hasOwnProperty('LTC'))
-                                marketData['LTC'] = {};
-
-                            var ltcData = results[symbol + '/LTC'];
-                            marketData['LTC'].last = new Number(ltcData.lasttradeprice);
-                            marketData['LTC'].baseVolume = new Number(marketData['LTC'].last / ltcData.volume);
-                            marketData['LTC'].quoteVolume = new Number(ltcData.volume);
-                            if (ltcData.sellorders != null)
-                                marketData['LTC'].ask = new Number(ltcData.sellorders[0].price);
-                            if (ltcData.buyorders != null) {
-                                marketData['LTC'].bid = new Number(ltcData.buyorders[0].price);
-                                var limit = new Number(marketData['LTC'].bid * portalConfig.profitSwitch.depth);
-                                var depth = new Number(0);
-                                var totalQty = new Number(0);
-                                ltcData['buyorders'].forEach(function(order) {
-                                    var price = new Number(order.price);
-                                    var qty = new Number(order.quantity);
-                                    if (price >= limit) {
-                                        depth += (qty * price);
-                                        totalQty += qty;
-                                    }
-                                });
-                                marketData['LTC'].depth = depth;
-                                if (totalQty > 0)
-                                    marketData['LTC'].weightedBid = new Number(depth / totalQty);
-                            }
-                        }
-                    });
-                    taskCallback();
-                });
-            }
-        ], function(err) {
-            if (err) {
-                callback(err);
-                return;
-            }
-            callback(null);
-        });
-
-    };
-
-
-    this.getProfitDataMintpal = function(callback) {
-        async.series([
-            function(taskCallback) {
-                mintpalApi.getTicker(function(err, response) {
-                    if (err || !response.data) {
-                        taskCallback(err);
-                        return;
-                    }
-
-                    Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
-                        response.data.forEach(function(market) {
+                        response.result.forEach(function(market) {
                             var exchangeInfo = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo;
-                            if (!exchangeInfo.hasOwnProperty('Mintpal'))
-                                exchangeInfo['Mintpal'] = {};
-
-                            var marketData = exchangeInfo['Mintpal'];
-
+                            if (!exchangeInfo.hasOwnProperty('tradeOgre'))
+                                exchangeInfo['tradeOgre'] = {};
+                            var marketData = exchangeInfo['tradeOgre'];
+                            var marketPair = market.MarketName.match(/([\w]+)-([\w-_]+)/)
+                            market.exchange = marketPair[1]
+                            market.code = marketPair[2]
                             if (market.exchange == 'BTC' && market.code == symbol) {
                                 if (!marketData.hasOwnProperty('BTC'))
                                     marketData['BTC'] = {};
 
-                                marketData['BTC'].last = new Number(market.last_price);
-                                marketData['BTC'].baseVolume = new Number(market['24hvol']);
-                                marketData['BTC'].quoteVolume = new Number(market['24hvol'] / market.last_price);
-                                marketData['BTC'].ask = new Number(market.top_ask);
-                                marketData['BTC'].bid = new Number(market.top_bid);
+                                marketData['BTC'].last = new Number(market.Last);
+                                marketData['BTC'].baseVolume = new Number(market.BaseVolume);
+                                marketData['BTC'].quoteVolume = new Number(market.BaseVolume / market.Last);
+                                marketData['BTC'].ask = new Number(market.Ask);
+                                marketData['BTC'].bid = new Number(market.Bid);
                             }
 
                             if (market.exchange == 'LTC' && market.code == symbol) {
                                 if (!marketData.hasOwnProperty('LTC'))
                                     marketData['LTC'] = {};
 
-                                marketData['LTC'].last = new Number(market.last_price);
-                                marketData['LTC'].baseVolume = new Number(market['24hvol']);
-                                marketData['LTC'].quoteVolume = new Number(market['24hvol'] / market.last_price);
-                                marketData['LTC'].ask = new Number(market.top_ask);
-                                marketData['LTC'].bid = new Number(market.top_bid);
+                                marketData['LTC'].last = new Number(market.Last);
+                                marketData['LTC'].baseVolume = new Number(market.BaseVolume);
+                                marketData['LTC'].quoteVolume = new Number(market.BaseVolume / market.Last);
+                                marketData['LTC'].ask = new Number(market.Ask);
+                                marketData['LTC'].bid = new Number(market.Bid);
                             }
 
                         });
@@ -336,15 +271,15 @@ module.exports = function(logger) {
             function(taskCallback) {
                 var depthTasks = [];
                 Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
-                    var marketData = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo['Mintpal'];
+                    var marketData = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo['tradeOgre'];
                     if (marketData.hasOwnProperty('BTC') && marketData['BTC'].bid > 0) {
                         depthTasks.push(function(callback) {
-                            _this.getMarketDepthFromMintpal('BTC', symbol, marketData['BTC'].bid, callback)
+                            _this.getMarketDepthFromBittrex('BTC', symbol, marketData['BTC'].bid, callback)
                         });
                     }
                     if (marketData.hasOwnProperty('LTC') && marketData['LTC'].bid > 0) {
                         depthTasks.push(function(callback) {
-                            _this.getMarketDepthFromMintpal('LTC', symbol, marketData['LTC'].bid, callback)
+                            _this.getMarketDepthFromBittrex('LTC', symbol, marketData['LTC'].bid, callback)
                         });
                     }
                 });
@@ -360,7 +295,7 @@ module.exports = function(logger) {
                     }
                     taskCallback();
                 });
-            }
+            } 
         ], function(err) {
             if (err) {
                 callback(err);
@@ -369,19 +304,21 @@ module.exports = function(logger) {
             callback(null);
         });
     };
-    this.getMarketDepthFromMintpal = function(symbolA, symbolB, coinPrice, callback) {
-        mintpalApi.getBuyOrderBook(symbolA, symbolB, function(err, response) {
+    this.getMarketDepthFromtradeOgre = function(symbolA, symbolB, coinPrice, callback) {
+
+        tradeOgreApi.getOrderBook(joinCurrencies(symbolA,symbolB), function(err, response) {
+            logger.debug('tradeOgre  getOrderBook called...'+err + response)
             if (err) {
                 callback(err);
                 return;
             }
             var depth = new Number(0);
-            if (response.hasOwnProperty('data')) {
+            if (response.hasOwnProperty('result')) {
                 var totalQty = new Number(0);
-                response['data'].forEach(function(order) {
-                    var price = new Number(order.price);
+                response['result'].forEach(function(order) {
+                    var price = new Number(order.Rate);
                     var limit = new Number(coinPrice * portalConfig.profitSwitch.depth);
-                    var qty = new Number(order.amount);
+                    var qty = new Number(order.Quantity);
                     // only measure the depth down to configured depth
                     if (price >= limit) {
                         depth += (qty * price);
@@ -390,7 +327,7 @@ module.exports = function(logger) {
                 });
             }
 
-            var marketData = profitStatus[symbolToAlgorithmMap[symbolB]][symbolB].exchangeInfo['Mintpal'];
+            var marketData = profitStatus[symbolToAlgorithmMap[symbolB]][symbolB].exchangeInfo['tradeOgre'];
             marketData[symbolA].depth = depth;
             if (totalQty > 0)
                 marketData[symbolA].weightedBid = new Number(depth / totalQty);
@@ -398,11 +335,14 @@ module.exports = function(logger) {
         });
     };
 
+   
 
     this.getProfitDataBittrex = function(callback) {
+        logger.debug('getProfitDataBittrex called...')
         async.series([
             function(taskCallback) {
                 bittrexApi.getTicker(function(err, response) {
+                    logger.debug('getProfitDataBittrex called...'+JSON.stringify(err))
                     if (err || !response.result) {
                         taskCallback(err);
                         return;
@@ -413,7 +353,6 @@ module.exports = function(logger) {
                             var exchangeInfo = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo;
                             if (!exchangeInfo.hasOwnProperty('Bittrex'))
                                 exchangeInfo['Bittrex'] = {};
-
                             var marketData = exchangeInfo['Bittrex'];
                             var marketPair = market.MarketName.match(/([\w]+)-([\w-_]+)/)
                             market.exchange = marketPair[1]
@@ -482,7 +421,9 @@ module.exports = function(logger) {
         });
     };
     this.getMarketDepthFromBittrex = function(symbolA, symbolB, coinPrice, callback) {
+
         bittrexApi.getOrderBook(symbolA, symbolB, function(err, response) {
+            logger.debug('getProfitDataBittrex called...'+JSON.stringify(err))
             if (err) {
                 callback(err);
                 return;
@@ -540,7 +481,7 @@ module.exports = function(logger) {
         var daemon = new Stratum.daemon.interface([cfg], function(severity, message) {
             logger[severity](logSystem, symbol, message);
 
-            console.log('getDaemonInfoForCoin called ...', daemon, symbol, cfg, message);
+            logger.debug('getDaemonInfoForCoin called ...', daemon, symbol, cfg, message);
             callback(null); // fail gracefully for each coin
         });
 
@@ -548,7 +489,7 @@ module.exports = function(logger) {
             "capabilities": ["coinbasetxn", "workid", "coinbase/append"]
         }], function(result) {
             if (result[0].error != null) {
-                logger.error(logSystem, symbol, 'Error while reading daemon info: ' + JSON.stringify(result[0]));
+                logger.debug(symbol, 'Error while reading daemon info: ' + JSON.stringify(result[0]));
                 callback(null); // fail gracefully for each coin
                 return;
             }
@@ -558,7 +499,7 @@ module.exports = function(logger) {
             // some shitcoins dont provide target, only bits, so we need to deal with both
             var target = response.target ? bignum(response.target, 16) : util.bignumFromBitsHex(response.bits);
             coinStatus.difficulty = parseFloat((diff1 / target.toNumber()).toFixed(9));
-            logger.debug(logSystem, symbol, 'difficulty is ' + coinStatus.difficulty);
+            logger.debug(symbol, 'difficulty is ' + coinStatus.difficulty);
 
             coinStatus.reward = response.coinbasevalue / 100000000;
             callback(null);
@@ -600,7 +541,7 @@ module.exports = function(logger) {
                             bestCoin = profitStatus[algo][symbol].name;
                         }
                         coinStatus.btcPerMhPerHour = btcPerMhPerHour;
-                        logger.debug(logSystem, 'CALC', 'BTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
+                        logger.debug('CALC', 'BTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
                     }
                     if (exchangeData.hasOwnProperty('LTC') && exchangeData['LTC'].hasOwnProperty('weightedBid')) {
                         var btcPerMhPerHour = (exchangeData['LTC'].weightedBid * coinStatus.coinsPerMhPerHour) * exchangeData['LTC'].ltcToBtc;
@@ -610,11 +551,11 @@ module.exports = function(logger) {
                             bestCoin = profitStatus[algo][symbol].name;
                         }
                         coinStatus.btcPerMhPerHour = btcPerMhPerHour;
-                        logger.debug(logSystem, 'CALC', 'LTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
+                        logger.debug('CALC', 'LTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
                     }
                 });
             });
-            logger.debug(logSystem, 'RESULT', 'Best coin for ' + algo + ' is ' + bestCoin + ' on ' + bestExchange + ' with ' + bestBtcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
+            logger.debug('RESULT', 'Best coin for ' + algo + ' is ' + bestCoin + ' on ' + bestExchange + ' with ' + bestBtcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
 
 
             var client = net.connect(portalConfig.cliPort, function() {
@@ -627,9 +568,9 @@ module.exports = function(logger) {
                 }) + '\n');
             }).on('error', function(error) {
                 if (error.code === 'ECONNREFUSED')
-                    logger.error(logSystem, 'CLI', 'Could not connect to NOMP instance on port ' + portalConfig.cliPort);
+                    logger.error('CLI: Could not connect to NOMP instance on port ' + portalConfig.cliPort);
                 else
-                    logger.error(logSystem, 'CLI', 'Socket error ' + JSON.stringify(error));
+                    logger.error('CLI: Socket error ' + JSON.stringify(error));
             });
 
         });
@@ -637,7 +578,7 @@ module.exports = function(logger) {
 
 
     var checkProfitability = function() {
-        logger.debug(logSystem, 'Check', 'Collecting profitability data.');
+        logger.info('Check: Collecting profitability data.');
 
         profitabilityTasks = [];
         if (portalConfig.profitSwitch.usePoloniex)
@@ -646,8 +587,8 @@ module.exports = function(logger) {
         if (portalConfig.profitSwitch.useCryptsy)
             profitabilityTasks.push(_this.getProfitDataCryptsy);
 
-        if (portalConfig.profitSwitch.useMintpal)
-            profitabilityTasks.push(_this.getProfitDataMintpal);
+        if (portalConfig.profitSwitch.usetradeOgre)
+            profitabilityTasks.push(_this.getProfitDatatradeOgre);
 
         if (portalConfig.profitSwitch.useBittrex)
             profitabilityTasks.push(_this.getProfitDataBittrex);
@@ -658,7 +599,7 @@ module.exports = function(logger) {
         // has to be series 
         async.series(profitabilityTasks, function(err) {
             if (err) {
-                logger.error(logSystem, 'Check', 'Error while checking profitability: ' + err);
+                logger.error('Check: Error while checking profitability: ' + JSON.stringify(err));
                 return;
             }
             //

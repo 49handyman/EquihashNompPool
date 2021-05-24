@@ -65,8 +65,8 @@ module.exports = function() {
         'tbs.html': 'tbs', // help
         'api.html': 'api', // api
         'miner_stats.html': 'miner_stats', // individual miner stats (skeleton?)
-        'pool_stats.html': 'pool_stats',
-        'learn_more.html': 'learn_more' // individual pool stats (skeleton?)
+        'pool_stats.html': 'pool_stats'
+        
     };
 
     // LeshaCat code to decide wether to load example page or real news page.    

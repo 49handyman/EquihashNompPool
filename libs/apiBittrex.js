@@ -1,5 +1,6 @@
 var request = require('request');
 var nonce   = require('nonce');
+var PoolLogger = require('./logUtil.js');
 
 module.exports = function() {
     'use strict';
@@ -8,12 +9,13 @@ module.exports = function() {
 
     // Constants
     var version         = '0.1.0',
-        PUBLIC_API_URL  = 'https://bittrex.com/api/v1/public',
+        PUBLIC_API_URL  = 'https://api.bittrex.com/api/v1.1/public',
         PRIVATE_API_URL = 'https://bittrex.com/api/v1/market',
         USER_AGENT      = 'nomp/node-open-mining-portal'
 
     // Constructor
     function Bittrex(key, secret){
+        console.log('bittrex called...')
         // Generate headers signed by this user's key and secret.
         // The secret is encapsulated and never exposed
         this._getPrivateHeaders = function(parameters){

@@ -313,15 +313,15 @@ module.exports = function(portalConfig, poolConfigs) {
             var coin = String(_this.stats.pools[pool.name].name);
 
             client.hscan(coin + ':blocksFound', 0, "match", a + "*", "count", 1000, function(error, found) { // pexacoin:blocksPending
-
+logger.info('blocksFound: '+ found)
                 // get all immature balances from address
                 client.hscan(coin + ':immature', 0, "match", a + "*", "count", 10000, function(pendserr, pends) {
                     // get all balances from address
                     client.hscan(coin + ':balances', 0, "match", a + "*", "count", 10000, function(balserr, bals) {
                         // get all payouts from address
                         client.hscan(coin + ':payouts', 0, "match", a + "*", "count", 10000, function(payserr, pays) {
-
-                            //            logger.debug("STATS> pendserr: [%s] balserr: [%s] payserr: [%s]", pendserr, balserr, payserr);
+logger.info('payouts: '+ pays)
+                                        logger.debug("STATS> pendserr: [%s] balserr: [%s] payserr: [%s]", pendserr, balserr, payserr);
 
                             var workerName = "";
                             var balAmount = 0;
@@ -430,14 +430,13 @@ module.exports = function(portalConfig, poolConfigs) {
                 ['scard', ':blocksKicked'],  // 17
                 ['zrevrange', ':lastBlock', 0, 0],  //18
                 ['zrevrange', ':lastBlockTime', 0, 0],  //19
-		        ['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime],  //20
-		        ['scard', ':blocksRejected'],  // 21
-		        ['scard', ':blocksDuplicate'],  // 22
-		        ['hgetall', ':bigDiff'],  // 23
-		        ['hgetall', ':shares:timesCurrent'], //24
-		        ['zrangebyscore', ':lastBlockTime', windowTime, '+inf'],  //25
+		['zremrangebyscore', 'lastBblock', '-inf', '(' + retentionTime],  //20
+		['scard', ':blocksRejected'],  // 21
+		['scard', ':blocksDuplicate'],  // 22
+		['hgetall', ':bigDiff'],  // 23
+		['hgetall', ':shares:timesCurrent'], //24
+		['zrangebyscore', ':lastBlockTime', windowTime, '+inf'],  //25
                 ['hgetall', ':wallet'], //26
-                
           ];
             var commandsPerCoin = redisCommandTemplates.length;
             client.coins.map(function(coin) {
@@ -466,13 +465,13 @@ module.exports = function(portalConfig, poolConfigs) {
                             explorerGetBlock: poolConfigs[coinName].coin.explorerGetBlock,
                             blockTime: poolConfigs[coinName].coin.blockTime,
                             blockChange: poolConfigs[coinName].coin.blockChange,
-			                blockReward:  poolConfigs[coinName].coin.blockReward,
+			    blockReward:  poolConfigs[coinName].coin.blockReward,
                             explorerGetBlockJSON: poolConfigs[coinName].coin.explorerGetBlockJSON,
                             explorerGetTX: poolConfigs[coinName].coin.explorerGetTX,
                             symbol: poolConfigs[coinName].coin.symbol.toUpperCase(),
                             algorithm: poolConfigs[coinName].coin.algorithm,
-			                PaymentInterval: poolConfigs[coinName].paymentInterval,
-			                minimumPayment: poolConfigs[coinName].minimumPayment,
+			    PaymentInterval: poolConfigs[coinName].paymentInterval,
+			    minimumPayment: poolConfigs[coinName].minimumPayment,
                             hashrates: replies[i + 1],
                             rewardRecipients: poolConfigs[coinName].rewardRecipients,
                             exchangeEnabled: poolConfigs[coinName].exchangeEnabled,
@@ -481,8 +480,6 @@ module.exports = function(portalConfig, poolConfigs) {
                             exchangeToCoin: poolConfigs[coinName].exchangeToCoin,
                             exchangeCoinPair: poolConfigs[coinName].exchangeCoinPair,
                             exchangeToCoinWallet: poolConfigs[coinName].exchangeToCoinWallet,
-                            
-
                             poolStats: {
                                 validShares: replies[i + 2] ? (replies[i + 2].validShares || 0) : 0,
                                 validBlocks: replies[i + 2] ? (replies[i + 2].validBlocks || 0) : 0,
@@ -496,8 +493,8 @@ module.exports = function(portalConfig, poolConfigs) {
                                 networkVersion: replies[i + 2] ? (replies[i + 2].networkSubVersion || 0) : 0,
                                 networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0,
                                 poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0,
-				                coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0
-		                        //		poolLuck:
+				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0,
+		                synced: replies[i + 2] ? (replies[i + 2].synced || 0) : 0        //		poolLuck:
                             },
 			                marketStats: marketStats,
                             wallet: {
@@ -507,6 +504,9 @@ module.exports = function(portalConfig, poolConfigs) {
                                 exchangeTicker: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeTicker) : 0,
                                 exchangeWalletConverted: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeWalletConverted) : 0,
                                 exchangeToCoinTicker: replies[i + 26] ? JSON.parse(replies[i + 26].exchangeToCoinTicker) : 0,
+                                btcusd: replies[i + 26] ? JSON.parse(replies[i + 26].btcusd) : 0,
+                                btcusd24hr: replies[i + 26] ? JSON.parse(replies[i + 26].btcusd24hr) : 0,
+                                ethusd: replies[i + 26] ? JSON.parse(replies[i + 26].ethusd) : 0,
 
                             },
 			                networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
@@ -519,10 +519,10 @@ module.exports = function(portalConfig, poolConfigs) {
                                 blocksFound: replies[i + 16],
                                 lastBlock: replies[i + 18],
                                 lastBlockTime: replies[i + 19],
-				                blocksRejected: replies[i + 21],
-				                blocksDuplicate: replies[i + 22],
-				                bigDiff: replies[i + 23],
-				                lastBlockTimeWindow: replies[i + 25]
+				blocksRejected: replies[i + 21],
+				blocksDuplicate: replies[i + 22],
+				bigDiff: replies[i + 23],
+				lastBlockTimeWindow: replies[i + 25]
                             },
                             pending: {
                                 blocks: replies[i + 9].sort(sortBlocks),
@@ -641,15 +641,16 @@ module.exports = function(portalConfig, poolConfigs) {
                 coinStats.luckHours = ((_networkHashRate / _myHashRate * _blocktime) / (60 * 60)).toFixed(3);
                 coinStats.timeToFind = readableSeconds(_networkHashRate / _myHashRate * _blocktime);
 		var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
-  var timeSinceLastBlock2 = Date.now() - (coinStats.blocks.lastBlock[0].split(':')[4]) * 1000 || 0
-		var poolLuck = (parseInt(timeSinceLastBlock2)  * 1000 / parseInt(_networkHashRate) / 
-			parseInt(_myHashRate)  * parseInt(coinStats.blockTime) * 1000 * 100|| 0).toFixed(2)
+//  var timeSinceLastBlock2 = Date.now() - (coinStats.blocks?.lastBlock[0].split(':')[4]) * 1000 || 0
+//		var poolLuck = (parseInt(timeSinceLastBlock2)  * 1000 / parseInt(_networkHashRate) / 
+//			parseInt(_myHashRate)  * parseInt(coinStats.blockTime) * 1000 * 100|| 0).toFixed(2)
 //doug poolLuck
 /* var poolLuck =  parseFloat(parseInt(timeSinceLastBlock)  * 1000 /
 parseInt(stats.pools[poolName].poolStats.networkSols) /
 parseInt(stats.pools[poolName].hashrate*2/1000000) *
 parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
 */
+poolLuck = 0;
 		parseFloat(poolLuck);
 		coinStats.poolLuck = poolLuck;
                 coinStats.workerCount = Object.keys(coinStats.workers).length;
@@ -724,10 +725,6 @@ parseInt(stats.pools[poolName].blockTime)*1000 * 100).toFixed(12)
         });
 
     };
-
-
-
-
 
 
     function sortPoolsByName(objects) {

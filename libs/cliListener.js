@@ -1,9 +1,15 @@
 var events = require('events');
 var net = require('net');
-const logger = require('./logger.js').getLogger('CLI', 'system');
+
+
+
+const loggerFactory = require('./logger.js');
+
+
+const logger = loggerFactory.getLogger('CLI', 'system');
 
 var listener = module.exports = function listener(host, port) {
-
+    
     var _this = this;
 
 

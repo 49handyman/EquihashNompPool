@@ -84,14 +84,16 @@ module.exports = function(logger, poolConfig) {
         if (isValidBlock) {
             redisCommands.push(['rename', coin + ':shares:roundCurrent', coin + ':shares:round' + shareData.height]);
 	    redisCommands.push(['rename', coin + ':shares:timesCurrent', coin + ':shares:times' + shareData.height]);
-            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000].join(':')]);
+            redisCommands.push(['sadd', coin + ':blocksPending', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000, shareData.worker].join(':')]);
             redisCommands.push(['zadd', coin + ':lastBlock', dateNow / 1000 | 0, [shareData.blockHash, shareData.txHash, shareData.worker, shareData.height, dateNow / 1000 | 0].join(':')]);
-      //      redisCommands.push(['zadd', coin + ':lastBlockTime', dateNow / 1000 | 0, [dateNow / 1000 | 0, shareData.height].join(':')]);
+            redisCommands.push(['zadd', coin + ':lastBlockTime', dateNow / 1000, [shareData.height, dateNow / 1000, shareData.worker].join(':')]);
             redisCommands.push(['hincrby', coin + ':stats', 'validBlocks', 1]);
             redisCommands.push(['hincrby', coin + ':blocksFound', shareData.worker, 1]);
+            console.log('\u0007'+ 'bell..');
         } else if (shareData.blockHash) {
+            console.log('\u0007'+ 'bell..');
             redisCommands.push(['hincrby', coin + ':stats', 'invalidBlocks', 1]);
-	    redisCommands.push(['sadd', coin + ':blocksRejected', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000,shareData.worker].join(':')]);
+	        redisCommands.push(['sadd', coin + ':blocksRejected', [shareData.blockHash, shareData.txHash, shareData.height, dateNow / 1000, shareData.worker].join(':')]);
         }
         connection.multi(redisCommands).exec(function(err, replies) {
             if (err)
