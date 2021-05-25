@@ -260,19 +260,28 @@ function createDefaultLineChart(ctx, datasets, xLabel, yLabel, annotations) {
 }
 
 function createLineChart(ctx,  datasets, xLabel, yLabel, ticks, annotations) {
+  
     return new Chart(ctx, {
         type: 'line',
         data: {
-            datasets: datasets
+            datasets: datasets,
         },
         options: {
-            spanGaps: false,
-	    annotation: annotations,
+           tooltips: {
+                bevelWidth: 5,
+                bevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                bevelShadowColor: 'rgba(255, 255, 255, 0.5)',
+                shadowOffsetX: 3,
+                shadowOffsetY: 3,
+                shadowBlur: 10,
+                shadowColor: 'rgba(255, 255, 255, 0.5)'
+            },
+
             animation: {
                 easing: 'easeInExpo',
-                duration: 400,
-                xAxis: true,
-                yAxis: true,
+                duration: 0,
+                xAxis: false,
+                yAxis: false
             },
             responsive: true,
             maintainAspectRatio: false,

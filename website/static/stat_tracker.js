@@ -22,6 +22,7 @@ var addWorkerToTracker = function(statData, workerData, address, callback) {
 
 //Adds a pool to the stat tracker
 var addPoolToTracker = function(poolData, poolName, callback) {
+    
     if (stats['p_' + poolName]) {
         updatePoolData(poolData, poolName, callback);
     } else {
@@ -195,11 +196,12 @@ var buildPoolData = function(statData, poolName, callback = null) {
                 pool.averagedWorkers.push([time, 0]);
                 pool.blocks.push([time, 0]);
 		        pool.networkDiff.push([time, 0]);
-                pool.averagedHashrate.push([time, 0]);
+            //    pool.averagedHashrate.push([time, 0]);
            //     pool.averagednetworkDiff.push([time, 0]);
              //   pool.averagednetworkSols.push([time, 0]);
             }
         }
+        
         var key = 'p_' + poolName;
         stats[key] = pool;
         if (callback != null) {
@@ -210,6 +212,7 @@ var buildPoolData = function(statData, poolName, callback = null) {
 
 //updates stat data objects for pools stored within the cache
 var updatePoolData = function(statData, poolName, callback = null) {
+    
     var pool = stats['p_' + poolName];
     if (pool) {
         var time = statData.time * 1000;

@@ -75,7 +75,7 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 
 
 #### Block Explorer<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-3.PNG)<br /><br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/charts.PNG)<br /><br />
 
 -------
 ### Node Open Mining Portal consists of 3 main modules:

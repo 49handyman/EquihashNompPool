@@ -18,7 +18,7 @@ function displayCharts() {
 
     var maxScaleNetwork = getReadableNetworkPair(Math.max.apply(null, stats.networkSols.map(x => x[1])));
     console.log('maxScaleNetwork.maxScaleNetwork: '+maxScaleNetwork)
-
+console.log('stats.averagedHashrate1: '+getReadableHashRate(stats.averagedHashrate[stats.averagedHashrate.length-1].slice(-1)))
     poolHashrateChart = createDefaultLineChart(
         document.getElementById("poolHashChart").getContext('2d'),
 
@@ -33,12 +33,33 @@ function displayCharts() {
                     }
                 }),
                 borderWidth: 1,
-                backgroundColor: '#348EA9',
-                pointHoverRadius: 6,
-                pointBorderColor: '#24becc',
-                pointBorderWidth: 2,
-                pointHitRadius: 1,
-                borderColor: '#348EA9'
+                backgroundColor: 'rgb(54, 162, 235)',
+			    borderColor: 'rgba(54, 255, 255, 0.75)',
+                //outerGlowWidth: 20,
+                outerGlowColor: 'rgba(255, 0, 255, 0.5)',
+                shadowOffsetX: 2,
+                shadowOffsetY: 2,
+                shadowBlur: 8,
+                shadowColor: 'rgba(255, 255, 255, 0.5)',
+                pointRadius: 0,
+                pointHoverRadius: 5,
+                pointBevelWidth: 5,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(255, 255, 255, 0.5)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 0,
+                pointShadowColor: 'rgba(255, 255, 255, 0.5)',
+                pointHoverInnerGlowWidth: 0,
+                pointHoverInnerGlowColor: 'rgba(255, 255, 0, 0.5)',
+                pointHoverOuterGlowWidth: 0,
+                pointHoverOuterGlowColor: 'rgba(255, 255, 0, 1)',
+                backgroundOverlayMode: 'multiply',
+                hoverInnerGlowWidth: 0,
+                hoverInnerGlowColor: 'rgb(255, 255, 0)',
+                hoverOuterGlowWidth: 0,
+                hoverOuterGlowWidth: 'rgb(255, 255, 0)'
+			    
             },
             {
                 label: 'Pool Averaged',
@@ -50,10 +71,14 @@ function displayCharts() {
                     }
                 }),
                 borderWidth: 1,
-                backgroundColor: '#E81D62',
-                pointHoverRadius: 6,
-                pointHitRadius: 1,
-                borderColor: '#E81D62'
+                backgroundColor: 'rgba(255, 40, 40, 0.75)',
+			    borderColor: 'rgba(255, 40, 40, 0.75)',
+                outerGlowColor: 'rgba(255, 0, 255, 0.5)',
+                shadowOffsetX: 2,
+                shadowOffsetY: 2,
+                shadowBlur: 5,
+                shadowColor: 'rgba(255, 255, 255, 0.5)'
+			    
             }
         ],
         'Time',
@@ -65,7 +90,7 @@ function displayCharts() {
         [  
             {
                 label: 'Diff ',
-                fill: true,
+                fill: false,
                 data: stats.networkDiff.map(x => {
                     return {
                         t: x[0],
@@ -73,20 +98,21 @@ function displayCharts() {
                     }
                 }),
                 borderWidth: 1,
-                backgroundColor: '#343a40',
-                borderColor: '#747a70'
+                backgroundColor: 'rgba(40, 40, 255, 0.75)',
+			    borderColor: 'rgba(40, 40, 255, 0.75)',
+                outerGlowColor: 'rgba(255, 0, 255, 0.5)',
+                shadowOffsetX: 1,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(255, 255, 255, 0.5)'
             }
-
         ],
         'Time',
         'G', {
             //   beginAtZero: true,
             //   fixedStepSize: 1
         }
-
     );
-
-
     networkHashrateChart = createLineChart(
         document.getElementById("networkHashrateChart").getContext('2d'),
         [
@@ -100,8 +126,14 @@ function displayCharts() {
                     }
                 }),
                 borderWidth: 1,
-                backgroundColor: '#FBA41F',
-                borderColor: '#FBA41F'
+                backgroundColor: 'rgba(255, 40, 40, 0.75)',
+			    borderColor: 'rgba(255, 40, 40, 0.75)',
+                outerGlowColor: 'rgba(255, 0, 255, 0.5)',
+                shadowOffsetX: 1,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(255, 255, 255, 0.5)'
+
             }
 
         ],
@@ -372,29 +404,33 @@ statsSource.addEventListener('message', function(e) {
        
         // usd fix: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
-      //  $("#bigDiff").html(poolName in stats.pools ?   'BigDiff Blocks</br>'+ parseInt(stats.pools[poolName]?.bigDiff) : 0);
         var time = stats.time * 1000;
-        var avg = pool.averagedHashrate; //pool
-        
-        var averagedhashrate = calculateExpMovingAvg(pool.averagedHashrate, hash)
-        
-        console.log('averaged: '+ getReadableHashRate(averagedhashrate[averagedhashrate.length-1].slice(-1)))
-       console.log('pool.averagedHashrate: '+ avg)
+        var poolHashrateData = pool.averagedHashrate; //pool
+       
+                
+                  
+					
+                   var statsHashrateAvg = getReadableHashRate(calculateAverageHashrate(poolHashrateData.slice(1)))
+                   console.log('statsHashrateAvg: '+statsHashrateAvg)
+    //    addChartData(poolHashrateChart, poolHashrateChart.data.datasets[1], {t: time, y: statsHashrateAvg}, true);
+      
+                  
+            
+       
        
         addChartData(poolHashrateChart, poolHashrateChart.data.datasets[0], {
             t: time,
             y: hash
         }, true);
 
-        // working on average hashrate to add to chart
-        addChartData(poolHashrateChart, poolHashrateChart.data.datasets[1], {t: time, y: getReadableHashRate(averagedhashrate[averagedhashrate.length-1].slice(-1))}, true);
-       console.log('networkDiff: '+ getScaledNetworkDiff(stats.pools[poolName].networkDiff))
+        
+        
         addChartData(networkDiffChart, networkDiffChart.data.datasets[0], {
             t: time,
             y: getScaledNetworkDiff(stats.pools[poolName].networkDiff)
         }, true);
         
-        console.log('networkSols: '+ getScaledNetworkDiff(stats.pools[poolName].networkSols))
+        
         addChartData(networkHashrateChart, networkHashrateChart.data.datasets[0], {
             t: time,
             y: getScaledNetworkDiff(stats.pools[poolName].networkSols)
@@ -496,3 +532,23 @@ this.getReadableHashRatePair = function(hashrate) {
     return [hashrate.toFixed(2), byteUnits[i], i];
 };
 */
+function calculateAverageHashrate(poolHashrateData) {
+		var count = 0;
+		var total = 1;
+		var avg = 0;
+        
+		for (var i = 0; i < poolHashrateData.length; i++) {
+			count = 0;
+           // console.log('poolHashrateData2: '+ poolHashrateData[i].slice(1))
+			for (var ii = 0; ii < poolHashrateData[i].values.length; ii++) {
+				
+					count++;
+					avg += parseFloat(poolHashrateData[i].values[ii][1]);
+				
+			}
+			if (count > total)
+				total = count;
+		}
+		avg = avg / total;
+		return avg;
+}
