@@ -64,6 +64,11 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 #### Pool Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EasyEquihashNomp-1.PNG)<br /><br />
 
+
+#### Pool Charts<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/charts.PNG)<br /><br />
+
+
 #### Worker Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/workers.PNG)<br /><br />
 
@@ -73,9 +78,6 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 #### Miners<br />
 ![Miner's Wallets](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/EquihashNomp2.PNG)<br /><br />
 
-
-#### Block Explorer<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/charts.PNG)<br /><br />
 
 -------
 ### Node Open Mining Portal consists of 3 main modules:
