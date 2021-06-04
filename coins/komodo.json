@@ -11,11 +11,11 @@
 
   "sapling": true,
 
-   "explorer":"https://kmdexplorer.io/",
+   "explorer":"http://pool.entrustus.org:7783/",
     
-    "explorerGetBlockJSON": "http://kmdexplorer.io/api/getrawtransaction?decrypt=1&txid=",
-    "explorerGetBlock": "https://kmdexplorer.io/block/",
-    "explorerGetTX": "https://kmdexplorer.io/tx/",
+    "explorerGetBlockJSON": "http://pool.entrustus.org:7783/api/getrawtransaction?decrypt=1&txid=",
+    "explorerGetBlock": "http://pool.entrustus.org:7783/block/",
+    "explorerGetTX": "http://pool.entrustus.org:7783/tx/",
     
     "blockTime": 60,
     "blockChange": 1

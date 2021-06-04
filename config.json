@@ -25,7 +25,8 @@
     "ethdonations": "0x06273002E7CA03ee114f1C7F9fB04d1C6aEa9dc4",
     "arrrdonations": "zs1gpysaurgl2qce5kdndpw4lsls9kxcfqxzp4ecumueqf3rfz8rfuw25207a9z2xh23zhdcg7getc",
     "xmrdonations": "",
-
+    "logLevel": "warn",
+    "logColors": true,
     "logger" : {
         "level" : "warn",
         "file" : "logs/nomp_debug.log"
@@ -57,8 +58,8 @@
             "host": "127.0.0.1",
             "port": 6379
         },
-	 "poolHex": "4d696e65642042793a706f6f6c2e656e747275737475732e6f7267",
-	"_comment_poolHex": "hex = Mined by: pool.entrustus.org"
+	 "poolHex": "456e74727573747573204368617269747920687474703a2f2f706f6f6c2e656e747275737475732e6f72673a383038332f",
+	"_comment_poolHex": "hex = Entrustus Charity http://pool.entrustus.org:8083/"
     },
     "api": {
 		"enabled": true,
@@ -122,7 +123,7 @@
 
     "switching": {
         "switch1": {
-            "enabled": true,
+            "enabled": false,
             "algorithm": "equihash",
             "ports": {
                 "3333": {

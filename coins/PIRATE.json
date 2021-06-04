@@ -1,6 +1,6 @@
 {
 "name": "pirate-chain",
-"comment_name": "use coingecko id for coin to get live stats and avoid errors",
+"comment_name": "use coingecko id for name to get live stats and avoid errors",
 "symbol": "arrr",
 "blockReward": 32,
 "algorithm": "equihash",

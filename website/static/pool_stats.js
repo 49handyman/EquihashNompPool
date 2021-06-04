@@ -312,7 +312,7 @@ statsSource.addEventListener('message', function(e) {
         $("#lastBlockPaid").html(poolName in stats.pools ? 'Last Block Paid</br>' + parseFloat(stats.pools[poolName]?.payments[0]?.blocks[0]).toLocaleString() : 0);
         $("#lastBlockFound").html(poolName in stats.pools ? 'Last Block Found<BR><a href="' + stats.pools[poolName].explorerGetBlock + stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[0] + '" target="_blank">' + parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[3]).toLocaleString() + '</a>' : 0);
         $("#lastBlockFoundTime").html(poolName in stats.pools ? 'Last Block Time</br>' + readableDate(parseInt(stats.pools[poolName]?.blocks?.lastBlock[0]?.split(':')[4]) * 1000) : 0) //[0]?.split(':')[4] * 1000) || 0 : 0);
-        $("#lastBlockAmt").html(poolName in stats.pools ? 'Last Block Paid</br>' + (parseFloat((stats.pools[poolName]?.payments[0] || 0).paid).toFixed(4) || 0) : 0);
+        $("#lastBlockAmt").html(poolName in stats.pools ? 'Last Payment</br>' + (parseFloat((stats.pools[poolName]?.payments[0] || 0).paid).toFixed(4) || 0) : 0);
         $("#poolWorkers").html(poolName in stats.pools ? 'Workers<BR>'+stats.pools[poolName].workerCount : 0);
         $("#pendingBlocks").html(poolName in stats.pools ? 'Pending Blocks</br>' + stats.pools[poolName]?.blocks?.pending : 0);
         $("#confirmedBlocks").html(poolName in stats.pools ? 'Confirmed Blocks</br>' + stats.pools[poolName]?.blocks?.confirmed : 0);
@@ -436,7 +436,7 @@ statsSource.addEventListener('message', function(e) {
             y: getScaledNetworkDiff(stats.pools[poolName].networkSols)
         }, true);
         
-        //addAnnotationVertical(poolHashrateChart, then, text);
+        addAnnotationVertical(poolHashrateChart, then, text);
 
     });
 }, false);

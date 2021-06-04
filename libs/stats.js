@@ -685,6 +685,7 @@ poolLuck = 0;
                     coinStats.workers[worker].hashrate = _workerRate;
                     coinStats.workers[worker].hashrateString = _this.getReadableHashRateString(_workerRate);
                 }
+                
 
                 delete coinStats.hashrates;
                 delete coinStats.shares;

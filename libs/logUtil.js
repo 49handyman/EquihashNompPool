@@ -12,8 +12,12 @@ var severityToColor = function(severity, text) {
             return text.green;
         case 'warning':
             return text.yellow;
+        case 'warn':
+            return text.yellow;
         case 'error':
             return text.red;
+        case 'silly':
+            return text.purple;
         default:
             console.log("Unknown severity " + severity);
             return text.italic;
@@ -24,8 +28,10 @@ var severityValues = {
     'debug': 1,
     'info': 2,
     'warning': 3,
+    'warn': 3,
     'error': 4,
-    'special': 5
+    'special': 5,
+    'silly': 6,
 };
 
 var PoolLogger = function(configuration) {

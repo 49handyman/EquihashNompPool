@@ -1,6 +1,6 @@
 {
     "name": "EasyNOMP",
-    "version": "1.1.4",
+    "version": "1.2.1",
     "description": "An extremely efficient, highly scalable, all-in-one, easy to setup Equihash mining pool",
     "keywords": [
         "stratum",
@@ -101,7 +101,7 @@
         "should": "^13.2.3",
         "sma": "^0.1.1",
         "sshpk": "^1.15.2",
-        "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git",
+        "stratum-pool": "git+https://github.com/49handyman/node-stratum-pool.git",
         "tradeogre-api": "git+https://github.com/pollodigomma/tradeogre-api.git",
         "underscore": "^1.12.1",
         "winston": "^3.2.1",
@@ -109,7 +109,7 @@
         "winston-transport": "^4.3.0"
     },
     "engines": {
-        "node": ">=8.1.4"
+        "node": ">=10.24.0"
     },
     "scripts": {
         "start": "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/node_modules/stratum-pool/node_modules/equihashverify/build/Release/:$PWD/node_modules/equihashverify/build/Release/ node init.js"

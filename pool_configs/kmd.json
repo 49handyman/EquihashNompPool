@@ -45,7 +45,7 @@
     "3334": {
        "tls":false,
         "diff": 900,
-          "varDiff": {"minDiff": 600, "maxDiff": 999999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
+          "varDiff": {"minDiff": 600, "maxDiff": 4999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
     },
     "3335": {
         "tls":false,
@@ -53,7 +53,7 @@
      }
 
 },
-"poolId": "main",
+"poolId": "kmd-usa",
 "daemons": [{
     "host": "127.0.0.1",
     "port": 8770,

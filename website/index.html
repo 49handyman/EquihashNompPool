@@ -20,6 +20,7 @@
 				<meta name="description" content="{{=it.portalConfig.pagedesc}}" />
 			{{ } else { }}
 				<meta name="description" content="An EasyNOMP cryptocurrency mining pool - https://github.com/leshacat/EasyNOMP" />    
+                
 			{{ } }}
 			
         
@@ -44,7 +45,7 @@
 			{{ if ((it.portalConfig.pagetitle !== "undefined") & (it.portalConfig.pagetitle !== "")) { }}
 				<title>{{=it.portalConfig.pagetitle}}</title>
 			{{ } else { }}
-				<title>EasyNOMP Mining Pool - https://github.com/leshacat/EasyNOMP</title>	    
+				<title>Forked by <a href="https://github.com/49handyman/EquihashNompPool" >Entrust Computer Technology Center</a></title>	    
 			{{ } }}
 	    
 	    
@@ -96,8 +97,8 @@
 					{{ } else { }}
 						<span style="font-size: 18px; color: white;">&nbsp;&nbsp;<b>{{=it.portalConfig.poolname}}</b></span>
 					{{ } }}
-		    
-                    <span style="font-size: 10px; color: white;">Powered by <a href="https://github.com/EasyX-Community/EasyNOMP" target="_blank">EasyX-Community/EasyNOMP</a></span>
+                    <span style="font-size: 10px; color: white;"><i>Forked by <a href="https://github.com/49handyman/EquihashNompPool" >Entrust Computer Technology Center</a></i></span>
+                    
                     <span style="font-size: 16px; color: white;"><i>{{=it.portalConfig.discordtwitterfacebook}}&nbsp;&nbsp;&nbsp;&nbsp;</i></span>
             </nav>
         </header>

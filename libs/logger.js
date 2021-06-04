@@ -1,5 +1,5 @@
 const {createLogger, format, transports} = require('winston');
-const {splat, combine, timestamp, label, printf} = format;
+const {splat, combine, colorize, timestamp, label, printf} = format;
 
 const timezoned = () => {
   return new Date().toLocaleString('en-US', {
@@ -29,13 +29,14 @@ module.exports = {
                     prepend: false,
                     localTime: true,
                     level: logLevel,
-		    colorize: true
+		            colorize: true
                 })
             );
         }
         return createLogger({
             format: combine(
                 splat(),
+                colorize(),
                 label({label: {loggerName: loggerName, coin: coin}}),
                 timestamp({format: timezoned}),
                 printf(info => {
@@ -43,8 +44,8 @@ module.exports = {
                 })
             ),
             level: logLevel,
-	    localTime: true,
-	    colorize: true,
+	        localTime: true,
+	        colorize: true,
             transports: transportz,
         });
     }

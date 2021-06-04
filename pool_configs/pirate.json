@@ -43,13 +43,14 @@
         "diff": 800,
         "varDiff": {
             "minDiff": 600,
-            "maxDiff": 99999,
+            "maxDiff": 4999,
             "targetTime": 65,
             "retargetTime": 60,
             "variancePercent": 30
         }
     }
 },
+"poolId": "arrr-usa",
 "daemons": [{
     "host": "127.0.0.1",
     "port": 7771,
