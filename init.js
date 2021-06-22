@@ -55,12 +55,12 @@ try {
         if (uid) {
             process.setuid(uid);
             logger.warn('Pool Server Starting...')
-            logger2.debug('init', 'POSIX' , 'POSIX Connection Limit Raised to 100K concurrent connections, now running as non-root user: %s', process.getuid());
+            logger.debug('POSIX Connection Limit Raised to 100K concurrent connections, now running as non-root user: %s', process.getuid());
         }
     }
 } catch (e) {
     if (cluster.isMaster) {
-        logger2.debug('init', 'POSIX' , 'POSIX Connection Limit (Safe to ignore) POSIX module not installed and resource (connection) limit was not raised');
+        logger.debug('POSIX Connection Limit (Safe to ignore) POSIX module not installed and resource (connection) limit was not raised');
     }
 }
 
@@ -114,13 +114,13 @@ var buildPoolConfigs = function() {
             var portsF = Object.keys(poolConfigFiles[f].ports);
             for (var g = 0; g < portsF.length; g++) {
                 if (ports.indexOf(portsF[g]) !== -1) {
-                    logger2.error('init', coin , poolConfigFiles[f].fileName, 'Has same configured port of ' + portsF[g] + ' as ' + poolConfigFiles[i].fileName);
+                    logger.error('init', coin , poolConfigFiles[f].fileName, 'Has same configured port of ' + portsF[g] + ' as ' + poolConfigFiles[i].fileName);
                     process.exit(1);
                     return;
                 }
             }
             if (poolConfigFiles[f].coin === poolConfigFiles[i].coin) {
-                logger2.error('init', coin , poolConfigFiles[f].fileName, 'Pool has same configured coin file coins/' + poolConfigFiles[f].coin + ' as ' + poolConfigFiles[i].fileName + ' pool');
+                logger.error('init', coin , poolConfigFiles[f].fileName, 'Pool has same configured coin file coins/' + poolConfigFiles[f].coin + ' as ' + poolConfigFiles[i].fileName + ' pool');
                 process.exit(1);
                 return;
             }
@@ -132,7 +132,7 @@ var buildPoolConfigs = function() {
 
         var coinFilePath = 'coins/' + poolOptions.coinFileName;
         if (!fs.existsSync(coinFilePath)) {
-            logger2.error('init', coin , '[%s] could not find file %s ', poolOptions.coinFileName, coinFilePath);
+            logger.error('init', coin , '[%s] could not find file %s ', poolOptions.coinFileName, coinFilePath);
             return;
         }
 
@@ -142,7 +142,7 @@ var buildPoolConfigs = function() {
         poolOptions.coin = coinProfile;
         poolOptions.coin.name = poolOptions.coin.name.toLowerCase();
         if (poolOptions.coin.name in configs) {
-            logger2.error('init', coin , '%s coins/' + poolOptions.coinFileName +
+            logger.error('init', coin , '%s coins/' + poolOptions.coinFileName +
                 ' has same configured coin name ' + poolOptions.coin.name + ' as coins/' +
                 configs[poolOptions.coin.name].coinFileName + ' used by pool config ' +
                 configs[poolOptions.coin.name].fileName, poolOptions.fileName);
@@ -163,7 +163,7 @@ var buildPoolConfigs = function() {
         }
         configs[poolOptions.coin.name] = poolOptions;
         if (!(coinProfile.algorithm in algos)) {
-            logger2.error('init', coin , '[%s] Cannot run a pool for unsupported algorithm "' + coinProfile.algorithm + '"', coinProfile.name);
+            logger.error('init', '[%s] Cannot run a pool for unsupported algorithm "' + coinProfile.algorithm + '"', coinProfile.name);
             delete configs[poolOptions.coin.name];
         }
     });
@@ -226,7 +226,7 @@ var spawnPoolWorkers = function() {
     Object.keys(poolConfigs).forEach(function(coin) {
         var p = poolConfigs[coin];
         if (!Array.isArray(p.daemons) || p.daemons.length < 1) {
-            logger2.error('init', coin , '[%s] No daemons configured so a pool cannot be started for this coin.', coin);
+            logger.error(coin , '[%s] No daemons configured so a pool cannot be started for this coin.', coin);
             delete poolConfigs[coin];
         } else if (!connection) {
             redisConfig = p.redis;
@@ -234,11 +234,11 @@ var spawnPoolWorkers = function() {
             if (redisConfig.password != "") {
                 connection.auth(redisConfig.password);
                 connection.on("error", function (err) {
-                    logger2.error('init', coin , "redis", coin, "An error occured while attempting to authenticate redis: " + err);
+                    logger.error('init', coin , "redis", coin, "An error occured while attempting to authenticate redis: " + err);
                 });
             }
             connection.on('ready', function(){
-                logger2.debug('PPLNT', coin, 'TimeShare processing setup with redis (' + connection.snompEndpoint + ')');
+                logger.debug(coin, 'TimeShare processing setup with redis (' + connection.snompEndpoint + ')');
             });
         }
     });
@@ -273,7 +273,7 @@ var spawnPoolWorkers = function() {
         worker.type = 'pool';
         poolWorkers[forkId] = worker;
         worker.on('exit', function(code, signal) {
-            logger2.error('init', 'pool' , 'PoolSpawner: Fork %s died, spawning replacement worker...', forkId);
+            logger.error('pool' , 'PoolSpawner: Fork %s died, spawning replacement worker...', forkId);
             setTimeout(function() {
                 createPoolWorker(forkId);
             }, 2000);
@@ -309,7 +309,7 @@ var spawnPoolWorkers = function() {
                             if (!_lastShareTimes[msg.coin][workerAddress] || !_lastStartTimes[msg.coin][workerAddress]) {
                                 _lastShareTimes[msg.coin][workerAddress] = now;
                                 _lastStartTimes[msg.coin][workerAddress] = now;
-                                logger2.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' joined.');
+                                logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' joined.');
                             }
                             // grab last times from memory objects
                             if (_lastShareTimes[msg.coin][workerAddress] != null && _lastShareTimes[msg.coin][workerAddress] > 0) {
@@ -325,15 +325,15 @@ var spawnPoolWorkers = function() {
                             if (timeChangeSec < 900) {
                                 // loyal miner keeps mining :)
                                 redisCommands.push(['hincrbyfloat', msg.coin + ':shares:timesCurrent', workerAddress + "." + poolConfigs[msg.coin].poolId, timeChangeSec]);                            
-                                //logger2.debug('init', coin , 'PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+':{totalTimeSec:'+timeChangeTotal+', timeChangeSec:'+timeChangeSec+'}');
+                                //logger.debug('init', coin , 'PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+':{totalTimeSec:'+timeChangeTotal+', timeChangeSec:'+timeChangeSec+'}');
                                 connection.multi(redisCommands).exec(function(err, replies){
                                     if (err)
-                                        logger2.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
+                                        logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
                                 });
                             } else {
                                 // they just re-joined the pool
                                 _lastStartTimes[workerAddress] = now;
-                                logger2.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' re-joined.');
+                                logger.debug(msg.coin, 'Thread '+msg.thread, workerAddress+' re-joined.');
                             }
                             
                             // track last time share
@@ -354,8 +354,8 @@ var spawnPoolWorkers = function() {
         i++;
         if (i === numForks) {
             clearInterval(spawnInterval);
-            logger2.debug('init', 'PoolSpawner' , 'Master PoolSpawner Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
-           // logger2.debug('Master2', 'PoolSpawner', 'Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
+            logger.debug('PoolSpawner' , 'Master PoolSpawner Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
+           // logger.debug('Master2', 'PoolSpawner', 'Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
 
         }
     }, 250);
@@ -411,7 +411,7 @@ var processCoinSwitchCommand = function(params, options, reply) {
     var logComponent = 'coinswitch';
     var replyError = function(msg) {
         reply(msg);
-        logger2.error('init', 'CLI' ,  msg+' params: '+JSON.stringify(params)+' options: ' +JSON.stringify(options));
+        logger.error('CLI' ,  msg+' params: '+JSON.stringify(params)+' options: ' +JSON.stringify(options));
     };
     if (!params[0]) {
         replyError('Coin name required');
@@ -470,7 +470,7 @@ var startPaymentProcessor = function() {
     for (var pool in poolConfigs) {
         var p = poolConfigs[pool];
         var enabled = p.enabled && p.paymentProcessing && p.paymentProcessing.enabled;
-        logger2.info('init', 'PaymentProcess' , 'startPaymentProcessor if (Enabled) '+ p.enabled + ' '+ p.paymentProcessing+ ' ' + p.paymentProcessing.enabled )
+        logger.info('PaymentProcess' , 'startPaymentProcessor if (Enabled) '+ p.enabled + ' '+ p.paymentProcessing+ ' ' + p.paymentProcessing.enabled )
         if (enabled) {
             enabledForAny = true;
             break;
@@ -483,7 +483,7 @@ var startPaymentProcessor = function() {
         pools: JSON.stringify(poolConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger2.error('init', 'paymentProcess' , 'Master Payment processor died, spawning replacement...');
+        logger.error('paymentProcess' , 'Master Payment processor died, spawning replacement...');
         setTimeout(function() {
             startPaymentProcessor(poolConfigs);
         }, 3000);
@@ -496,7 +496,7 @@ var startmarketStats = function() {
         var p = poolConfigs[pool];
         var enabled = p.enabled && p.marketStats;
         if (enabled) {
-            logger2.info('MarketStats', pool , '\u001b[35m start marketStats if (Enabled) '+ pool+ enabled+ p.enabled+ p.marketStats)
+            logger.info('MarketStats', pool , '\u001b[35m start marketStats if (Enabled) '+ pool+ enabled+ p.enabled+ p.marketStats)
             enabledForAny = true;
             break;
         }
@@ -508,7 +508,7 @@ var startmarketStats = function() {
         pools: JSON.stringify(poolConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger2.error('MarketStats', pool , 'Master marketStats Processor MarketStats died, spawning replacement...'+ code+ signal);
+        logger.error('MarketStats', pool , 'Master marketStats Processor MarketStats died, spawning replacement...'+ code+ signal);
         setTimeout(function() {
             startmarketStats(poolConfigs);
         }, 2000);
@@ -534,7 +534,7 @@ var startAuxPaymentProcessor = function() {
         pools: JSON.stringify(auxConfigs)
     });
     worker.on('exit', function(code, signal) {
-        logger2.error('init', 'PaymentProcess' , 'Master Auxilliary Payment Processor Auxilliary Payment processor died, spawning replacement...');
+        logger.error('Master Auxilliary Payment Processor Auxilliary Payment processor died, spawning replacement...');
         setTimeout(function() {
             startPaymentProcessor(auxConfigs);
         }, 2000);
@@ -550,7 +550,7 @@ var startWebsite = function() {
         portalConfig: JSON.stringify(portalConfig)
     });
     worker.on('exit', function(code, signal) {
-        logger2.error('init', 'Website' , 'Master Website process died, spawning replacement...');
+        logger.error('Website' , 'Master Website process died, spawning replacement...');
         setTimeout(function() {
             startWebsite(portalConfig, poolConfigs);
         }, 2000);
@@ -566,7 +566,7 @@ var startProfitSwitch = function() {
         portalConfig: JSON.stringify(portalConfig)
     });
     worker.on('exit', function(code, signal) {
-        logger2.error('init', workerType , 'Profit switching process died, spawning replacement...');
+        logger.error(workerType , 'Profit switching process died, spawning replacement...');
         setTimeout(function() {
             startProfitSwitch(portalConfig, poolConfigs);
         }, 2000);

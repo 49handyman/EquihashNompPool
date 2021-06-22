@@ -33,22 +33,22 @@
             "user": "entrust",
             "password": "entrust"
         }
-    },
 
 
+},
 "trackShares": { "disable": false },
 "ports": {
-    "3348": {
-        "tls":false,
-        "diff": 800,
-        "varDiff": {
-            "minDiff": 600,
-            "maxDiff": 4999,
-            "targetTime": 65,
-            "retargetTime": 60,
-            "variancePercent": 30
-        }
-    }
+     "3348": {
+        "tls": false,
+         "diff": 1200,
+           "varDiff": {"minDiff": 600, "maxDiff": 4999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
+     },
+"3347": {
+         "tls": false,
+          "diff": 1300
+      }
+
+
 },
 "poolId": "arrr-usa",
 "daemons": [{
@@ -56,7 +56,15 @@
     "port": 7771,
     "user": "entrust",
     "password": "entrust"
-}],
+},
+{
+     "host": "127.0.0.1",
+     "port": 7771,
+     "user": "entrust",
+     "password": "entrust"
+ }
+
+],
 
 "p2p": {
         "enabled": true,

@@ -99,7 +99,13 @@
               <th style="text-align:center;vertical-align: middle;">Node Connectons<BR>{{=it.stats.pools[pool].poolStats.networkConnections}}</th>
                 <th id="netTime" style="text-align:center;vertical-align: middle;">Net Time</th>
               <th id="synced"  style="text-align:center;vertical-align: middle;">Wallet Synced</BR?</th>
-              <th id="" style="text-align:center;vertical-align: middle;">blank2</th>
+
+              
+             
+              
+              <th colspan="1" style="text-align:center;vertical-align: middle;">
+               Wallet Port<BR> {{=it.poolsConfigs[pool].daemons[0].port}}</th>
+              
             </tr>
             {{ var sortedPools = Object.keys(it.stats.pools); }}
             {{ sortedPools.sort(function(a, b) { return a.workerCount - b.workerCount; }); }}

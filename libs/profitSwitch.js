@@ -24,11 +24,9 @@ var PoolLogger = require('./logUtil.js');
 const loggerFactory = require('./logger.js');
 let componentStr = `ProfitSwitch`;
 let logger = loggerFactory.getLogger(componentStr, 'system');
-var logger2 = new PoolLogger({
-    logColors: true
-});
+
 module.exports = function() {
-logger2.debug(componentStr, 'system', 'profit swtich called')
+//logger.debug('profit swtich called')
     var _this = this;
     var portalConfig = JSON.parse(process.env.portalConfig);
     var poolConfigs = JSON.parse(process.env.pools);
@@ -53,10 +51,10 @@ logger2.debug(componentStr, 'system', 'profit swtich called')
             reward: 0,
             exchangeInfo: {}
         };
-        logger2.debug(componentStr, 'system', 'coinStatus: '+JSON.stringify(coinStatus))
+  //      logger.debug('coinStatus: '+JSON.stringify(coinStatus))
         profitStatus[algo][poolConfig.coin.symbol] = coinStatus;
         symbolToAlgorithmMap[poolConfig.coin.symbol] = algo;
-        logger2.debug(componentStr, 'system', 'algo: '+JSON.stringify(algo))
+  //      logger.debug('algo: '+JSON.stringify(algo))
     });
 
 
@@ -65,18 +63,18 @@ logger2.debug(componentStr, 'system', 'profit swtich called')
     //
     Object.keys(profitStatus).forEach(function(algo) {
         if (Object.keys(profitStatus[algo]).length <= 1) {
-            logger2.debug(componentStr, 'system', 'profitStatus[algo]: '+JSON.stringify(profitStatus[algo]))
+  //          logger.debug('profitStatus[algo]: '+JSON.stringify(profitStatus[algo]))
             delete profitStatus[algo];
             Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
-                logger2.debug(componentStr, 'system', 'symbolToAlgorithmMap[symbol] : '+JSON.stringify(symbolToAlgorithmMap[symbol] ))
+  //              logger.debug('symbolToAlgorithmMap[symbol] : '+JSON.stringify(symbolToAlgorithmMap[symbol] ))
                 if (symbolToAlgorithmMap[symbol] === algo)
                     delete symbolToAlgorithmMap[symbol];
             });
         }
     });
     if (Object.keys(profitStatus).length == 0) {
-        logger2.error(componentStr, 'system','Config, No alternative coins to switch to in current config, switching disabled.');
-        logger2.error(componentStr, 'system','profitStatus keys called...' + JSON.stringify(profitStatus))
+//        logger.error('Config, No alternative coins to switch to in current config, switching disabled.');
+//        logger.error('profitStatus keys called...' + JSON.stringify(profitStatus))
         return;
     }
 // Helper methods
@@ -101,7 +99,7 @@ function joinCurrencies(currencyA, currencyB) {
         bittrex_api_key,
         bittrex_api_secret
     );
-    logger2.debug(componentStr, 'system', 'profitSwitch Called...');
+//    logger.debug('profitSwitch Called...');
     // 
     // market data collection from Poloniex
     //
@@ -109,7 +107,7 @@ function joinCurrencies(currencyA, currencyB) {
         async.series([
             function(taskCallback) {
                 poloApi.getTicker(function(err, data) {
-                    logger2.debug(componentStr, 'system', 'getProfitDataPoloniex called...'+err)
+//                    logger.debug('getProfitDataPoloniex called...'+err)
                     if (err) {
                         taskCallback(err);
                         return;
@@ -117,7 +115,7 @@ function joinCurrencies(currencyA, currencyB) {
 
                     Object.keys(symbolToAlgorithmMap).forEach(function(symbol) {
                         var exchangeInfo = profitStatus[symbolToAlgorithmMap[symbol]][symbol].exchangeInfo;
-                        logger2.debug(componentStr, 'system', 'exchangeInfo called...'+JSON.stringify(exchangeInfo))
+//                        logger.debug('exchangeInfo called...'+JSON.stringify(exchangeInfo))
                         if (!exchangeInfo.hasOwnProperty('Poloniex'))
                             exchangeInfo['Poloniex'] = {};
                         var marketData = exchangeInfo['Poloniex'];
@@ -193,7 +191,7 @@ function joinCurrencies(currencyA, currencyB) {
     };
     this.getMarketDepthFromPoloniex = function(symbolA, symbolB, coinPrice, callback) {
         poloApi.getOrderBook(symbolA, symbolB, function(err, data) {
-            logger2.debug(componentStr, 'system', 'getMarketDepthFromPoloniex called...'+err)
+//            logger.debug('getMarketDepthFromPoloniex called...'+err)
             if (err) {
                 callback(err);
                 return;
@@ -224,11 +222,11 @@ function joinCurrencies(currencyA, currencyB) {
 
 
     this.getProfitDatatradeOgre = function(callback) {
-        logger2.debug(componentStr, 'system', 'getProfitData tradeOgre called...')
+//        logger.debug('getProfitData tradeOgre called...')
         async.series([
             function(taskCallback) {
                 tradeOgreApi.getTicker(joinCurrencies(symbolA,symbolB), function(err, response) {
-                    logger2.debug(componentStr, 'system', 'tradeOgre getTicker called...'+err+response)
+//                    logger.debug('tradeOgre getTicker called...'+err+response)
                     if (err || !response.result) {
                         taskCallback(err);
                         return;
@@ -309,7 +307,7 @@ function joinCurrencies(currencyA, currencyB) {
     this.getMarketDepthFromtradeOgre = function(symbolA, symbolB, coinPrice, callback) {
 
         tradeOgreApi.getOrderBook(joinCurrencies(symbolA,symbolB), function(err, response) {
-            logger2.debug(componentStr, 'system', 'tradeOgre  getOrderBook called...'+err + response)
+//            logger.debug('tradeOgre  getOrderBook called...'+err + response)
             if (err) {
                 callback(err);
                 return;
@@ -340,11 +338,11 @@ function joinCurrencies(currencyA, currencyB) {
    
 
     this.getProfitDataBittrex = function(callback) {
-        logger2.debug(componentStr, 'system', 'getProfitDataBittrex called...')
+  //      logger.debug('getProfitDataBittrex called...')
         async.series([
             function(taskCallback) {
                 bittrexApi.getTicker(function(err, response) {
-                    logger2.debug(componentStr, 'system', 'getProfitDataBittrex called...'+JSON.stringify(err))
+//                    logger.debug('getProfitDataBittrex called...'+JSON.stringify(err))
                     if (err || !response.result) {
                         taskCallback(err);
                         return;
@@ -425,7 +423,7 @@ function joinCurrencies(currencyA, currencyB) {
     this.getMarketDepthFromBittrex = function(symbolA, symbolB, coinPrice, callback) {
 
         bittrexApi.getOrderBook(symbolA, symbolB, function(err, response) {
-            logger2.debug(componentStr, 'system', 'getProfitDataBittrex called...'+JSON.stringify(err))
+//            logger.debug('getProfitDataBittrex called...'+JSON.stringify(err))
             if (err) {
                 callback(err);
                 return;
@@ -483,7 +481,7 @@ function joinCurrencies(currencyA, currencyB) {
         var daemon = new Stratum.daemon.interface([cfg], function(severity, message) {
             logger[severity](logSystem, symbol, message);
 
-            logger2.debug(componentStr, 'system', 'getDaemonInfoForCoin called ...', daemon, symbol, cfg, message);
+//            logger.debug('getDaemonInfoForCoin called ...', daemon, symbol, cfg, message);
             callback(null); // fail gracefully for each coin
         });
 
@@ -491,19 +489,20 @@ function joinCurrencies(currencyA, currencyB) {
             "capabilities": ["coinbasetxn", "workid", "coinbase/append"]
         }], function(result) {
             if (result[0].error != null) {
-                logger2.debug(componentStr, 'system', symbol, 'Error while reading daemon info: ' + JSON.stringify(result[0]));
+                logger.debug(symbol, 'Error while reading daemon info: ' + JSON.stringify(result[0]));
                 callback(null); // fail gracefully for each coin
                 return;
             }
             var coinStatus = profitStatus[symbolToAlgorithmMap[symbol]][symbol];
             var response = result[0].response;
-
+//logger.warn('response: '+JSON.stringify(response));
             // some shitcoins dont provide target, only bits, so we need to deal with both
             var target = response.target ? bignum(response.target, 16) : util.bignumFromBitsHex(response.bits);
-            coinStatus.difficulty = parseFloat((diff1 / target.toNumber()).toFixed(9));
-            logger2.debug(componentStr, 'system', symbol, 'difficulty is ' + coinStatus.difficulty);
+            coinStatus.difficulty = parseFloat((diff1 / target.toNumber()).toFixed(9)/2);
+            logger.debug(symbol, 'difficulty is ' + coinStatus.difficulty);
 
-            coinStatus.reward = response.coinbasevalue / 100000000;
+            coinStatus.reward = response.coinbasetxn.coinbasevalue / 100000000;
+logger.warn('reward: ' + response.coinbasetxn.coinbasevalue)
             callback(null);
         });
     };
@@ -515,7 +514,10 @@ function joinCurrencies(currencyA, currencyB) {
             Object.keys(profitStatus[algo]).forEach(function(symbol) {
                 var coinStatus = profitStatus[symbolToAlgorithmMap[symbol]][symbol];
                 coinStatus.blocksPerMhPerHour = 86400 / ((coinStatus.difficulty * Math.pow(2, 32)) / (1 * 1000 * 1000));
+coinStatus.blocksPerMhPerDay = 14400 / ((coinStatus.difficulty * Math.pow(2, 32)) / (1 * 1000 * 1000));
+//logger.warn('symbol: '+symbol +'  blocksPerDay: '+ coinStatus.blocksPerMhPerDay) ;
                 coinStatus.coinsPerMhPerHour = coinStatus.reward * coinStatus.blocksPerMhPerHour;
+// logger.warn('symbol: '+symbol +'  '+' coinStatus: ' + JSON.stringify(coinStatus));
             });
         });
         callback(null);
@@ -535,29 +537,26 @@ function joinCurrencies(currencyA, currencyB) {
 
                 Object.keys(coinStatus.exchangeInfo).forEach(function(exchange) {
                     var exchangeData = coinStatus.exchangeInfo[exchange];
-                    if (exchangeData.hasOwnProperty('BTC') && exchangeData['BTC'].hasOwnProperty('weightedBid')) {
-                        var btcPerMhPerHour = exchangeData['BTC'].weightedBid * coinStatus.coinsPerMhPerHour;
+                  //  if (exchangeData.hasOwnProperty('BTC') && exchangeData['BTC'].hasOwnProperty('weightedBid')) {
+                  //      var btcPerMhPerHour = exchangeData['BTC'].weightedBid * coinStatus.coinsPerMhPerHour;
+
+
+if (symbol == 'kmd'){var btcPerMhPerHour =  0.00002767 * coinStatus.coinsPerMhPerHour;}
+if (symbol == 'arrr'){var btcPerMhPerHour = 0.00010827 * coinStatus.coinsPerMhPerHour;}
+//logger.warn('symbol: '+ symbol + ' btcPerMhPerHour: '+ btcPerMhPerHour);
+var btcPerMhPerHour = 0.00010827 * coinStatus.coinsPerMhPerHour;
                         if (btcPerMhPerHour > bestBtcPerMhPerHour) {
                             bestBtcPerMhPerHour = btcPerMhPerHour;
                             bestExchange = exchange;
                             bestCoin = profitStatus[algo][symbol].name;
                         }
                         coinStatus.btcPerMhPerHour = btcPerMhPerHour;
-                        logger2.debug(componentStr, 'system', 'CALC', 'BTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
-                    }
-                    if (exchangeData.hasOwnProperty('LTC') && exchangeData['LTC'].hasOwnProperty('weightedBid')) {
-                        var btcPerMhPerHour = (exchangeData['LTC'].weightedBid * coinStatus.coinsPerMhPerHour) * exchangeData['LTC'].ltcToBtc;
-                        if (btcPerMhPerHour > bestBtcPerMhPerHour) {
-                            bestBtcPerMhPerHour = btcPerMhPerHour;
-                            bestExchange = exchange;
-                            bestCoin = profitStatus[algo][symbol].name;
-                        }
-                        coinStatus.btcPerMhPerHour = btcPerMhPerHour;
-                        logger2.debug(componentStr, 'system', 'CALC', 'LTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
-                    }
+// logger.warn('bestcoin: '+bestCoin +' symbol: '+ symbol + ' coin profit: '+ 0.00010827 * coinStatus.coinsPerMhPerHour);
+//                        logger.debug('CALC', 'BTC/' + symbol + ' on ' + exchange + ' with ' + coinStatus.btcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
+                   // }
                 });
             });
-            logger2.debug(componentStr, 'system', 'RESULT', 'Best coin for ' + algo + ' is ' + bestCoin + ' on ' + bestExchange + ' with ' + bestBtcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
+            logger.debug('RESULT', 'Best coin for ' + algo + ' is ' + bestCoin + ' on ' + bestExchange + ' with ' + bestBtcPerMhPerHour.toFixed(8) + ' BTC/day per Mh/s');
 
 
             var client = net.connect(portalConfig.cliPort, function() {
@@ -570,9 +569,9 @@ function joinCurrencies(currencyA, currencyB) {
                 }) + '\n');
             }).on('error', function(error) {
                 if (error.code === 'ECONNREFUSED')
-                    logger2.error(componentStr, 'system','CLI: Could not connect to NOMP instance on port ' + portalConfig.cliPort);
+                    logger.error('CLI: Could not connect to NOMP instance on port ' + portalConfig.cliPort);
                 else
-                    logger2.error(componentStr, 'system','CLI: Socket error ' + JSON.stringify(error));
+                    logger.error('CLI: Socket error ' + JSON.stringify(error));
             });
 
         });
@@ -580,7 +579,7 @@ function joinCurrencies(currencyA, currencyB) {
 
 
     var checkProfitability = function() {
-        logger2.info(componentStr, 'system','Check: Collecting profitability data.');
+//        logger.info('Check: Collecting profitability data.');
 
         profitabilityTasks = [];
         if (portalConfig.profitSwitch.usePoloniex)
@@ -601,7 +600,7 @@ function joinCurrencies(currencyA, currencyB) {
         // has to be series 
         async.series(profitabilityTasks, function(err) {
             if (err) {
-                logger2.error(componentStr, 'system','Check: Error while checking profitability: ' + JSON.stringify(err));
+                logger.error('Check: Error while checking profitability: ' + JSON.stringify(err));
                 return;
             }
             //

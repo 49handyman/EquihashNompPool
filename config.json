@@ -25,10 +25,10 @@
     "ethdonations": "0x06273002E7CA03ee114f1C7F9fB04d1C6aEa9dc4",
     "arrrdonations": "zs1gpysaurgl2qce5kdndpw4lsls9kxcfqxzp4ecumueqf3rfz8rfuw25207a9z2xh23zhdcg7getc",
     "xmrdonations": "",
-    "logLevel": "warn",
+    "logLevel": "info",
     "logColors": true,
     "logger" : {
-        "level" : "warn",
+        "level" : "info",
         "file" : "logs/nomp_debug.log"
     },
 
@@ -97,11 +97,11 @@
 
     "website": {
         "enabled": true,
-        "sslenabled": false,
-        "sslforced": false,
+        "sslenabled": true,
+        "sslforced": true,
         "host": "0.0.0.0",
         "port": 8083,
-        "sslport": 743,
+        "sslport": 8443,
         "sslkey": "certs/privkey.pem",
         "sslcert": "certs/fullchain.pem",
         "stratumHost": "pool.entrustus.org",

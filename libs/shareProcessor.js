@@ -3,9 +3,7 @@ var Stratum = require('stratum-pool');
 var PoolLogger = require('./logUtil.js');
 const loggerFactory = require('./logger.js');
 const logger = loggerFactory.getLogger('Shares', 'system');
-var logger2 = new PoolLogger({
-    logColors: true
-});
+
 
 
 /*
@@ -18,9 +16,7 @@ value: a hash with..
 
  */
 
-var logSystem;
-var logComponent; 
-var logSubCat;
+
 module.exports = function(logger, poolConfig) {
     
     var redisConfig = poolConfig.redis;
@@ -31,19 +27,19 @@ module.exports = function(logger, poolConfig) {
     var connection = redis.createClient(redisConfig.port, redisConfig.host);
     var client = redis.createClient(redisConfig.port, redisConfig.host);
     connection.on('ready', function() {
-        logger2.debug(logSystem, logComponent, logSubCat,'Share processing setup with redis (' + redisConfig.host +
+        logger.debug('Share processing setup with redis (' + redisConfig.host +
             ':' + redisConfig.port + ')');
     });
     connection.on('error', function(err) {
-        logger2.error(logSystem, logComponent, logSubCat, 'Redis client had an error: ' + JSON.stringify(err))
+        logger.error('Redis client had an error: ' + JSON.stringify(err))
     });
     connection.on('end', function() {
-        logger2.error(logSystem, logComponent, logSubCat, 'Connection to redis database has been ended');
+        logger.error('Connection to redis database has been ended');
     });
 
     connection.info(function(error, response) {
         if (error) {
-            logger2.error(logSystem, logComponent, logSubCat, 'Redis version check failed');
+            logger.error('Redis version check failed');
             return;
         }
         var parts = response.split('\r\n');
@@ -60,15 +56,16 @@ module.exports = function(logger, poolConfig) {
             }
         }
         if (!version) {
-            logger2.error(logSystem, logComponent, logSubCat, 'Could not detect redis version - but be super old or broken');
+            logger.error('Could not detect redis version - but be super old or broken');
         } else if (version < 2.6) {
-            logger2.error(logSystem, logComponent, logSubCat, "You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
+            logger.error("You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
         }
         var startTime = [];
         startTime.push(['hset', coin + ':stats', 'poolStartTime', Date.now() / 1000]);
+        logger.warn('Pool Restarted')
         connection.multi(startTime).exec(function(err, replies) {
             if (err)
-                logger2.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
+                logger.error('Error with share processor multi ' + JSON.stringify(err));
         });
     });
 
@@ -105,7 +102,7 @@ module.exports = function(logger, poolConfig) {
         }
         connection.multi(redisCommands).exec(function(err, replies) {
             if (err)
-                logger2.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
+                logger.error('Error with share processor multi ' + JSON.stringify(err));
         });
 
 /*

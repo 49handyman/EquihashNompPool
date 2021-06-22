@@ -5,15 +5,11 @@ const functions = require('./functions.js');
 var MposCompatibility = require('./mposCompatibility.js');
 var ShareProcessor = require('./shareProcessor.js');
 const loggerFactory = require('./logger.js');
-var PoolLogger = require('./logUtil.js');
- var logger2 = new PoolLogger({
-        logColors: true
-    });
+
+
 module.exports = function() {
     const logger = loggerFactory.getLogger('PoolWorker', 'system');
-        var logger2 = new PoolLogger({
-        logColors: true
-    });
+       
     var _this = this;
     var poolConfigs = JSON.parse(process.env.pools);
     var portalConfig = JSON.parse(process.env.portalConfig);
@@ -53,11 +49,11 @@ module.exports = function() {
         var proxyPorts = Object.keys(proxySwitch[switchName].ports);
 
         if (newCoin == oldCoin) {
-            logger2.debug('PoolWorker', 'system', 'Switch message would have no effect - ignoring %s', newCoin);
+            logger.debug('Switch message would have no effect - ignoring %s', newCoin);
             return;
         }
 
-        logger2.debug('PoolWorker', 'system', 'Proxy message for %s from %s to %s', algo, oldCoin, newCoin);
+        logger.debug('Proxy message for %s from %s to %s', algo, oldCoin, newCoin);
 
         if (newPool) {
             oldPool.relinquishMiners(
@@ -73,9 +69,9 @@ module.exports = function() {
 
             redisClient.hset('proxyState', algo, newCoin, function(error, obj) {
                 if (error) {
-                    logger2.error('Redis error writing proxy config, err = %s', JSON.stringify(err))
+                    logger.error('Redis error writing proxy config, err = %s', JSON.stringify(err))
                 } else {
-                    logger2.debug('Last proxy state saved to redis for %s', algo);
+                    logger.debug('Last proxy state saved to redis for %s', algo);
                 }
             });
         }
@@ -153,8 +149,8 @@ module.exports = function() {
 
                 var authString = authorized ? 'Authorized' : 'Unauthorized ';
 
-              //  logger2.debug('PoolWorker', 'system', 'AUTH>TRUE> authstr '+' ip [%s]', authString,  functions.anonymizeIP(ip));
-                logger2.debug('PoolWorker', 'system', 'AUTH>TRUE> authstr '+ authString +' ip '+   functions.anonymizeIP(ip));
+              //  logger.debug('AUTH>TRUE> authstr '+' ip [%s]', authString,  functions.anonymizeIP(ip));
+                logger.debug('AUTH>TRUE> authstr '+ authString +' ip '+   functions.anonymizeIP(ip));
                 callback({
                     error: null,
                     authorized: authorized,
@@ -172,21 +168,21 @@ module.exports = function() {
             let workerInfo = workerStr.split('.');
             logger.silly('onStratumPoolShare');
             var shareDataJsonStr = JSON.stringify(data);
-            var logger2 = new PoolLogger({logColors: true});
+          //pm2   var logger2 = new PoolLogger({logColors: true});
             
             if (data.blockHash && !isValidBlock) {
                 if (workerInfo.length === 2) {
-                    logger2.info('PoolWorker', 'system', '\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
+                    logger.info('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
                 } else {
-                    logger2.info('PoolWorker', 'system', '\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
+                    logger.info('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
                 }
             } else if (isValidBlock) {
                 if (workerInfo.length === 2) {
-                    logger2.info('PoolWorker', 'system', '\u001b[33mBLOCK>ACCEPTED> '+data.blockHash+' by worker: \u001b[37m'+ workerInfo[1]);
-                    logger2.info('PoolWorker', 'system', '\u001b[33mBLOCK>ACCEPTED>INFO> '+data.shareDiff+' \u001b[37m'+ JSON.stringify(data));
+                    logger.info('\u001b[33mBLOCK>ACCEPTED> '+data.blockHash+' by worker: \u001b[37m'+ workerInfo[1]);
+                    logger.info('\u001b[33mBLOCK>ACCEPTED>INFO> '+data.shareDiff+' \u001b[37m'+ JSON.stringify(data));
                 } else {
-                    logger2.info('PoolWorker', 'system', '\u001b[33mBLOCK>ACCEPTED> '+data.blockHash+' by '+workerInfo[1]+' worker: none\u001b[37m');
-                    logger2.info('PoolWorker', 'system', '\u001b[33mBLOCK>ACCEPTED>INFO> \u001b[37m'+ JSON.stringify(data));
+                    logger.info('\u001b[33mBLOCK>ACCEPTED> '+data.blockHash+' by '+workerInfo[1]+' worker: none\u001b[37m');
+                    logger.info('\u001b[33mBLOCK>ACCEPTED>INFO> \u001b[37m'+ JSON.stringify(data));
                 }
             }
 
@@ -194,26 +190,26 @@ module.exports = function() {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
-			logger2.info(componentStr, coin, '\u001b[33mSHARE>WARN> Share was found with diff: '+data.shareDiff+', higher than 1,000,000,000!\u001b[37m ');
+			logger.info('\u001b[33mSHARE>WARN> Share was found with diff: '+data.shareDiff+', higher than 1,000,000,000!\u001b[37m ');
                     } else if (data.shareDiff > 1000000) {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
-			 logger2.info(componentStr, coin, '\u001b[33mSHARE>WARN> Share was found with diff: '+data.shareDiff+', higher than 1,000,000!\u001b[37m ');
+			 logger.info('\u001b[33mSHARE>WARN> Share was found with diff: '+data.shareDiff+', higher than 1,000,000!\u001b[37m ');
                     }
-                    logger2.info(componentStr, coin, '\u001b[32mSHARE>ACCEPTED> job: '+data.job+' req: '+data.difficulty+ ' res: '+data.shareDiff +' by '+workerInfo[1] +' \u001b[37m' + functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[32mSHARE>ACCEPTED> job: '+data.job+' req: '+data.difficulty+ ' res: '+data.shareDiff +' by '+workerInfo[1] +' \u001b[37m' + functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger2.info(componentStr, coin, '\u001b[31mSHARE>REJECTED>2 job: '+data.job+' diff: '+data.difficulty+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error + ' ' + functions.anonymizeIP(data.ip));                }
+                    logger.info('\u001b[31mSHARE>REJECTED>2 job: '+data.job+' diff: '+data.difficulty+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error + ' ' + functions.anonymizeIP(data.ip));                }
             } else {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
 			redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
- 			logger2.info(componentStr, coin, '\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+data.shareDiff);
+ 			logger.info('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+data.shareDiff);
                     } else if (data.shareDiff > 1000000) {
 			 redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
-			 logger2.info(componentStr, coin, '\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+data.shareDiff);
+			 logger.info('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+data.shareDiff);
                     }
-                    logger2.info(componentStr, coin, '\u001b[32mSHARE>ACCEPTED> job: '+data.job+' req: '+data.difficulty+ 'res: '+data.shareDiff +' by '+workerInfo[1] +' \u001b[37m' + functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[32mSHARE>ACCEPTED> job: '+data.job+' req: '+data.difficulty+ 'res: '+data.shareDiff +' by '+workerInfo[1] +' \u001b[37m' + functions.anonymizeIP(data.ip));
                 } else if (!isValidShare) {
-                    logger2.info(componentStr, coin, '\u001b[31mSHARE>REJECTED> job: '+data.job+' diff: '+data.difficulty+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error + ' ' + functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[31mSHARE>REJECTED> job: '+data.job+' diff: '+data.difficulty+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error + ' ' + functions.anonymizeIP(data.ip));
                 }
             }
 
@@ -227,14 +223,14 @@ module.exports = function() {
 
 
             if (workerInfo.length === 2) {
-                logger2.info(componentStr, coin, '\u001b[35mDIFFICULTY>UPDATE> diff: '+diff+' worker: \u001b[37m' + workerInfo[1]);
+                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: '+diff+' worker: \u001b[37m' + workerInfo[1]);
             } else {
-                logger2.info(componentStr, coin, '\u001b[35mDIFFICULTY>UPDATE> diff: '+diff+' worker: \u001b[37m' + workerStr);
+                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: '+diff+' worker: \u001b[37m' + workerStr);
             }
 
             handlers.diff(workerName, diff);
         }).on('log', function(severity, text) {
-            logger2.info('PoolWorker', 'system', text);
+            logger.info(text);
         }).on('banIP', function(ip, worker) {
             process.send({
                 type: 'banIP',
@@ -258,7 +254,7 @@ module.exports = function() {
         // Load proxy state for each algorithm from redis which allows NOMP to resume operation
         // on the last pool it was using when reloaded or restarted
         //
-        logger2.debug('PoolWorker', 'system', 'Loading last proxy state from redis');
+        logger.debug('Loading last proxy state from redis');
 
         redisClient.on('error', function(err) {
             logger.debug('Pool configuration failed: ' + err);
@@ -267,7 +263,7 @@ module.exports = function() {
         redisClient.hgetall("proxyState", function(error, obj) {
             if (!error && obj) {
                 proxyState = obj;
-                logger2.debug('PoolWorker', 'system', 'Last proxy state loaded from redis');
+                logger.debug('Last proxy state loaded from redis');
             }
 
             //
@@ -299,7 +295,7 @@ module.exports = function() {
                         var currentPool = proxySwitch[switchName].currentPool;
 
                         //todo to string interpolation, i'm tired
-                        logger2.debug('PoolWorker', 'system', 'Connection to ' +
+                        logger.debug('Connection to ' +
                             switchName + ' from ' +
                             socket.remoteAddress + ' on ' +
                             port + ' routing to ' + currentPool);
@@ -312,7 +308,7 @@ module.exports = function() {
 
                     }).listen(parseInt(port), function() {
                         //todo to string interpolation, i'm tired
-                        logger2.debug('PoolWorker', 'system', 'Switching "' + switchName +
+                        logger.debug('Switching "' + switchName +
                             '" listening for ' + algorithm +
                             ' on port ' + port +
                             ' into ' + proxySwitch[switchName].currentPool);
@@ -342,7 +338,7 @@ module.exports = function() {
     this.setDifficultyForProxyPort = function(pool, coin, algo) {
 
 
-        logger2.debug('PoolWorker', 'system', `[${algo}] Setting proxy difficulties after pool start`);
+        logger.debug(`[${algo}] Setting proxy difficulties after pool start`);
 
         Object.keys(portalConfig.switching).forEach(function(switchName) {
             if (!portalConfig.switching[switchName].enabled) {
