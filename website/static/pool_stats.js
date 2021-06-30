@@ -297,7 +297,9 @@ statsSource.addEventListener('message', function(e) {
 
       //  console.log('ARRR-BTCUSD: '+ exchangeRate +' '+BTCUSD+' '+parseFloat(BTCUSD) * exchangeRate)
         var exchangeName = stats.pools[poolName]?.wallet.exchangeWallet.exchange;
-	$("#synced").html('Wallet Synced</br>' + stats.pools[poolName].poolStats.synced);
+        var synced = stats.pools[poolName].poolStats.synced;
+        if (!stats.pools[poolName].poolStats.synced){synced= false};
+	    $("#synced").html('Wallet Synced</br>' + synced);
         $("#blockReward").html(poolName + '<BR>Block Reward<BR>' + reward + ' ' + stats.pools[poolName].symbol);
         $("#revenue").html('Est Daily<BR>Revenue<br>$' + parseFloat(revenue).toFixed(2));
         $("#poolLuck").html(parseFloat(poolLuck).toFixed(2) + ' %' + '<br> Pool Luck ');

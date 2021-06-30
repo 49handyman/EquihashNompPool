@@ -9,11 +9,11 @@
     "anonymizeips": false,
     "ipv4bits": 16,
     "ipv6bits": 16,
-    "poolwarningmsg": "Public Alert - Do Not Use this Pool - This is a private mining pool and you may not receive any payouts.",
+    "poolwarningmsg": "Public Alert -  This is a private mining pool and you may not receive any payouts.",
     "defaultCoin": "pirate-chain",
     "poollogo": "/static/icons/entrustcircle-circuit.png",
     "discordtwitterfacebook": "Private Mining Pool",
-    "pagetitle": "Dev - Entrust Computer Mining Pool - Nonprofit Charity",
+    "pagetitle": "Dev - Entrust Mining Pool - Nonprofit Charity",
     "pageauthor": "Support...",
     "pagedesc": "Entrust Computer Technology Center Crypto Mining Project -- Nonpofit Charity Support",
     "pagekeywds": "komodo mining pool, pirate chain mining pool, pirate chain coin, zcash mining pool, horizen mining pool, mining pool, equihash mining pool, miners, mining, ASIC mining, ASIC Equihash,Hash,ASIC Hashrate,Cryptocurrency,Crypto,Mining,Pool,Bitcoin,Raven,Ravencoin,Wavi,Wavicoin,Dixicoin,Dixi,QBic,QBicCoin,Easy,Simple,How,To",
@@ -58,8 +58,8 @@
             "host": "127.0.0.1",
             "port": 6379
         },
-	 "poolHex": "456e74727573747573204368617269747920687474703a2f2f706f6f6c2e656e747275737475732e6f72673a383038332f",
-	"_comment_poolHex": "hex = Entrustus Charity http://pool.entrustus.org:8083/"
+	 "poolHex": "456e747275737475732e6f726720436861726974792057652077616e7420737570706f7274202d20616868682e2e2e2050697261746573",
+	"_comment_poolHex": "Entrustus.org Charity We want support - ahhh... Pirates"
     },
     "api": {
 		"enabled": true,

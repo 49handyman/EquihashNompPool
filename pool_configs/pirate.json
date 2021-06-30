@@ -21,7 +21,7 @@
 "rewardRecipients": {},
 "tlsOptions": { "enabled": false },
     "paymentProcessing": {
-        "minConf": 6,
+        "minConf": 3,
         "enabled": true,
         "paymentMode": "prop",
         "paymentInterval": 120,
@@ -40,12 +40,12 @@
 "ports": {
      "3348": {
         "tls": false,
-         "diff": 1200,
-           "varDiff": {"minDiff": 600, "maxDiff": 4999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
+         "diff": 2600,
+           "varDiff": {"minDiff": 1600, "maxDiff": 6999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
      },
 "3347": {
          "tls": false,
-          "diff": 1300
+          "diff": 2300
       }
 
 
@@ -59,7 +59,7 @@
 },
 {
      "host": "127.0.0.1",
-     "port": 7771,
+     "port": 7779,
      "user": "entrust",
      "password": "entrust"
  }
