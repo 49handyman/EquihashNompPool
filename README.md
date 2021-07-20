@@ -41,6 +41,15 @@ Im tying to keep this compatible with other nomp forks, new stats and data are a
 
 but no warranty... 
 
+ #### Grafana Stats<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
+
+##### Pool Stats<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
+
+
+
+
 [Update 4-14-2021]
 
 Thanks to the Knomp code i got z_addresses working in authorization, and payments -- I hope.
