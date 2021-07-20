@@ -47,9 +47,12 @@ Next, install latest versions of all these packages (do not use apt for them)
 
 [Grafana install]
 
-```sudo apt-get install -y adduser libfontconfig1
-wget <.deb package url>
-sudo dpkg -i grafana<edition>_<version>_amd64.deb```
+```
+sudo apt-get install -y adduser libfontconfig1
+wget https://dl.grafana.com/oss/release/grafana_8.0.6_amd64.deb
+sudo dpkg -i grafana_8.0.6_amd64.deb
+```
+
  
 ### Screenshots
 #### Grafana Stats<br />
