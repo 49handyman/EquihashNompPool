@@ -25,6 +25,24 @@ Forked from Raven coin Updated to use Equihash
 
 This is a badly hacked version that no one should use without modifications and bug/security checking.
 
+[Grafana}
+
+Grafana, infludb, prometheus. fail2ban (all servers) should be setup on their own server. We use tiny Lenovo ThinkCentre i5's for the data & grafana server. (16GB ram, 500GB SSD drive, Ubuntu 18 server)
+
+You do not want this on the pool server. The load will be too heavy and cause problems. These i5's can be bought on eBay for $69 stripped, $80 SSD drive, $60 Ram.
+
+Default fail2ban rules will be OK, but i found another fail2ban config specifically for the miner ports.
+Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
+
+To start get Ubuntu setup with all desktop functions disabled. You'll have to learn to use vscode & Putty. 
+Next, setup Wallet (Pirate, Komodo, zcash) daemons installed and working.
+Then, setup fail2ban with "sudo apt install fail2ban"
+Next, install latest versions of all these packages (do not use apt for them)
+	Grafana
+	'''sudo apt-get install -y adduser libfontconfig1
+wget <.deb package url>
+sudo dpkg -i grafana<edition>_<version>_amd64.deb'''
+ 
 ### Screenshots
 #### Grafana Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
