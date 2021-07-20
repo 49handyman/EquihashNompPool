@@ -13,6 +13,16 @@ Forked from Raven coin Updated to use Equihash
 
 This is a badly hacked version that no one should use without modifications and bug/security checking.
 
+### Screenshots
+#### Grafana Stats<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
+
+##### Pool Stats<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
+
+
+
+
 [Update 5-24-2021]
 
 added: coinbase pro reference btc prices, 
@@ -40,14 +50,6 @@ Testing Z to Z payments, working for Pirate coin so far. Need to test all parts 
 Im tying to keep this compatible with other nomp forks, new stats and data are appended and previous order not changed, so it should work
 
 but no warranty... 
-
-### Screenshots
- #### Grafana Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
-
-##### Pool Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
-
 
 
 
