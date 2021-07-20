@@ -41,6 +41,7 @@ Im tying to keep this compatible with other nomp forks, new stats and data are a
 
 but no warranty... 
 
+### Screenshots
  #### Grafana Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
 
