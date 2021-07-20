@@ -1,0 +1,13 @@
+[Unit]
+Description=zcashd_exporter for Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=Always
+ExecStart=/usr/local/bin/zcashd_exporter --zcash.conf.path="/home/doug/.pirate/PIRATE.conf"
+
+[Install]
+WantedBy=multi-user.target
+

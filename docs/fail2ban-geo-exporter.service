@@ -1,0 +1,14 @@
+[Unit]
+Description=fail2ban geo exporter
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/doug/tar/geoip/fail2ban-geo-exporter
+#PYTHONPATH=/home/doug/.local/lib/python3.6/site-packages
+ExecStart=/usr/bin/python3 /home/doug/tar/geoip/fail2ban-geo-exporter/fail2ban-exporter.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
