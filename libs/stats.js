@@ -9,10 +9,12 @@ const logger = require('./logger.js').getLogger('Stats', 'system');
 const functions = require('./functions.js');
 var price;
 var found;
-
-const apiconfig = require('../../tradeogre.json');
- if(!apiconfig){throw  new Error("Config file tradeogre.json does not exist")}
-
+var domain;
+var ip = require("ip");
+var host = ip.address();
+//require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+//var domain = add);
+//})
 
 function sortProperties(obj, sortedBy, isNumericSort, reverse) {
      sortedBy = sortedBy || 1; // by default first key
@@ -465,13 +467,13 @@ logger.info('payouts: '+ pays)
                             explorerGetBlock: poolConfigs[coinName].coin.explorerGetBlock,
                             blockTime: poolConfigs[coinName].coin.blockTime,
                             blockChange: poolConfigs[coinName].coin.blockChange,
-			    blockReward:  poolConfigs[coinName].coin.blockReward,
+			                blockReward:  poolConfigs[coinName].coin.blockReward,
                             explorerGetBlockJSON: poolConfigs[coinName].coin.explorerGetBlockJSON,
                             explorerGetTX: poolConfigs[coinName].coin.explorerGetTX,
                             symbol: poolConfigs[coinName].coin.symbol.toUpperCase(),
                             algorithm: poolConfigs[coinName].coin.algorithm,
-			    PaymentInterval: poolConfigs[coinName].paymentInterval,
-			    minimumPayment: poolConfigs[coinName].minimumPayment,
+			                PaymentInterval: poolConfigs[coinName].paymentInterval,
+			                minimumPayment: poolConfigs[coinName].minimumPayment,
                             hashrates: replies[i + 1],
                             rewardRecipients: poolConfigs[coinName].rewardRecipients,
                             exchangeEnabled: poolConfigs[coinName].exchangeEnabled,
@@ -493,8 +495,10 @@ logger.info('payouts: '+ pays)
                                 networkVersion: replies[i + 2] ? (replies[i + 2].networkSubVersion || 0) : 0,
                                 networkProtocolVersion: replies[i + 2] ? (replies[i + 2].networkProtocolVersion || 0) : 0,
                                 poolStartTime: replies[i + 2] ? (replies[i + 2].poolStartTime || 0) : 0,
-				coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0,
-		                synced: replies[i + 2] ? (replies[i + 2].synced || 0) : 0        //		poolLuck:
+				                coinMarketCap: replies[i + 2] ? (replies[i + 2].coinMarketCap || 0) : 0,
+		                        synced: replies[i + 2] ? (replies[i + 2].synced || 0) : 0,        //		poolLuck:
+                                host: host,
+                                domain: domain
                             },
 			                marketStats: marketStats,
                             wallet: {
@@ -519,10 +523,10 @@ logger.info('payouts: '+ pays)
                                 blocksFound: replies[i + 16],
                                 lastBlock: replies[i + 18],
                                 lastBlockTime: replies[i + 19],
-				blocksRejected: replies[i + 21],
-				blocksDuplicate: replies[i + 22],
-				bigDiff: replies[i + 23],
-				lastBlockTimeWindow: replies[i + 25]
+				                blocksRejected: replies[i + 21],
+				                blocksDuplicate: replies[i + 22],
+				                bigDiff: replies[i + 23],
+				                lastBlockTimeWindow: replies[i + 25]
                             },
                             pending: {
                                 blocks: replies[i + 9].sort(sortBlocks),
@@ -609,8 +613,8 @@ logger.info('payouts: '+ pays)
                         if (worker in coinStats.workers) {
                             coinStats.workers[worker].invalidshares -= workerShares; // workerShares is negative number!
                             coinStats.workers[worker].diff = diff;
-//			    coinStats.workers[worker].blocks=coinStats.blocks.blocksFound[worker];
-//			    coinStats.workers[worker].blocksFound=coinStats.blocks.blocksFound[worker];
+//			                coinStats.workers[worker].blocks=coinStats.blocks.blocksFound[worker];
+//			                coinStats.workers[worker].blocksFound=coinStats.blocks.blocksFound[worker];
                             //	coinStats.workers[worker].blocks = blocks  // doug
                         } else {
                             coinStats.workers[worker] = {
@@ -640,6 +644,7 @@ logger.info('payouts: '+ pays)
                 coinStats.luckDays = ((_networkHashRate / _myHashRate * _blocktime) / (24 * 60 * 60)).toFixed(3);
                 coinStats.luckHours = ((_networkHashRate / _myHashRate * _blocktime) / (60 * 60)).toFixed(3);
                 coinStats.timeToFind = readableSeconds(_networkHashRate / _myHashRate * _blocktime);
+                coinStats.blocksPerDay  = (24/coinStats.luckHours).toFixed(1);
 		var timeSinceLastBlock = (Date.now() - coinStats.lastBlockTime)
 //  var timeSinceLastBlock2 = Date.now() - (coinStats.blocks?.lastBlock[0].split(':')[4]) * 1000 || 0
 //		var poolLuck = (parseInt(timeSinceLastBlock2)  * 1000 / parseInt(_networkHashRate) / 

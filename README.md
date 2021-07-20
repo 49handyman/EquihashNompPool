@@ -1,6 +1,14 @@
 ![Entrust Computer Technology Center]
 
 # EquihashNompPool
+
+[Update 7-19-2021]
+New updates to dashboard, grafna, infludb, prometheus, and numerous prometheus exporters added 
+
+We've been under constant bot attack for last 3 weeks. This was all developed to monitor and ban offending ip bots.
+
+"fail2ban" has been outragously awesome for our site. Every pool should have it running. 
+
 Forked from Raven coin Updated to use Equihash
 
 This is a badly hacked version that no one should use without modifications and bug/security checking.
@@ -61,6 +69,11 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 
 -------
 ### Screenshots
+
+#### Grafana Stats<br />
+ ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br />
+ 
+
 #### Pool Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
 

@@ -397,7 +397,7 @@ var coin = poolOptions.coin.name
                       logger.error('Error with  ' + coin + ' RPC call getinfo ' + JSON.stringify(result[0].error));
                       return;
                   }
-		logger.info('Node Wallet Synced: ' + coin + ' ' + JSON.stringify(result[0].response.synced));
+		logger.debug('Node Wallet Synced: ' + coin + ' ' + JSON.stringify(result[0].response.synced));
                   if (result[0].response.synced !== null) {
                       finalRedisCommands.push(['hset', coin + ':stats', 'synced', result[0].response.synced]);
                   }

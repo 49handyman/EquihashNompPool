@@ -101,7 +101,7 @@
         "should": "^13.2.3",
         "sma": "^0.1.1",
         "sshpk": "^1.15.2",
-        "stratum-pool": "git+https://github.com/49handyman/node-stratum-pool.git",
+        "stratum-pool": "git+https://github.com/webworker01/node-stratum-pool.git",
         "tradeogre-api": "git+https://github.com/pollodigomma/tradeogre-api.git",
         "underscore": "^1.12.1",
         "winston": "^3.2.1",

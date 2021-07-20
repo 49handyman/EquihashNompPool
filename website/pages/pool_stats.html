@@ -91,7 +91,14 @@
                 {{=it.stats.pools[pool].blocks.confirmed || 0}}</th>
                 <th id="validShares" style="text-align:center;vertical-align: middle;">
                   {{=it.stats.pools[pool].poolStats.validShares || 0}}</th>
-                <th id="bigDiff" style="text-align:center;vertical-align: middle;">bigdiff</th>
+
+
+
+                <th id="bigDiff" style="text-align:center;vertical-align: middle;">
+                  Host<BR>
+                  {{=it.stats.pools[pool].poolStats.host }}
+                  {{=it.stats.pools[pool].poolStats.domain }}
+                </th>
                 
               {{ var blockchange = it.stats.pools[pool].blockChange || 0; }}
               {{ var blockheight = it.stats.pools[pool].poolStats.networkBlocks || 0; }}
@@ -120,7 +127,9 @@
               {{var lastPayment = parseFloat('{{=it.stats.pools[pool].payments[0]}}').toFixed(5);}}
               <th id="lastBlockAmt" style="text-align:center;vertical-align: middle;">{{=lastPayment}} </th>
               <th id="blockValue" colspan="1" style="text-align:center;vertical-align: middle;">Block Value</th>
-              <th id="poolFees" style="text-align:center;vertical-align: middle;">Pool Fees</th>
+
+              <th id="poolFees" style="text-align:center;vertical-align: middle;">Blocks Per<BR>Day<BR>
+                {{=it.stats.pools[pool].blocksPerDay || 0}}</th>
               {{ var tmpPaid = parseFloat('{{=it.stats.pools[pool].poolStats.totalPaid}}').toFixed(2);}}
               
               

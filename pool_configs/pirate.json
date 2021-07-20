@@ -38,14 +38,14 @@
 },
 "trackShares": { "disable": false },
 "ports": {
-     "3348": {
+     "3347": {
         "tls": false,
-         "diff": 2600,
-           "varDiff": {"minDiff": 1600, "maxDiff": 6999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
+         "diff": 1600,
+           "varDiff": {"minDiff": 900, "maxDiff": 6999, "targetTime": 45, "retargetTime": 60, "variancePercent": 30}
      },
-"3347": {
+"3348": {
          "tls": false,
-          "diff": 2300
+          "diff": 1800
       }
 
 
@@ -56,13 +56,7 @@
     "port": 7771,
     "user": "entrust",
     "password": "entrust"
-},
-{
-     "host": "127.0.0.1",
-     "port": 7779,
-     "user": "entrust",
-     "password": "entrust"
- }
+}
 
 ],
 
