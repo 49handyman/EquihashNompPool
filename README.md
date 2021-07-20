@@ -33,6 +33,10 @@ Forked from Raven coin Updated to use Equihash
 
 This is a badly hacked version that no one should use without modifications and bug/security checking.
 
+[Setup]
+
+To start, get Ubuntu setup with all desktop functions disabled. You'll have to learn to use vscode w/ssh & Putty. 
+
 [Grafana]
 
 Grafana, infludb, prometheus. fail2ban (all servers) should be setup on their own server. We use tiny Lenovo ThinkCentre i5's for the data & grafana server. (16GB ram, 500GB SSD drive, Ubuntu 18 server)
@@ -41,58 +45,68 @@ You do not want this on the pool server. The load will be too heavy and cause pr
 
 ### Screenshots
 #### Grafana Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br/><br/>
 
 ##### Pool Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br/><br/>
 
 
-[UFW install]
-```
-iptables sucks for usersm "ufw is much easier and it creates the iptable entries for you.
+[UFW/fail2ban install]
+
+iptables sucks for users "ufw is much easier and it creates the iptable entries for you.
 
 Install "ufw"  with apt and enable
-
-Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
-
-to view rules
-
-  sudo ufw status numbered
 ```
-To start get Ubuntu setup with all desktop functions disabled. You'll have to learn to use vscode & Putty. 
+sudo apt-get install ufw
+ufw allow ssh
+ufw enable
 
-[Wallet Node installs]
+sudo apt-get install fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
 
-Next, setup Wallet (Pirate, Komodo, zcash) daemons installed and working. Sync or bootstrap them.
+View rules
+ sudo ufw status numbered
 
-[fail2ban install]
+Add rule
+sudo ufw insert 2 allow proto tcp from 192.168.2.103 to any port 8443
+sudo ufw insert 2 allow proto tcp from 192.168.2.0/24 to any port 9144
+sudo ufw insert 2 allow proto tcp from 127.0.0.1 to any port 10853
 ```
-Setup fail2ban with "sudo apt install fail2ban" All outgoing and current ports will still be enabled. make sure to set the ignore * config options for your local network and any ip's you dont want banned.
+
+
+All outgoing and current ports will still be enabled. make sure to set the ignore * 
+config options for your local network and any ip's you dont want banned.
 
 The following files are located in the ./doc <dir> here.
 
-Setup aggressive fire wall rules to ban at 1 probed/scanned non-open port. SSH is automatically 
+Setup aggressive firewall rules to ban at 1 probed/scanned non-open port. SSH is automatically 
 setup for you on 3rd bad password
 
-set ban time: 60000 plus minutes or what you want. Should be huge number.
+set ban time: 600000 plus minutes or what you want. Should be huge number.
 
 
-Install the follow ufw-Aggressive rules, I'll include them in docs also. Set super aggressive.
-Follow this easy page https://forum.iredmail.org/topic15982-aggressive-fail2ban-rules-using-ufw.html
+Then, install the follow additional ufw-Aggressive/s-nomp-fail2ban rules, I'll include them in 
+docs also. Set super aggressive.
+
+Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
+Thanks to: jasongo https://forum.iredmail.org/topic15982-aggressive-fail2ban-rules-using-ufw.html
+
+
+```
+Look in ./docs for these i use.
 
 Create /etc/fail2ban/jail.d/ufw-aggressive.local
 Create /etc/fail2ban/filter.d/ufw.aggressive.conf
 
-Restart Fail2Ban. In Ubuntu it is usually with "service fail2ban restart"
+Restart Fail2Ban. In Ubuntu  "service fail2ban restart"
 
 sudo tail -f /var/log/fail2ban.log 	to verify its working.
-
-
-Default fail2ban rules will be OK, but i found another fail2ban config specifically for the miner ports.
-
-new s-nomp specific rules
-https://github.com/Oink70/s-nomp-fail2ban
 ```
+
+[Wallet Node installs]
+
+Next, setup Wallet (Pirate, Komodo, zcash) daemons installed and working. Sync or bootstrap them.
 
 Next, install latest versions of all these packages (do not use apt for them)
 
@@ -128,18 +142,18 @@ sudo cp -r prometheus-2.0.0.linux-amd64/console_libraries /etc/prometheus
 sudo chown -R prome:prome /etc/prometheus/consoles
 sudo chown -R prome:prome /etc/prometheus/console_libraries
 
+sudo cp docs/prometheus.yml /etc/prometheus
 sudo nano /etc/prometheus/prometheus.yml
+```
 
-sudo cp doc/prometheus.yml /etc/prometheus
+Edit for your server ip's or localhost, I'll show how to install all the prometheus exports 
+in this file.
 
-sudo nano /etc/prometheus/prometheus.yml
-  Edit for your server ip's or localhost, I'll show how to install all the prometheus exports in this file.
-
-add each to Firewall, in addition to other ports 80,844,22, etc...
-  
+add each prometheus scraper "address:port" to Firewall only local network, in addition to other 
+ports 80,844,22, etc...
+```
  sudo ufw insert 2 allow proto tcp from 192.168.2.103 to any port 8443
  sudo ufw insert 2 allow proto tcp from 192.168.2.0/24 to any port 9144
-
 
 ```
 
