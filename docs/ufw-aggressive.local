@@ -1,0 +1,9 @@
+[ufw-aggressive]
+enabled     = true
+filter      = ufw.aggressive
+action      = iptables-allports
+logpath     = /var/log/ufw.log
+findtime    = 3600
+maxretry    = 1
+
+

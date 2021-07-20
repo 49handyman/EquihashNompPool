@@ -1,0 +1,4 @@
+/usr/local/bin/zcashd_exporter --zcash.conf.path=/home/doug/.pirate/PIRATE.conf
+
+setup as systemd start
+modified for your komodod config file.
