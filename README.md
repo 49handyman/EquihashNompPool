@@ -8,6 +8,8 @@ Warning - And dont forget this pool is pretty dedicated to Pirate-chain (ARRR), 
 
 Warning - Its a hacked-up piece of nodejs. LOL...  Just a nice warning.
 
+Warning - ALL POOL OPERATERS - Keep an eye on your Redis databases. Look for new databases created with 5 ways to download "b.sh" from the bot network. Firewall the shit out of this port. And update Redis.
+
 I'll get all the relevant items gathered up into another repository to help others get it all setup. Its a lot of work. I have about 60-80 man hours in it all so far.
 
 It should be usable on any nomp based pool server with api available. there will be new stats api's added specificly for grafana in next few weeks. JSON scrapers dont like the available api much.
