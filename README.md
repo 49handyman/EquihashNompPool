@@ -2,6 +2,11 @@
 
 # EquihashNompPool
 
+Warning - Grafana Dashboards, prometheus scrapers, and influxdb is not included in this repository yet.
+
+I'll get all the relevant items gathered up into another repository to help others get it all setup. Its a lot of work. I have about 60-80 man hours in it all so far.
+
+
 [Update 7-19-2021]
 New updates to dashboard, grafna, infludb, prometheus, and numerous prometheus exporters added 
 
