@@ -66,9 +66,9 @@ sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
 
 View rules
- sudo ufw status numbered
+sudo ufw status numbered
 
-Add rule
+Add rules
 sudo ufw insert 2 allow proto tcp from 192.168.2.103 to any port 8443
 sudo ufw insert 2 allow proto tcp from 192.168.2.0/24 to any port 9144
 sudo ufw insert 2 allow proto tcp from 127.0.0.1 to any port 10853
@@ -78,7 +78,7 @@ sudo ufw insert 2 allow proto tcp from 127.0.0.1 to any port 10853
 All outgoing and current ports will still be enabled. make sure to set the ignore * 
 config options for your local network and any ip's you dont want banned.
 
-The following files are located in the ./doc <dir> here.
+The previous and following files are located in the ./docs <dir> here.
 
 Setup aggressive firewall rules to ban at 1 probed/scanned non-open port. SSH is automatically 
 setup for you on 3rd bad password
@@ -89,12 +89,14 @@ set ban time: 600000 plus minutes or what you want. Should be huge number.
 Then, install the follow additional ufw-Aggressive/s-nomp-fail2ban rules, I'll include them in 
 docs also. Set super aggressive.
 
-Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
-Thanks to: jasongo https://forum.iredmail.org/topic15982-aggressive-fail2ban-rules-using-ufw.html
+open these links and follow them.
+1. Thanks to: jasongo https://forum.iredmail.org/topic15982-aggressive-fail2ban-rules-using-ufw.html
+2. Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
+
 
 
 ```
-Look in ./docs for these i use.
+Look in ./docs for files I use.
 
 Create /etc/fail2ban/jail.d/ufw-aggressive.local
 Create /etc/fail2ban/filter.d/ufw.aggressive.conf
