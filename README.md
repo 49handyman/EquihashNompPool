@@ -4,6 +4,10 @@
 
 Warning - Grafana Dashboards, prometheus scrapers, and influxdb is not included in this repository yet.
 
+Warning - And dont forget this pool is pretty dedicated to Pirate-chain (ARRR), however it runs all equihash coins without many of the coin specific features, like pricing, "TradOgre Private Wallet" balances, etc...
+
+Warning - Its a hacked-up piece of nodejs. LOL...  Just a nice warning.
+
 I'll get all the relevant items gathered up into another repository to help others get it all setup. Its a lot of work. I have about 60-80 man hours in it all so far.
 
 It should be usable on any nomp based pool server with api available. there will be new stats api's added specificly for grafana in next few weeks. JSON scrapers dont like the available api much.
@@ -87,14 +91,6 @@ The raven repository wasn't setup for sheilded coins, so it might take lots to g
 
 -------
 ### Screenshots
-
-#### Grafana Stats<br />
- ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br />
- 
-
-#### Pool Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
-
 
 #### Pool Charts<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/charts.PNG)<br /><br />
