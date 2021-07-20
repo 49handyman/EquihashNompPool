@@ -35,13 +35,21 @@ Default fail2ban rules will be OK, but i found another fail2ban config specifica
 Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
 
 To start get Ubuntu setup with all desktop functions disabled. You'll have to learn to use vscode & Putty. 
+
+
 Next, setup Wallet (Pirate, Komodo, zcash) daemons installed and working.
+
+
 Then, setup fail2ban with "sudo apt install fail2ban"
+
+
 Next, install latest versions of all these packages (do not use apt for them)
-	Grafana
-	'''sudo apt-get install -y adduser libfontconfig1
+
+[Grafana install]
+
+```sudo apt-get install -y adduser libfontconfig1
 wget <.deb package url>
-sudo dpkg -i grafana<edition>_<version>_amd64.deb'''
+sudo dpkg -i grafana<edition>_<version>_amd64.deb```
  
 ### Screenshots
 #### Grafana Stats<br />
