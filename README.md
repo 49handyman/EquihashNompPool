@@ -31,6 +31,7 @@ Grafana, infludb, prometheus. fail2ban (all servers) should be setup on their ow
 
 You do not want this on the pool server. The load will be too heavy and cause problems. These i5's can be bought on eBay for $69 stripped, $80 SSD drive, $60 Ram.
 
+Install "ufw"  with apt and enable
 Default fail2ban rules will be OK, but i found another fail2ban config specifically for the miner ports.
 Thanks to: Oink70/s-nomp-fail2ban https://github.com/Oink70/s-nomp-fail2ban
 
@@ -40,8 +41,18 @@ To start get Ubuntu setup with all desktop functions disabled. You'll have to le
 Next, setup Wallet (Pirate, Komodo, zcash) daemons installed and working.
 
 
-Then, setup fail2ban with "sudo apt install fail2ban"
+Then, setup fail2ban with "sudo apt install fail2ban" All outgoing and current ports will still be enabled. make sure to set the ignore * config options for your local network and any ip's you dont want banned.
 
+The following files are located in the ./doc <dir> here.
+
+Follow this easy page https://forum.iredmail.org/topic15982-aggressive-fail2ban-rules-using-ufw.html
+
+Create /etc/fail2ban/jail.d/ufw-aggressive.local
+Create /etc/fail2ban/filter.d/ufw.aggressive.conf
+
+Restart Fail2Ban. In Ubuntu it is usually with "service fail2ban restart"
+
+sudo tail -f /var/log/fail2ban.log 	to verify its working.
 
 Next, install latest versions of all these packages (do not use apt for them)
 
@@ -51,6 +62,41 @@ Next, install latest versions of all these packages (do not use apt for them)
 sudo apt-get install -y adduser libfontconfig1
 wget https://dl.grafana.com/oss/release/grafana_8.0.6_amd64.deb
 sudo dpkg -i grafana_8.0.6_amd64.deb
+```
+
+```
+wget https://github.com/prometheus/prometheus/releases/download/v2.0.0/
+prometheus-2.0.0.linux-amd64.tar.gz
+
+sudo mkdir /etc/prometheus
+sudo mkdir /var/lib/prometheus
+
+sudo useradd --no-create-home --shell /bin/false prome
+sudo useradd --no-create-home --shell /bin/false node_exporter
+
+tar xvf prometheus-2.0.0.linux-amd64.tar.gz
+
+sudo cp prometheus-2.0.0.linux-amd64/prometheus /usr/local/bin/
+sudo cp prometheus-2.0.0.linux-amd64/promtool /usr/local/bin/
+
+sudo chown prome:prome /usr/local/bin/prometheus
+sudo chown prome:prome /usr/local/bin/promtool
+
+sudo cp -r prometheus-2.0.0.linux-amd64/consoles /etc/prometheus
+sudo cp -r prometheus-2.0.0.linux-amd64/console_libraries /etc/prometheus
+
+sudo chown -R prome:prome /etc/prometheus/consoles
+sudo chown -R prome:prome /etc/prometheus/console_libraries
+
+sudo nano /etc/prometheus/prometheus.yml
+
+sudo cp doc/prometheus.yml /etc/prometheus
+
+sudo nano /etc/prometheus/prometheus.yml
+  Edit for your ip's, I'll show how to install all the prometheus exports in this file.
+
+
+
 ```
 
  
