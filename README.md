@@ -31,6 +31,14 @@ Grafana, infludb, prometheus. fail2ban (all servers) should be setup on their ow
 
 You do not want this on the pool server. The load will be too heavy and cause problems. These i5's can be bought on eBay for $69 stripped, $80 SSD drive, $60 Ram.
 
+### Screenshots
+#### Grafana Stats<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
+
+##### Pool Stats<br />
+![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
+
+
 [UFW install]
 ```
 iptables sucks for usersm "ufw is much easier and it creates the iptable entries for you.
@@ -123,18 +131,9 @@ add each to Firewall, in addition to other ports 80,844,22, etc...
   
  sudo ufw insert 2 allow proto tcp from 192.168.2.103 to any port 8443
  sudo ufw insert 2 allow proto tcp from 192.168.2.0/24 to any port 9144
+
+
 ```
-
- 
-### Screenshots
-#### Grafana Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br /><br$
-
-##### Pool Stats<br />
-![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/stats.PNG)<br /><br />
-
-
-
 
 [Update 5-24-2021]
 
