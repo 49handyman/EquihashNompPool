@@ -11,7 +11,9 @@ const logger = loggerFactory.getLogger('CLI', 'system');
 var listener = module.exports = function listener(host, port) {
     
     var _this = this;
-
+var emitLog = function(text){
+        _this.emit('log', text);
+    };
 
     this.start = function() {
         net.createServer(function(c) {

@@ -28,7 +28,7 @@
         "minimumPayment": 10,
         "maxBlocksPerPayment": 20,
         "daemon": {
-            "host": "127.0.0.1",
+            "host": "192.168.2.147",
             "port": 7771,
             "user": "entrust",
             "password": "entrust"
@@ -38,32 +38,32 @@
 },
 "trackShares": { "disable": false },
 "ports": {
-     "3347": {
+     "3348": {
         "tls": false,
-         "diff": 1600,
-           "varDiff": {"minDiff": 900, "maxDiff": 6999, "targetTime": 45, "retargetTime": 60, "variancePercent": 30}
+         "diff": 900,
+           "varDiff": {"minDiff": 900, "maxDiff": 8000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30}
      },
-"3348": {
+"3347": {
          "tls": false,
-          "diff": 1800
+          "diff": 2800
       }
 
 
 },
 "poolId": "arrr-usa",
+
 "daemons": [{
-    "host": "127.0.0.1",
+    "host": "192.168.2.147",
     "port": 7771,
     "user": "entrust",
     "password": "entrust"
 }
-
 ],
 
 "p2p": {
         "enabled": true,
-        "host": "127.0.0.1",
-        "port": 45452,
+        "host": "192.168.2.147",
+        "port": 7780,
         "disableTransactions": true
 },
 

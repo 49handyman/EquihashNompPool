@@ -1,0 +1,13 @@
+[Unit]
+Description=Speedtest.net exporter for Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=Always
+ExecStart=/usr/local/bin/speedtest_exporter 
+
+[Install]
+WantedBy=multi-user.target
+

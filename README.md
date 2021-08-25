@@ -43,6 +43,10 @@ Grafana, infludb, prometheus. fail2ban (all servers) should be setup on their ow
 
 You do not want this on the pool server. The load will be too heavy and cause problems. These i5's can be bought on eBay for $69 stripped, $80 SSD drive, $60 Ram.
 
+On the right worldmap is the BANNED HACKER BOTS, on the left is legit connections, mostly Wallet Node Peers.
+
+Prometheus scrapers provide all the data for the dashboard and are easy to install and configure.
+
 ### Screenshots
 #### Grafana Stats<br />
 ![Block Explorer](https://github.com/49handyman/equihashnomppool/blob/main/docs/screenshots/dashbrd1.PNG)<br/><br/>
@@ -65,10 +69,10 @@ sudo apt-get install fail2ban
 sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
 
-View rules
+View rules like this:
 sudo ufw status numbered
 
-Add rules
+Add rules like this:
 sudo ufw insert 2 allow proto tcp from 192.168.2.103 to any port 8443
 sudo ufw insert 2 allow proto tcp from 192.168.2.0/24 to any port 9144
 sudo ufw insert 2 allow proto tcp from 127.0.0.1 to any port 10853
@@ -113,12 +117,12 @@ Next, setup Wallet (Pirate, Komodo, zcash) daemons installed and working. Sync o
 Next, install latest versions of all these packages (do not use apt for them)
 
 [Grafana install]
-
 ```
 sudo apt-get install -y adduser libfontconfig1
 wget https://dl.grafana.com/oss/release/grafana_8.0.6_amd64.deb
 sudo dpkg -i grafana_8.0.6_amd64.deb
 ```
+
 [prometheus install]
 ```
 wget https://github.com/prometheus/prometheus/releases/download/v2.0.0/
@@ -146,6 +150,9 @@ sudo chown -R prome:prome /etc/prometheus/console_libraries
 
 sudo cp docs/prometheus.yml /etc/prometheus
 sudo nano /etc/prometheus/prometheus.yml
+
+configure to your ip's and ports.
+
 ```
 
 Edit for your server ip's or localhost, I'll show how to install all the prometheus exports 

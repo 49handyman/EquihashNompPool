@@ -33,7 +33,7 @@
     },
 
     "cliHost": "127.0.0.1",
-    "cliPort": 17120,
+    "cliPort": 17122,
 
     "clustering": {
         "enabled": true,
@@ -42,8 +42,8 @@
 
     "defaultPoolConfigs": {
         "blockRefreshInterval": 0,
-        "jobRebroadcastTimeout": 75,
-        "connectionTimeout": 2900,
+        "jobRebroadcastTimeout": 55,
+        "connectionTimeout": 5000,
         "emitInvalidBlockHashes": false,
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
@@ -100,8 +100,8 @@
         "sslenabled": true,
         "sslforced": true,
         "host": "0.0.0.0",
-        "port": 8083,
-        "sslport": 8443,
+        "port": 8084,
+        "sslport": 8444,
         "sslkey": "certs/privkey.pem",
         "sslcert": "certs/fullchain.pem",
         "stratumHost": "pool.entrustus.org",
@@ -176,10 +176,10 @@
         "enabled": true,
         "updateInterval": 60,
         "depth": 0.90,
-        "usePoloniex": true,
+        "usePoloniex": false,
         "useCryptsy": false,
-        "useTradeOgre": true,
-        "useBittrex": true
+        "useTradeOgre": false,
+        "useBittrex": false
     }
 
 }

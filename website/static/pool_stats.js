@@ -323,7 +323,7 @@ statsSource.addEventListener('message', function(e) {
         $("#networkDiff").html(poolName in stats.pools ? 'Net Difficulty</br>' + getReadableNetworkDiffString(stats.pools[poolName].poolStats.networkDiff) : 0); //doug
         $("#validBlocks").html(poolName in stats.pools ? 'Valid Blocks</br>' + parseInt(stats.pools[poolName].poolStats.validBlocks) : 0);
         $("#networkTime").html(poolName in stats.pools ? timeOfDayFormat(Date.now()) : 0);
-        $("#blocksKicked").html(poolName in stats.pools ? 'Kicked Blocks</br>' + parseInt(stats.pools[poolName]?.blocks.kicked) : 0);
+        $("#blocksKicked").html(poolName in stats.pools ? 'Kicked/Orphaned</BR> Blocks</br>' + parseInt(stats.pools[poolName]?.blocks.kicked) : 0);
         var totalPaid = (poolName in stats.pools ? parseFloat((stats.pools[poolName].poolStats?.totalPaid) || 0) : 0);
         $("#totalPaidOut").html('Total Paid</br>' + parseFloat(totalPaid).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + stats.pools[poolName].symbol);
         var payout = (totalPaid * parseFloat(stats.pools[poolName].poolStats.coinMarketCap)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});

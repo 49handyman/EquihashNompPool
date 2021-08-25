@@ -32,11 +32,6 @@ var portalConfig = JSON.parse(JSON.minify(fs.readFileSync("config.json", {
 })));
 var poolConfigs;
 
-var logger2 = new PoolLogger({
-    logLevel: portalConfig.logLevel,
-    logColors: portalConfig.logColors
-});
-
 try {
     var posix = require('posix');
     try {
@@ -79,7 +74,7 @@ if (cluster.isWorker) {
             new Website();
             break;
         case 'profitSwitch':
-            new ProfitSwitch();
+//            new ProfitSwitch();
             break;
         case 'marketStats':
             new marketStats();
@@ -208,7 +203,7 @@ var buildAuxConfigs = function() {
             }
         }
         if (!(poolProfile.algorithm in algos)) {
-            logger.warn('Master'+ coinProfile.name+ 'Cannot run a pool for unsupported algorithm "' + coinProfile.algorithm + '"');
+            logger.warn('Master '+ coinProfile.name+ ' Cannot run a pool for unsupported algorithm "' + coinProfile.algorithm + '"');
             delete configs[poolOptions.coin.name];
         }
     });
@@ -226,7 +221,7 @@ var spawnPoolWorkers = function() {
     Object.keys(poolConfigs).forEach(function(coin) {
         var p = poolConfigs[coin];
         if (!Array.isArray(p.daemons) || p.daemons.length < 1) {
-            logger.error(coin , '[%s] No daemons configured so a pool cannot be started for this coin.', coin);
+            logger.error('[%s] No daemons configured so a pool cannot be started for this coin.', coin);
             delete poolConfigs[coin];
         } else if (!connection) {
             redisConfig = p.redis;
@@ -238,7 +233,7 @@ var spawnPoolWorkers = function() {
                 });
             }
             connection.on('ready', function(){
-                logger.debug(coin, 'TimeShare processing setup with redis (' + connection.snompEndpoint + ')');
+                logger.debug(coin+ ' TimeShare processing setup with redis (' + connection.snompEndpoint + ')');
             });
         }
     });
@@ -273,7 +268,7 @@ var spawnPoolWorkers = function() {
         worker.type = 'pool';
         poolWorkers[forkId] = worker;
         worker.on('exit', function(code, signal) {
-            logger.error('pool' , 'PoolSpawner: Fork %s died, spawning replacement worker...', forkId);
+            logger.error('pool' + 'PoolSpawner: Fork %s died, spawning replacement worker...', forkId);
             setTimeout(function() {
                 createPoolWorker(forkId);
             }, 2000);
@@ -362,17 +357,15 @@ var spawnPoolWorkers = function() {
 };
 
 var startCliListener = function() {
-    let cliHost = '';
-    if (portalConfig.cliHost) {
-        cliHost = portalConfig.cliHost;
-    } else {
-        // For backward compatibility
-        cliHost = '127.0.0.1';
-    }
+
+
     var cliPort = portalConfig.cliPort;
-    var listener = new CliListener(cliHost, cliPort);
+    var cliServer = portalConfig.cliServer || "127.0.0.1";
+
+    var listener = new CliListener(cliServer, cliPort);
+
     listener.on('log', function(text) {
-        
+logger.info('CLI '+ text);
     }).on('command', function(command, params, options, reply) {
         switch (command) {
             case 'blocknotify':
@@ -407,14 +400,14 @@ var startCliListener = function() {
 
 
 var processCoinSwitchCommand = function(params, options, reply) {
-    var logSystem = 'CLI';
+    var logSystem = 'CoinSwitch';
     var logComponent = 'coinswitch';
     var replyError = function(msg) {
         reply(msg);
-        logger.error('CLI' ,  msg+' params: '+JSON.stringify(params)+' options: ' +JSON.stringify(options));
+        logger.error('CLI ' +  msg+' params: '+JSON.stringify(params)+' options: ' +JSON.stringify(options));
     };
     if (!params[0]) {
-        replyError('Coin name required');
+        replyError(' "Coin name required" ');
         return;
     }
     if (!params[1] && !options.algorithm) {
@@ -585,7 +578,7 @@ var startProfitSwitch = function() {
         startPaymentProcessor();
         startAuxPaymentProcessor();
         startWebsite();
-        startProfitSwitch();
+//        startProfitSwitch();
         startCliListener();
     }, 2000);
 })();

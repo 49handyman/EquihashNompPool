@@ -15,7 +15,7 @@ module.exports = function() {
 
     // Constructor
     function Bittrex(key, secret){
-        console.log('bittrex called...')
+//        console.log('bittrex called...')
         // Generate headers signed by this user's key and secret.
         // The secret is encapsulated and never exposed
         this._getPrivateHeaders = function(parameters){

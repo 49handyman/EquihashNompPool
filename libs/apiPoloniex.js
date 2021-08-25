@@ -14,7 +14,7 @@ module.exports = function() {
 
     // Constructor
     function Poloniex(key, secret) {
-        console.log('Polinex called...')
+//        console.log('Polinex called...')
         // Generate headers signed by this user's key and secret.
         // The secret is encapsulated and never exposed
         this._getPrivateHeaders = function(parameters) {

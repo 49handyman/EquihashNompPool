@@ -1,5 +1,5 @@
 {
-"enabled": false,
+"enabled": true,
 "coin": "komodo.json",
 "address": "RWi6u5i3QBqkw2HNfj6QHdygcYGtmUzhsr",
 "zAddress": "",
@@ -33,7 +33,7 @@
     "minimumPayment": 3.00,
     "maxBlocksPerPayment": 100,
     "daemon": {
-        "host": "127.0.0.1",
+        "host": "192.168.2.147",
         "port": 8770,
         "user": "entrust",
         "password": "entrust"
@@ -42,20 +42,16 @@
 
 "trackShares": { "disable": false },
 "ports": {
-    "3334": {
+    "3335": {
        "tls":false,
         "diff": 900,
-          "varDiff": {"minDiff": 600, "maxDiff": 4999, "targetTime": 65, "retargetTime": 60, "variancePercent": 30}
-    },
-    "3335": {
-        "tls":false,
-         "diff": 900
-     }
+          "varDiff": {"minDiff": 600, "maxDiff": 5999, "targetTime": 45, "retargetTime": 60, "variancePercent": 30}
+    }
 
 },
 "poolId": "kmd-usa",
 "daemons": [{
-    "host": "127.0.0.1",
+    "host": "192.168.2.147",
     "port": 8770,
     "user": "entrust",
     "password": "entrust"
@@ -63,7 +59,7 @@
 
 "p2p": {
     "enabled": true,
-    "host": "127.0.0.1",
+    "host": "192.168.2.147",
     "port": 7770,
     "disableTransactions": true
 },
