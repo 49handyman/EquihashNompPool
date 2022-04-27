@@ -165,14 +165,14 @@ function TriggerChartUpdates() {
     poolHashrateChart.update();
     poolBlockChart.update();
 }
-
+/*
 $.getJSON('/api/pool_stats', function(data) {
     statData = data;
     buildChartData();
     displayCharts();
 });
 
-
+*/
 
 statsSource.addEventListener('message', function(e) {
     var stats = JSON.parse(e.data);
