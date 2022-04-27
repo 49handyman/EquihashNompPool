@@ -33,7 +33,7 @@
     },
 
     "cliHost": "127.0.0.1",
-    "cliPort": 17122,
+    "cliPort": 17123,
 
     "clustering": {
         "enabled": true,
@@ -48,7 +48,7 @@
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
         "banning": {
-            "enabled": true,
+            "enabled": false,
             "time": 1200,
             "invalidPercent": 50,
             "checkThreshold": 500,
@@ -100,15 +100,15 @@
         "sslenabled": true,
         "sslforced": true,
         "host": "0.0.0.0",
-        "port": 8084,
-        "sslport": 8444,
+        "port": 8085,
+        "sslport": 8445,
         "sslkey": "certs/privkey.pem",
         "sslcert": "certs/fullchain.pem",
         "stratumHost": "pool.entrustus.org",
         "stats": {
-            "updateInterval": 5,
-            "historicalRetention": 14400,
-            "hashrateWindow": 600
+            "updateInterval": 15,
+            "historicalRetention": 10800,
+            "hashrateWindow": 300
         },
         "adminCenter": {
             "enabled": false,

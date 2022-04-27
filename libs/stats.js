@@ -315,14 +315,14 @@ module.exports = function(portalConfig, poolConfigs) {
             var coin = String(_this.stats.pools[pool.name].name);
 
             client.hscan(coin + ':blocksFound', 0, "match", a + "*", "count", 1000, function(error, found) { // pexacoin:blocksPending
-logger.info('blocksFound: '+ found)
+//logger.info('blocksFound: '+ found)
                 // get all immature balances from address
                 client.hscan(coin + ':immature', 0, "match", a + "*", "count", 10000, function(pendserr, pends) {
                     // get all balances from address
                     client.hscan(coin + ':balances', 0, "match", a + "*", "count", 10000, function(balserr, bals) {
                         // get all payouts from address
                         client.hscan(coin + ':payouts', 0, "match", a + "*", "count", 10000, function(payserr, pays) {
-logger.info('payouts: '+ pays)
+//logger.info('payouts: '+ pays)
                                         logger.debug("STATS> pendserr: [%s] balserr: [%s] payserr: [%s]", pendserr, balserr, payserr);
 
                             var workerName = "";

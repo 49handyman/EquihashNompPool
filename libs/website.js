@@ -7,7 +7,7 @@ const https = require('https');
 
 var async = require('async');
 var redis = require('redis');
-var watch = require('node-watch');
+//var watch = require('node-watch');
 
 var dot = require('dot');
 var express = require('express');
@@ -133,7 +133,7 @@ module.exports = function() {
             processTemplates();
         });
     };
-    /* requires node-watch 0.5.0 or newer */
+/* 
     watch(['./website', './website/pages'], function(evt, filename) {
         var basename;
         // support older versions of node-watch automatically
@@ -147,7 +147,7 @@ module.exports = function() {
             logger.debug('WEBSITE> Reloaded file %s', basename);
         }
     });
-
+*/
     portalStats.getGlobalStats(function() {
         readPageFiles(Object.keys(pageFiles));
     });

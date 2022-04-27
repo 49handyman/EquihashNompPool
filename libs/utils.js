@@ -11,8 +11,8 @@ let crypto = require('crypto');
 let dateFormat = require('dateformat');
 exports.dateFormat = dateFormat;
 
-let cnUtil = require('cryptoforknote-util');
-exports.cnUtil = cnUtil;
+//let cnUtil = require('cryptoforknote-util');
+//exports.cnUtil = cnUtil;
 
 /**
  * Generate random instance id

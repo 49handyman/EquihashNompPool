@@ -18,7 +18,10 @@
 "payOnStart": true,
 "marketStats": true,
 "MarketStatsInterval": 65,
-"rewardRecipients": {},
+
+"rewardRecipients": {
+},
+
 "tlsOptions": { "enabled": false },
     "paymentProcessing": {
         "minConf": 3,
@@ -28,11 +31,17 @@
         "minimumPayment": 10,
         "maxBlocksPerPayment": 20,
         "daemon": {
-            "host": "192.168.2.147",
+            "host": "127.0.0.1",
             "port": 7771,
             "user": "entrust",
             "password": "entrust"
-        }
+        },
+         "daemon": {
+             "host": "127.0.0.1",
+             "port": 7771,
+             "user": "entrust",
+             "password": "entrust"
+         }
 
 
 },
@@ -40,12 +49,12 @@
 "ports": {
      "3348": {
         "tls": false,
-         "diff": 900,
-           "varDiff": {"minDiff": 900, "maxDiff": 8000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30}
+         "diff": 1800,
+           "varDiff": {"mode": "fast", "minDiff": 1200, "maxDiff": 8000, "targetTime": 35, "retargetTime": 120, "variancePercent": 30}
      },
 "3347": {
          "tls": false,
-          "diff": 2800
+          "diff": 2780
       }
 
 
@@ -53,7 +62,7 @@
 "poolId": "arrr-usa",
 
 "daemons": [{
-    "host": "192.168.2.147",
+    "host": "127.0.0.1",
     "port": 7771,
     "user": "entrust",
     "password": "entrust"
@@ -62,8 +71,8 @@
 
 "p2p": {
         "enabled": true,
-        "host": "192.168.2.147",
-        "port": 7780,
+        "host": "127.0.0.1",
+        "port": 45452,
         "disableTransactions": true
 },
 
@@ -72,7 +81,7 @@
     "host": "127.0.0.1",
     "port": 3306,
     "user": "root",
-    "password": "",
+    "password": "jayisadick",
     "database": "ARRR",
     "checkPassword": false,
     "autoCreateWorker": true

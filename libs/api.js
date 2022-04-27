@@ -10,10 +10,10 @@ var filterIterate = require('./filterIterate.js');
 var stats = require('./stats.js');
 // added
 let charts = require('./charts.js');
-let notifications = require('./notifications.js');
+//let notifications = require('./notifications.js');
 let apiInterfaces = require('./apiInterfaces.js')   //(config.daemon, config.wallet);
 let market = require('./market.js');
-let utils = require('./utils.js');
+//let utils = require('./utils.js');
 JSON.minify = JSON.minify || require("node-json-minify");
 //end
 /*
@@ -323,7 +323,7 @@ module.exports = function(portalConfig, poolConfigs) {
                 res.write('\n');
                 var uid = Math.random().toString();
                 _this.liveStatConnections[uid] = res;
-                res.flush();
+//                res.flush();
                 req.on("close", function() {
                     delete _this.liveStatConnections[uid];
                 });
