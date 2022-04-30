@@ -1,5 +1,5 @@
 {
-    
+
     "poolname": "Development Site - Entrust Equihash Private Pool",
     "devmode": false,
     "devmodePayMinimim": 0.25,
@@ -27,9 +27,9 @@
     "xmrdonations": "",
     "logLevel": "info",
     "logColors": true,
-    "logger" : {
-        "level" : "info",
-        "file" : "logs/nomp_debug.log"
+    "logger": {
+        "level": "info",
+        "file": "logs/nomp_debug.log"
     },
 
     "cliHost": "127.0.0.1",
@@ -58,47 +58,47 @@
             "host": "127.0.0.1",
             "port": 6379
         },
-	 "poolHex": "456e747275737475732e6f726720436861726974792057652077616e7420737570706f7274202d20616868682e2e2e2050697261746573",
-	"_comment_poolHex": "Entrustus.org Charity We want support - ahhh... Pirates"
+        "poolHex": "456e747275737475732e6f726720436861726974792057652077616e7420737570706f7274202d20616868682e2e2e2050697261746573",
+        "_comment_poolHex": "Entrustus.org Charity We want support - ahhh... Pirates"
     },
     "api": {
-		"enabled": true,
-		"hashrateWindow": 600,
-		"updateInterval": 60,
-		"bindIp": "127.0.0.1",
-		"port": 8229,
-		"blocks": 30,
-		"payments": 30,
-		"password": "password",
-		"ssl": false,
-		"sslPort": 8119,
-		"sslCert": "cert.pem",
-		"sslKey": "privkey.pem",
-		"sslCA": "chain.pem",
-		"trustProxyIP": true
-	},
+        "enabled": true,
+        "hashrateWindow": 600,
+        "updateInterval": 60,
+        "bindIp": "127.0.0.1",
+        "port": 8229,
+        "blocks": 30,
+        "payments": 30,
+        "password": "password",
+        "ssl": false,
+        "sslPort": 8119,
+        "sslCert": "cert.pem",
+        "sslKey": "privkey.pem",
+        "sslCA": "chain.pem",
+        "trustProxyIP": true
+    },
 
 
-	"monitoring": {
-		"daemon": {
-			"checkInterval": 60,
-			"rpcMethod": "getblockcount"
-		},
-		"wallet": {
-			"checkInterval": 60,
-			"rpcMethod": "getbalance"
-		}
-	},
+    "monitoring": {
+        "daemon": {
+            "checkInterval": 60,
+            "rpcMethod": "getblockcount"
+        },
+        "wallet": {
+            "checkInterval": 60,
+            "rpcMethod": "getbalance"
+        }
+    },
 
-	"prices": {
-		"source": "tradeogre",
-		"currency": "USD"
-	},
+    "prices": {
+        "source": "tradeogre",
+        "currency": "USD"
+    },
 
     "website": {
         "enabled": true,
-        "sslenabled": true,
-        "sslforced": true,
+        "sslenabled": false,
+        "sslforced": false,
         "host": "0.0.0.0",
         "port": 8085,
         "sslport": 8445,
@@ -162,10 +162,10 @@
                     "diff": 0.001,
                     "varDiff": {
                         "minDiff": 0.001,
-                        "maxDiff": 1, 
-                        "targetTime": 15, 
-                        "retargetTime": 60, 
-                        "variancePercent": 30 
+                        "maxDiff": 1,
+                        "targetTime": 15,
+                        "retargetTime": 60,
+                        "variancePercent": 30
                     }
                 }
             }
@@ -173,7 +173,7 @@
     },
 
     "profitSwitch": {
-        "enabled": true,
+        "enabled": false,
         "updateInterval": 60,
         "depth": 0.90,
         "usePoloniex": false,

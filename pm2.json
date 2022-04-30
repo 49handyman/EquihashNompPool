@@ -1,0 +1,18 @@
+{
+    "apps": [{
+        "name": "Poolserver",
+        "script": "npm",
+        "args": "start",
+        "watch": false,
+        "ignore_watch": [".git/*", "logs/*"],
+        "watch_options": {
+            "followSymlinks": false
+        },
+        "env": {
+            "NODE_ENV": "production"
+        },
+        "env_production": {
+            "NODE_ENV": "production"
+        }
+    }]
+}
