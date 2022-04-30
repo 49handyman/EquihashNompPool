@@ -68,7 +68,7 @@
         "nodecoinbase": "git+https://github.com/49handyman/nodecoinbase.git",
         "nonce": "^1.0.4",
         "promise": ">=8.1.0",
-        "redis": "^3.1.1",
+        "redis": ">=4.0.6",
         "redis-commands": "^1.7.0",
         "should": "^13.2.3",
         "sma": "^0.1.1",
