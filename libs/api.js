@@ -9,7 +9,7 @@ var async = require('async');
 var filterIterate = require('./filterIterate.js');
 var stats = require('./stats.js');
 // added
-let charts = require('./charts.js');
+//let charts = require('./charts.js');
 //let notifications = require('./notifications.js');
 let apiInterfaces = require('./apiInterfaces.js')   //(config.daemon, config.wallet);
 let market = require('./market.js');
