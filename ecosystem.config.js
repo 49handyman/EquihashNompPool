@@ -4,7 +4,7 @@ module.exports = {
      * http://pm2.keymetrics.io/docs/usage/application-declaration/
      */
     apps: [{
-        name: 'site',
+        name: 'PoolServer',
         script: 'init.js',
         node_args: '--max_old_space_size=2048',
         max_memory_restart : "4G",
