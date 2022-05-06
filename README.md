@@ -4,7 +4,7 @@
 ```
 May 6, 2022
 
-Starting to clean up and the hacked up js code and extra repositories not needed.
+Starting to clean up hacked-up js code and extra repositories not needed.
 
 
 Warning - Grafana Dashboards, prometheus scrapers, and influxdb is not included 
