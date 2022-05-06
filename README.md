@@ -3,6 +3,7 @@
 # EquihashNompPool
 ```
 May 6, 2022
+dev branch
 
 Starting to clean up hacked-up js code and extra repositories not needed.
 
