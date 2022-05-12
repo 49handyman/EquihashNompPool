@@ -26,7 +26,17 @@ module.exports = function() {
                 onBanIP(message);
                 break;
             case 'blocknotify':
-                onBlockNotify(message);
+//                onBlockNotify(message);
+
+                 var messageCoin = message.coin.toLowerCase();
+                 var poolTarget = Object.keys(pools).filter(function(p){
+                     return p.toLowerCase() === messageCoin;
+                 })[0];
+
+                 if (poolTarget)
+                     pools[poolTarget].processBlockNotify(message.hash, 'blocknotify script');
+
+
                 break;
 
                 // IPC message for pool switching
@@ -172,17 +182,19 @@ module.exports = function() {
             
             if (data.blockHash && !isValidBlock) {
                 if (workerInfo.length === 2) {
-                    logger.info('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
+                    logger.info('\u001b[33mHeight: '+ data.height + '\u001b[33m Block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
                 } else {
-                    logger.info('\u001b[31mBLOCK>REJECTED> Found block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
+                    logger.info('\u001b[33mHHeight: '+ data.height +'\u001b[33m Block rejected by the daemon, share data: \u001b[37m' + shareDataJsonStr);
                 }
             } else if (isValidBlock) {
                 if (workerInfo.length === 2) {
-                    logger.info('\u001b[33mBLOCK>ACCEPTED> '+data.blockHash+' by worker: \u001b[37m'+ workerInfo[1]);
-                    logger.info('\u001b[33mBLOCK>ACCEPTED>INFO> '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+' \u001b[37m'+ JSON.stringify(data));
+                    logger.info('\u001b[33mHeight: '+ data.height + ' job# ' +data.job+ ' Block found by miner: \u001b[37m'+ workerInfo[1]);
+                    logger.info('\u001b[33mHeight: '+ data.height + ' job# ' +data.job+ ' BLOCK>ACCEPTED> Diff \u001b[37m'+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}));
+			logger.info('\u0007');
                 } else {
-                    logger.info('\u001b[33mBLOCK>ACCEPTED> '+data.blockHash+' by '+workerInfo[1]+' worker: none\u001b[37m');
-                    logger.info('\u001b[33mBLOCK>ACCEPTED>INFO> \u001b[37m'+ JSON.stringify(data));
+                    logger.info('\u001b[33mHeight: '+ data.height + ' job# ' +data.job+ ' Block found by miner: \u001b[37m' + workerInfo[0]);
+			 logger.info('\u0007');
+
                 }
             }
 
@@ -190,26 +202,26 @@ module.exports = function() {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
-			logger.info('\u001b[33mSHARE>WARN> Share was found with diff: '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+', higher than 1,000,000,000!\u001b[37m ');
+			logger.info('\u001b[33mHHeight: '+ data.height + ' SHARE>WARN> Share was found with diff: \u001b[37m'+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+', higher than 1,000,000,000!\u001b[37m ');
                     } else if (data.shareDiff > 1000000) {
 			redisClient.hincrby([coin + ':bigDiff', workerStr, 1]);
-			 logger.info('\u001b[33mSHARE>WARN> Share was found with diff: '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+', higher than 1,000,000!\u001b[37m ');
+			 logger.info('\u001b[33mHHeight: '+ data.height + ' SHARE>WARN> Share was found with diff: \u001b[37m'+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+', higher than 1,000,000!\u001b[37m ');
                     }
-                    logger.info('\u001b[32mSHARE>ACCEPTED> job: '+data.job+' req: '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ ' res: '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) +' by '+workerInfo[1] +' \u001b[37m' + functions.anonymizeIP(data.ip));
+                    logger.info('\u001b[32mHeight: '+ data.height + '\u001b[37m Job# ' + data.job +  '\u001b[35m Share diff ' + parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ '/'+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) +' by miner\u001b[37m '+workerInfo[1] +' \u001b[37m');
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED>2 job: '+data.job+' diff: '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error + ' ' + functions.anonymizeIP(data.ip));                }
+                    logger.info('\u001b[31mSHARE>REJECTED> job# '+data.job+' diff: '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ '\u001b[32m by miner '+workerInfo[1] +' reason: \u001b[37m'+ data.error);                }
             } else {
                 if (isValidShare) {
                     if (data.shareDiff > 1000000000) {
 			redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
- 			logger.info('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}));
+ 			logger.info('Height: '+ data.height + '\u001b[33m SHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}));
                     } else if (data.shareDiff > 1000000) {
 			 redisClient.hincrby([coin + ':bigDiff',workerStr, 1]);
-			 logger.info('\u001b[33mSHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}));
+			 logger.info('Height: '+ data.height + '\u001b[33m SHARE>WARN> Share was found with diff: %s, higher than 1,000,000,000!\u001b[37m '+parseFloat(data.shareDiff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}));
                     }
-                    logger.info('\u001b[32mSHARE>ACCEPTED> job: '+data.job+' req: '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ 'res: '+data.shareDiff.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) +' by '+workerInfo[1] +' \u001b[37m' + functions.anonymizeIP(data.ip));
+                    logger.info('Height: '+ data.height + '\u001b[32m SHARE>ACCEPTED> job: '+data.job+' \u001b[35m  Share diff '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ '/'+data.shareDiff.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) +'\u001b[32m by miner\u001b[37m'+workerInfo[1] +' \u001b[37m');
                 } else if (!isValidShare) {
-                    logger.info('\u001b[31mSHARE>REJECTED> job: '+data.job+' diff: '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error + ' ' + functions.anonymizeIP(data.ip));
+                    logger.info('Height: '+ data.height + '\u001b[31m SHARE>REJECTED> job: '+data.job+' diff: '+parseFloat(data.difficulty).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+ ' by '+workerInfo[1] +' reason: \u001b[37m'+ data.error);
                 }
             }
 
@@ -223,9 +235,9 @@ module.exports = function() {
 
 
             if (workerInfo.length === 2) {
-                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: '+parseFloat(diff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+' worker: \u001b[37m' + workerInfo[1]);
+                logger.info('\u001b[35mDifficulty update to diff  '+parseFloat(diff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+' worker: \u001b[37m' + workerInfo[1]);
             } else {
-                logger.info('\u001b[35mDIFFICULTY>UPDATE> diff: '+parseFloat(diff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+' worker: \u001b[37m' + workerStr);
+                logger.info('\u001b[35mDifficulty update to diff '+parseFloat(diff).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})+' worker: \u001b[37m' + workerStr);
             }
 
             handlers.diff(workerName, diff);

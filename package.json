@@ -69,7 +69,7 @@
         "redis": "^3.1.1",
         "redis-commands": "^1.7.0",
         "request": "^2.88.0",
-        "stratum-pool": "git+https://github.com/49handyman/node-stratum-pool.git",
+        "stratum-pool": "git+https://github.com/49handyman/node-stratum-pool-snomp.git",
         "tradeogre-api": "git+https://github.com/49handyman/tradeogre-api.git",
         "winston": "^3.7.2",
         "winston-daily-rotate-file": "^3.5.1",
