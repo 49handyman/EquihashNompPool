@@ -1,6 +1,6 @@
 {
     "apps": [{
-        "name": "Poolserver",
+        "name": "PoolServer",
         "script": "npm",
         "args": "start",
         "watch": false,
