@@ -79,6 +79,6 @@
         "node": ">=14.19.1"
     },
     "scripts": {
-        "start": "node --max_old_space_size=8G --max-memory-restart 8G init.js"
+        "start": "node --huge-max-old-generation-size init.js"
     }
 }
