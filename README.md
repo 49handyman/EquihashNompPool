@@ -8,6 +8,12 @@ We started signing all commits with our gpg key
 Requires node >=v14
 use this to install ```nvm install 14```
 
+Stats for single user address are all messed up, I'll be working on it
+this week, I hope.
+
+Were still working on upgrading all possible modules to latest if possible
+without breaking everything or major changes to code or esm updates.
+
 
 May 6, 2022
 dev branch
