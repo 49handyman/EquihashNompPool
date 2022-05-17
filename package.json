@@ -1,6 +1,6 @@
 {
     "name": "EquihashNompPool",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "description": "An extremely efficient, highly scalable, all-in-one, easy to setup Equihash mining pool",
     "keywords": [
         "stratum",
@@ -69,7 +69,7 @@
         "redis": "^3.1.1",
         "redis-commands": "^1.7.0",
         "request": "^2.88.0",
-        "stratum-pool": "git+https://github.com/49handyman/node-stratum-pool-snomp.git",
+        "stratum-pool": "git+https://github.com/49handyman/node-stratum-pool.git",
         "tradeogre-api": "git+https://github.com/49handyman/tradeogre-api.git",
         "winston": "^3.7.2",
         "winston-daily-rotate-file": "^3.5.1",
@@ -79,6 +79,6 @@
         "node": ">=14.19.1"
     },
     "scripts": {
-        "start": "node --huge-max-old-generation-size init.js"
+        "start": "node --huge-max-old-generation-size --max_old_space_size=8192 init.js"
     }
 }

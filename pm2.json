@@ -1,18 +1,30 @@
 {
     "apps": [{
-        "name": "PoolServer",
-        "script": "npm",
-        "args": "start",
-        "watch": false,
-        "ignore_watch": [".git/*", "logs/*"],
-        "watch_options": {
-            "followSymlinks": false
-        },
-        "env": {
-            "NODE_ENV": "production"
-        },
-        "env_production": {
-            "NODE_ENV": "production"
-        }
+ 	"name"			: "PoolServer.v16.snomp", 
+ 	"exec_interpreter"  	: "node",
+	"exec_interpreter"	:  "/home/doug/.nvm/versions/node/v16.15.0/bin/node",
+ 	"exec_mode"         	: "fork",
+ 	"autorestart"       	: true,
+ 	"max_memory_restart"	: "7G",
+ 	"script"            	: "./init.js",
+ 	"node_args"         	: " --huge-max-old-generation-size --max_old_space_size=8192 ",
+ 	"args"              	: "",
+ 	"cron_restart"      	: "0 1/3 * * *",
+        "watch"			: false,
+        "ignore_watch"		: [".git/*", "logs/*"],
+        "watch_options"	: {
+            	"followSymlinks": false
+        	},
+        	"env": {
+            		"NODE_ENV" : "development",
+			"PORT"     : "8085"
+        	},
+        	"env_production": {
+            		"NODE_ENV" : "production",
+			"PORT"     : "8085"
+        	}
     }]
 }
+
+
+
