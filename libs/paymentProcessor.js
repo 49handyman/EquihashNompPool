@@ -339,17 +339,23 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         var coin = poolOptions.coin.name;
 
         request('https://api.coingecko.com/api/v3/simple/price?ids=' + coin + '&vs_currencies=usd', function(error, response, body) {
+	 if (!error && response.statusCode !== 200 && response.contentType !== "application/json") { 
+		logger.info('coingecko not json'); 
+		logger.debug('coingecko not json' + JSON.stringify(body[coin].usd)); 
+		return; 
+	 };
+//	 if (response.contentType !== "application/json") { logger.info('coingecko not json'); logger.debug('coingecko not json' + JSON.stringify(response); return; };
             if (error) {
                 logger.error(coin + 'Error with http request to https://api.coingecko.com/api/v3/simple/price.... ' + JSON.stringify(error));
                 return;
             }
             if (response && response.statusCode) {
-                if (response.statusCode == 200 | 429) {
+                if (response.statusCode == 200) {
                     if (body) {
-			if (response.contentType !== "application/json") { logger.error('coingecko not json'); return; };
+//			if (response.contentType !== "application/json") { logger.error('coingecko not json'); return; };
                         var data = JSON.parse(body);
                         var price = data[coin].usd
-                        logger.debug('\u001b[36;1m Get Coingecko Data: ' + coin + ' Price usd:\u001b[0m ' + price)
+                        logger.debug('\u001b[36;1mGet Coingecko Data: ' + coin + ' Price usd:\u001b[0m ' + price)
                         marketStatsUpdate.push(['hset', coin + ':stats', 'coinMarketCap', price]);
                         redisClient.multi(marketStatsUpdate).exec(function(err, results) {
                             if (err) {
