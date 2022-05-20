@@ -25,10 +25,10 @@
     "ethdonations": "0x06273002E7CA03ee114f1C7F9fB04d1C6aEa9dc4",
     "arrrdonations": "zs1gpysaurgl2qce5kdndpw4lsls9kxcfqxzp4ecumueqf3rfz8rfuw25207a9z2xh23zhdcg7getc",
     "xmrdonations": "",
-    "logLevel": "info",
+    "logLevel": "debug",
     "logColors": true,
     "logger": {
-        "level": "info",
+        "level": "debug",
         "file": "logs/nomp_debug.log"
     },
 
@@ -42,7 +42,7 @@
 
     "defaultPoolConfigs": {
         "blockRefreshInterval": 0,
-        "jobRebroadcastTimeout": 55,
+        "jobRebroadcastTimeout": 155,
         "connectionTimeout": 5000,
         "emitInvalidBlockHashes": false,
         "validateWorkerUsername": true,
@@ -58,8 +58,8 @@
             "host": "127.0.0.1",
             "port": 6379
         },
-        "poolHex": "456e747275737475732e6f726720436861726974792057652077616e7420737570706f7274202d20616868682e2e2e2050697261746573",
-        "_comment_poolHex": "Entrustus.org Charity We want support - ahhh... Pirates"
+        "poolHex": "4A6179206973206120746F74616C204469636B21",
+        "_comment_poolHex": "Entrustus.org Charity We want support - arrr... Pirates"
     },
     "api": {
         "enabled": true,

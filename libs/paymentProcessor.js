@@ -48,7 +48,6 @@ module.exports = function(logger) {
 
 function SetupForPool(logger, poolOptions, setupFinished) {
     var coin = poolOptions.coin.name;
-
     var processingConfig = poolOptions.paymentProcessing;
     var logSystem = 'PaymentProcess';
     var logComponent = coin;
@@ -338,8 +337,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     function cacheMarketStats() {
         var marketStatsUpdate = [];
         var coin = poolOptions.coin.name;
-        //   if (coin == 'zen')
-        //      coin = 'zencash';
+
         request('https://api.coingecko.com/api/v3/simple/price?ids=' + coin + '&vs_currencies=usd', function(error, response, body) {
             if (error) {
                 logger.error(coin + 'Error with http request to https://api.coingecko.com/api/v3/simple/price.... ' + JSON.stringify(error));
@@ -348,7 +346,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             if (response && response.statusCode) {
                 if (response.statusCode == 200 | 429) {
                     if (body) {
-
+			if (response.contentType !== "application/json") { logger.error('coingecko not json'); return; };
                         var data = JSON.parse(body);
                         var price = data[coin].usd
                         logger.debug('\u001b[36;1m Get Coingecko Data: ' + coin + ' Price usd:\u001b[0m ' + price)
@@ -359,7 +357,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                 return;
                             }
                         });
-                        //  }
                     }
                 } else {
                     logger.error('Error, unexpected http status code during call to  ' + coin + ' cacheMarketStats() ' + JSON.stringify(response.statusCode));
@@ -518,7 +515,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         var market_stats_interval = 120 * 1000;
         var marketStatsInterval = setInterval(function() {
             // update market stats using coinmarketcap
-            cacheMarketStats();
+           cacheMarketStats();
         }, market_stats_interval);
     }
 

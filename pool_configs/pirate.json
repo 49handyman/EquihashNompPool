@@ -14,10 +14,10 @@
     "exchangeCoinbaseProEnabled": true,
     "exchangeCoinbaseProQuote": "BTC-USD",
     "_comments": "above items are dependent on exchange used and their naming conventions for exchange testing and conversion, which is only partially implemented and tested.",
-    "walletInterval": 300,
+    "walletInterval": 600,
     "payOnStart": true,
     "marketStats": true,
-    "MarketStatsInterval": 125,
+    "MarketStatsInterval": 505,
 
     "rewardRecipients": {},
 
@@ -48,13 +48,13 @@
     "ports": {
         "3348": {
             "tls": false,
-            "diff": 1800,
-            "varDiff": { "mode": "fast", "minDiff": 1200, "maxDiff": 8000, "targetTime": 35, "retargetTime": 120, "variancePercent": 30 }
+            "diff": 1200,
+            "varDiff": { "mode": "fast", "minDiff": 600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
         },
         "3380": {
             "tls": false,
-            "diff": 1800,
-            "varDiff": { "mode": "fast", "minDiff": 1200, "maxDiff": 8000, "targetTime": 35, "retargetTime": 120, "variancePercent": 30 }
+            "diff": 1500,
+            "varDiff": { "mode": "fast", "minDiff": 600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
         },
         "3347": {
             "tls": false,

@@ -42,7 +42,6 @@
         "async": "3.2.3",
         "bignum": "^0.13.1",
         "bignumber.js": ">=8.0.2",
-        "bittrex-exchange-api": "git+https://github.com/ballantyne/bittrex-exchange-api.git",
         "bittrex-rest-client": "^2.0.4",
         "body-parser": "^1.18.3",
         "chart.js": "^3.1.1",
