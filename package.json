@@ -1,6 +1,6 @@
 {
     "name": "EquihashNompPool",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "An extremely efficient, highly scalable, all-in-one, easy to setup Equihash mining pool",
     "keywords": [
         "stratum",

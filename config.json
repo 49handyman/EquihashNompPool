@@ -25,10 +25,10 @@
     "ethdonations": "0x06273002E7CA03ee114f1C7F9fB04d1C6aEa9dc4",
     "arrrdonations": "zs1gpysaurgl2qce5kdndpw4lsls9kxcfqxzp4ecumueqf3rfz8rfuw25207a9z2xh23zhdcg7getc",
     "xmrdonations": "",
-    "logLevel": "debug",
+    "logLevel": "info",
     "logColors": true,
     "logger": {
-        "level": "debug",
+        "level": "info",
         "file": "logs/nomp_debug.log"
     },
 
