@@ -30,19 +30,11 @@
         "minimumPayment": 10,
         "maxBlocksPerPayment": 20,
         "daemon": {
-            "host": "192.168.2.231",
-            "port": 7771,
-            "user": "entrust",
-            "password": "entrust"
-        },
-        "daemon": {
-            "host": "192.168.2.231",
+            "host": "127.0.0.1",
             "port": 7771,
             "user": "entrust",
             "password": "entrust"
         }
-
-
     },
     "trackShares": { "disable": false },
     "ports": {
@@ -63,12 +55,26 @@
     },
     "poolId": "arrr-usa",
 
-    "daemons": [{
+    "daemons": [
+	{
+        "host": "127.0.0.1",
+        "port": 7771,
+        "user": "entrust",
+        "password": "entrust"
+    	},
+        {
+        "host": "192.168.2.138",
+        "port": 7771,
+        "user": "entrust",
+        "password": "entrust"
+        },
+        {
         "host": "192.168.2.231",
         "port": 7771,
         "user": "entrust",
         "password": "entrust"
-    }],
+        }
+],
 
     "p2p": {
         "enabled": true,

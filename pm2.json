@@ -1,6 +1,6 @@
 {
     "apps": [{
- 	"name"			: "PoolServer.v16.snomp", 
+ 	"name"			: "PoolServer", 
  	"exec_interpreter"  	: "node",
 	"exec_interpreter"	:  "/home/doug/.nvm/versions/node/v16.15.0/bin/node",
  	"exec_mode"         	: "fork",

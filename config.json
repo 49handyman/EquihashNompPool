@@ -72,9 +72,9 @@
         "password": "password",
         "ssl": false,
         "sslPort": 8119,
-        "sslCert": "cert.pem",
-        "sslKey": "privkey.pem",
-        "sslCA": "chain.pem",
+        "sslCert": "cert/cert.pem",
+        "sslKey": "cert/privkey.pem",
+        "sslCA": "cert/chain.pem",
         "trustProxyIP": true
     },
 

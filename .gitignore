@@ -1,4 +1,7 @@
 # Logs
+/cert
+*.pem
+*.crt
 .env
 logs
 *.log
