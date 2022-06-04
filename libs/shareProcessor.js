@@ -62,7 +62,6 @@ module.exports = function(logger, poolConfig) {
         }
         var startTime = [];
         startTime.push(['hset', coin + ':stats', 'poolStartTime', Date.now() / 1000]);
-        logger.warn('Pool Restarted')
         connection.multi(startTime).exec(function(err, replies) {
             if (err)
                 logger.error('Error with share processor multi ' + JSON.stringify(err));

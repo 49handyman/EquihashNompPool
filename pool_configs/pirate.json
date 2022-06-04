@@ -47,10 +47,6 @@
             "tls": false,
             "diff": 1500,
             "varDiff": { "mode": "fast", "minDiff": 600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
-        },
-        "3347": {
-            "tls": false,
-            "diff": 2780
         }
     },
     "poolId": "arrr-usa",
