@@ -40,13 +40,13 @@
     "ports": {
         "3348": {
             "tls": false,
-            "diff": 1200,
-            "varDiff": { "mode": "fast", "minDiff": 600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
+            "diff": 2200,
+            "varDiff": { "mode": "fast", "minDiff": 1600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
         },
         "3380": {
             "tls": false,
-            "diff": 1500,
-            "varDiff": { "mode": "fast", "minDiff": 600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
+            "diff": 2200,
+            "varDiff": { "mode": "fast", "minDiff": 1600, "maxDiff": 18000, "targetTime": 45, "retargetTime": 60, "variancePercent": 30 }
         }
     },
     "poolId": "arrr-usa",

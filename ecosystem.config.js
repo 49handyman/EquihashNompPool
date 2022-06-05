@@ -1,10 +1,14 @@
-{
+module.exports = {
+    /**
+     * Application configuration section
+     * http://pm2.keymetrics.io/docs/usage/application-declaration/
+     */
     "apps": [{
         "name"                  : "PoolServer.old",
         "exec_interpreter"      : "node",
-        "exec_interpreter"      :  "/home/doug/.nvm/versions/node/v16.15.0/bin/node",
-    	"exec_mode" 		: "fork",
-	"stop_exit_codes"	: [0],
+        "exec_interpreter"      :  "/home/doug/.nvm/versions/node/v14.19.2/bin/node",
+        "exec_mode"             : "fork",
+        "stop_exit_codes"       : "\[0\]",
         "autorestart"           : true,
         "max_memory_restart"    : "7G",
         "script"                : "./init.js",
@@ -26,8 +30,8 @@
                 }
     }],
 
-  deploy : {
-    production : {
+  "deploy" : {
+    "production" : {
        "user" : "doug",
        "host" : ["192.168.2.226"],
        "ref"  : "origin/master",
@@ -36,5 +40,5 @@
        "post-deploy" : "npm install"
     }
   }
-}
 
+};
