@@ -39,7 +39,7 @@ module.exports = {
        "path" : "/home/doug/testserver",
        "post-deploy" : "nvm install 16",
        "post-deploy" : "nvm use 16",
-       "post-deploy" : "npm install"
+       "post-deploy" : "/home/doug/.nvm/versions/node/v16.15.0/bin/npm install"
     }
   }
 
