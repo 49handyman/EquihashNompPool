@@ -34,8 +34,8 @@ module.exports = {
     "production" : {
        "user" : "doug",
        "host" : ["192.168.2.226"],
-       "ref"  : "origin/master",
-       "repo" : "git@https://github.com/49handyman/EquihashNompPool.git",
+       "ref"  : "origin/main",
+       "repo" : "https://github.com/49handyman/EquihashNompPool.git",
        "path" : "/home/doug/testserver",
        "post-deploy" : "npm install"
     }
