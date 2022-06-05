@@ -37,6 +37,8 @@ module.exports = {
        "ref"  : "origin/main",
        "repo" : "https://github.com/49handyman/EquihashNompPool.git",
        "path" : "/home/doug/testserver",
+       "post-deploy" : "nvm install 16",
+       "post-deploy" : "nvm use 16",
        "post-deploy" : "npm install"
     }
   }
