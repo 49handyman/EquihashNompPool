@@ -3,7 +3,7 @@
     "comment_name": "use coingecko id for name to get live stats and avoid errors",
     "symbol": "arrr",
     "network": "mainnet",
-    "blockReward": 16,
+    "blockReward": 8,
     "algorithm": "equihash",
     "txfee": 0.0001,
     "getMarketStats": true,

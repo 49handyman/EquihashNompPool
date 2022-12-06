@@ -10,6 +10,7 @@ var util = require('stratum-pool/lib/util.js');
 
 var portalConfig = JSON.parse(fs.readFileSync("config.json", { encoding: 'utf8' }));
 let componentStr = `PaymentProcess`;
+
 module.exports = function(logger) {
     var logger2 = new PoolLogger({
         logColors: true
@@ -270,7 +271,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         });
     }
 
-    cacheMarketStats();
+//    cacheMarketStats();
 
     // get z_address coinbalance
     function listUnspentZ(addr, minConf, displayBool, callback) {
@@ -521,7 +522,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         var market_stats_interval = 120 * 1000;
         var marketStatsInterval = setInterval(function() {
             // update market stats using coinmarketcap
-           cacheMarketStats();
+      //     cacheMarketStats();
         }, market_stats_interval);
     }
 

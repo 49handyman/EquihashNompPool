@@ -1,8 +1,8 @@
 {
     "apps": [{
-        "name"                  : "PoolServer.old",
+        "name"                  : "PoolServer",
         "exec_interpreter"      : "node",
-        "exec_interpreter"      :  "/home/doug/.nvm/versions/node/v16.15.0/bin/node",
+        "exec_interpreter"      :  "/home/doug/.nvm/versions/node/v16.16.0/bin/node",
     	"exec_mode" 		: "fork",
 	"stop_exit_codes"	: [0],
         "autorestart"           : true,
@@ -32,7 +32,7 @@
        "host" : ["192.168.2.226"],
        "ref"  : "origin/master",
        "repo" : "git@https://github.com/49handyman/EquihashNompPool.git",
-       "path" : "/home/doug/testserver",
+       "path" : "./",
        "post-deploy" : "npm install"
     }
   }
