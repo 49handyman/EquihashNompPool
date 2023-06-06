@@ -1,0 +1,153 @@
+# my global config
+global:
+  scrape_interval:     120s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 120s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  #scrape_timeout is set to the global default (10s).
+  scrape_timeout: 60s
+remote_write:
+  - url: "http://localhost:8086/api/v1/prom/write?db=prometheus"
+
+remote_read:
+  - url: "http://localhost:8086/api/v1/prom/read?db=prometheus"
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'prometheus'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    scrape_interval: 230s
+    static_configs:
+      - targets: ['192.168.2.103:9090']
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
+  - job_name: node_explorer
+    scrape_interval: 230s
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+      - targets: ['192.168.2.103:9100']
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
+  - job_name: crypto_currency
+    scrape_interval: 360s
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+      - targets: ['192.168.2.103:9002']
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
+
+  - job_name: iptables
+    scrape_interval: 360s
+
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+      - targets: ['192.168.2.138:9455', '192.168.2.103:9455', '192.168.2.231:9455', '192.168.2.184:9455']
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
+  - job_name: 'fail2ban_geo_data'
+    scrape_interval: 520s
+    metrics_path: '/metrics'
+
+    static_configs:
+      - targets: ['192.168.2.138:9002', '192.168.2.103:9002', '192.168.2.231:9002', '192.168.2.184:9002']
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
+  - job_name: 'pirate_wallet'
+    scrape_interval: 120s
+    metrics_path: '/metrics'
+
+    static_configs:
+      - targets: ['192.168.2.138:9003','192.168.2.103:9003','192.168.2.231:9003','192.168.2.184:9003']
+
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
+  - job_name: 'fail2ban-exporter'
+    scrape_interval: 360s
+    metrics_path: '/metrics'
+
+    static_configs:
+      - targets: ['192.168.2.138:9191','192.168.2.103:9191','192.168.2.231:9191','192.168.2.184:9191']
+
+    relabel_configs:
+      - source_labels: [instance]
+        target_label: __tmp_instance
+        regex: '(.+)'
+        replacement: '${1};'
+      - source_labels: [__tmp_instance, __address__]
+        separator: ''
+        target_label: instance
+        regex: '([^:;]+)((:[0-9]+)?|;(.*))'
+        replacement: '${1}'
+
