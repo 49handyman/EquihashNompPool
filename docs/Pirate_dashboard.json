@@ -1,0 +1,5941 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": 18,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-purple",
+                "value": 5
+              },
+              {
+                "color": "dark-red",
+                "value": 10
+              },
+              {
+                "color": "dark-yellow",
+                "value": 15
+              },
+              {
+                "color": "dark-green",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home-231"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Building-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 2,
+        "x": 0,
+        "y": 0
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12,
+          "valueSize": 24
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Home-231",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "algos_equihash_workers"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "algos_equihash_workers"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "algos_equihash_workers"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Miners",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "super-light-green",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "light-purple",
+                "value": 3
+              },
+              {
+                "color": "dark-purple",
+                "value": 4
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Building"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 2,
+        "y": 0
+      },
+      "id": 60,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"pools_komodo_blocks_pending\") FROM \"poolStats\" WHERE $timeFilter GROUP BY time(5m) fill(null)",
+          "rawQuery": false,
+          "refId": "H",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_confirmed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [],
+                "type": "non_negative_difference"
+              }
+            ]
+          ],
+          "slimit": "20",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_difference(difference(distinct(\"pools_pirate-chain_blocks_confirmed\"))) FROM \"poolStats\" WHERE (\"url\" = 'http://192.168.2.226:8085/api/stats') AND $timeFilter GROUP BY time(30m) fill(none) LIMIT 100 SLIMIT 100",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_confirmed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              },
+              {
+                "params": [],
+                "type": "non_negative_difference"
+              }
+            ]
+          ],
+          "slimit": "20",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT non_negative_difference(difference(distinct(\"pools_pirate-chain_blocks_confirmed\"))) FROM \"poolStats\" WHERE (\"url\" = 'http://192.168.2.226:8085/api/stats') AND $timeFilter GROUP BY time(30m) fill(none) LIMIT 100 SLIMIT 100",
+          "rawQuery": false,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_confirmed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              },
+              {
+                "params": [],
+                "type": "non_negative_difference"
+              }
+            ]
+          ],
+          "slimit": "20",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Confirmed Blocks",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 85,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "light-green",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              },
+              {
+                "color": "super-light-purple",
+                "value": 3
+              },
+              {
+                "color": "semi-dark-purple",
+                "value": 4
+              },
+              {
+                "color": "dark-purple",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Building"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 7,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.3",
+      "targets": [
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"pools_komodo_blocks_pending\") FROM \"poolStats\" WHERE $timeFilter GROUP BY time(5m) fill(null)",
+          "rawQuery": false,
+          "refId": "H",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"pools_komodo_blocks_pending\") FROM \"poolStats\" WHERE $timeFilter GROUP BY time(5m) fill(null)",
+          "rawQuery": false,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "138-testing",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"pools_komodo_blocks_pending\") FROM \"poolStats\" WHERE $timeFilter GROUP BY time(5m) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"pools_komodo_blocks_pending\") FROM \"poolStats\" WHERE $timeFilter GROUP BY time(5m) fill(null)",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"pools_komodo_blocks_pending\") FROM \"poolStats\" WHERE $timeFilter GROUP BY time(5m) fill(null)",
+          "rawQuery": false,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Blocks Pending mini graph",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 1
+              },
+              {
+                "color": "#EAB839",
+                "value": 3
+              },
+              {
+                "color": "super-light-green",
+                "value": 5
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 7
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 11,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 14,
+          "valueSize": 24
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Home-231",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_confirmed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "100",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "M",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_confirmed"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "100",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "($B+$M)*4*0.34",
+          "hide": false,
+          "refId": "A",
+          "type": "math"
+        }
+      ],
+      "title": "Blocks Paid ${__from:date:MM-DD-YY} To ${__to:date:MM-DD-YY}",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-yellow",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              },
+              {
+                "color": "dark-purple",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 13,
+        "y": 0
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "building-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Immature",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 15,
+        "y": 0
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksDuplicate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "building-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksDuplicate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksDuplicate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksDuplicate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksDuplicate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Duplicated",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 17,
+        "y": 0
+      },
+      "id": 52,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksRejected"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "building-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksRejected"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksRejected"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksRejected"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksRejected"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Rejected",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 2,
+        "x": 19,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_kicked"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "building-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_kicked"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "luck",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_poolLuck"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.226:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_kicked"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_kicked"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "24h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_kicked"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              },
+              {
+                "params": [
+                  "+0"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Orphaned",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "semi-dark-yellow",
+                "value": 15
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 29
+              },
+              {
+                "color": "dark-green",
+                "value": 39
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 21,
+        "y": 0
+      },
+      "id": 39,
+      "interval": "10s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "wallet_balance",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"gauge\") FROM \"komodo_wallet_balance\" WHERE (\"pirate_wallet\" = 'http://192.168.2.241:9003/metrics' AND \"type\" = 'private') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:9003/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "wallet_balance",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"gauge\") FROM \"komodo_wallet_balance\" WHERE (\"pirate_wallet\" = 'http://192.168.2.241:9003/metrics' AND \"type\" = 'private') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.231:9003/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "wallet_balance",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"gauge\") FROM \"komodo_wallet_balance\" WHERE (\"pirate_wallet\" = 'http://192.168.2.241:9003/metrics' AND \"type\" = 'private') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.138:9003/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "wallet_balance",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"gauge\") FROM \"komodo_wallet_balance\" WHERE (\"pirate_wallet\" = 'http://192.168.2.241:9003/metrics' AND \"type\" = 'private') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.184:9003/metrics"
+            }
+          ]
+        }
+      ],
+      "title": "Wallet Balance",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "#EF843C",
+                "value": 2
+              },
+              {
+                "color": "#E24D42",
+                "value": 3
+              },
+              {
+                "color": "super-light-green",
+                "value": 5
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 7
+              },
+              {
+                "color": "super-light-green",
+                "value": 8
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 9
+              },
+              {
+                "color": "dark-green",
+                "value": 10
+              },
+              {
+                "color": "#BA43A9",
+                "value": 12
+              },
+              {
+                "color": "#705DA0",
+                "value": 15
+              }
+            ]
+          },
+          "unit": "MHs"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Backup-1"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Backup-1-226",
+                    "url": "http://192.168.2.226:8085/stats/pirate-chain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Building"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Building",
+                    "url": "http://pool1.entrustus.org:8085/stats/pirate-chain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Home"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Home",
+                    "url": "http://192.168.2.231:8085/stats/pirate-chain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Backup-2"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Backup-2-138",
+                    "url": "http://192.168.2.138:8085/stats/pirate-chain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "local-3"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Pool Server Status Website -Crypto-3",
+                    "url": "http://192.168.2.184:8085/stats/pirate-chain"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 57,
+      "options": {
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "text": {
+          "titleSize": 17,
+          "valueSize": 8
+        }
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000/1000/1000/1000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Building-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000/1000/1000/1000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000/1000/1000/1000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000/1000/1000/1000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000/1000/1000/1000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "title": "Miner Hashrates",
+      "transformations": [],
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#00ff36",
+                "value": 1
+              },
+              {
+                "color": "#8e0004ab",
+                "value": 2
+              },
+              {
+                "color": "#eb021d54",
+                "value": 3
+              },
+              {
+                "color": "#fc002e26",
+                "value": 3.5
+              },
+              {
+                "color": "dark-purple",
+                "value": 4
+              },
+              {
+                "color": "#9900e58f",
+                "value": 5
+              },
+              {
+                "color": "#a103f061",
+                "value": 6
+              }
+            ]
+          },
+          "unit": "MHs"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Difficulty"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Difficulty"
+              },
+              {
+                "id": "unit",
+                "value": "GHs"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hashrate"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Msols"
+              },
+              {
+                "id": "unit",
+                "value": "MHs"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "dark-green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 400
+                    },
+                    {
+                      "color": "#a5041691",
+                      "value": 600
+                    },
+                    {
+                      "color": "#ff001eb8",
+                      "value": 800
+                    },
+                    {
+                      "color": "#f2001c",
+                      "value": 900
+                    },
+                    {
+                      "color": "dark-purple",
+                      "value": 1000
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "min",
+                "value": 200
+              },
+              {
+                "id": "max",
+                "value": 1200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Difficulty"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 9,
+        "y": 7
+      },
+      "id": 59,
+      "interval": "10s",
+      "libraryPanel": {
+        "description": "",
+        "meta": {
+          "connectedDashboards": 2,
+          "created": "2021-07-26T22:47:49-05:00",
+          "createdBy": {
+            "avatarUrl": "",
+            "id": 1,
+            "name": ""
+          },
+          "folderName": "General",
+          "folderUid": "",
+          "updated": "2023-06-05T22:53:34-05:00",
+          "updatedBy": {
+            "avatarUrl": "/avatar/e29bdd042bf3f9284140aa23ef9502ab",
+            "id": 3,
+            "name": "dswelch"
+          }
+        },
+        "name": "Network",
+        "type": "gauge",
+        "uid": "SdZTwYW7z",
+        "version": 44
+      },
+      "options": {
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "text": {
+          "valueSize": 13
+        }
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "Hashrate",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "network_hashrate",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000000"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.184:9003/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "Difficulty",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "difficulty",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.184:9003/metrics"
+            }
+          ]
+        }
+      ],
+      "title": "Blockchain Stats",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 3,
+          "displayName": "ARRR Block Reward",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-yellow",
+                "value": 30000
+              },
+              {
+                "color": "dark-blue",
+                "value": 35000
+              },
+              {
+                "color": "dark-green",
+                "value": 40000
+              },
+              {
+                "color": "dark-purple",
+                "value": 60000
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 15,
+        "y": 7
+      },
+      "id": 54,
+      "interval": "10s",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "crypto_currency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pair",
+              "operator": "=",
+              "value": "arrrusdt"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "-100"
+          },
+          "expression": "$A*8",
+          "hide": false,
+          "refId": "C",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "crypto_currency",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "pair",
+              "operator": "=",
+              "value": "arrrusdt"
+            }
+          ]
+        }
+      ],
+      "title": "Block Value",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "__expr__",
+        "uid": "-100"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "displayName": "ARRR Exchange Rate",
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "TradeOgre",
+              "url": "https://tradeogre.com/exchange/BTC-ARRR"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "super-light-red",
+                "value": 0.8
+              },
+              {
+                "color": "light-red",
+                "value": 1
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 1.2
+              },
+              {
+                "color": "dark-red",
+                "value": 1.3
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 1.5
+              },
+              {
+                "color": "dark-yellow",
+                "value": 1.75
+              },
+              {
+                "color": "super-light-green",
+                "value": 2
+              },
+              {
+                "color": "light-green",
+                "value": 2.25
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 2.5
+              },
+              {
+                "color": "dark-green",
+                "value": 3
+              },
+              {
+                "color": "dark-purple",
+                "value": 3.5
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 8
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "displayName",
+                "value": "ARRR/BTC Rate"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "BTC"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "BTC $USD"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ARRR"
+            },
+            "properties": [
+              {
+                "id": "displayName"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 7
+      },
+      "id": 56,
+      "interval": "10s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "ARRR",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "crypto_currency",
+          "orderByTime": "ASC",
+          "policy": "poolServer-rp",
+          "query": "SELECT last(\"gauge\") FROM \"exchange_rate\" WHERE (\"exchange\" = 'coinex' AND \"currency\" = 'ARRR') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "exchange",
+              "operator": "=",
+              "value": "kucoin"
+            },
+            {
+              "condition": "AND",
+              "key": "pair",
+              "operator": "=",
+              "value": "arrrusdt"
+            }
+          ]
+        },
+        {
+          "alias": "BTC",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "crypto_currency",
+          "orderByTime": "ASC",
+          "policy": "poolServer-rp",
+          "query": "SELECT last(\"gauge\") FROM \"exchange_rate\" WHERE (\"exchange\" = 'coinex' AND \"currency\" = 'ARRR') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "exchange",
+              "operator": "=",
+              "value": "kucoin"
+            },
+            {
+              "condition": "AND",
+              "key": "pair",
+              "operator": "=",
+              "value": "btcusdt"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "$A/$B",
+          "hide": false,
+          "refId": "C",
+          "type": "math"
+        },
+        {
+          "alias": "Value",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "crypto_currency",
+          "orderByTime": "ASC",
+          "policy": "poolServer-rp",
+          "query": "SELECT last(\"gauge\") FROM \"exchange_rate\" WHERE (\"exchange\" = 'coinex' AND \"currency\" = 'ARRR') AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "*8*.45"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "exchange",
+              "operator": "=",
+              "value": "kucoin"
+            },
+            {
+              "condition": "AND",
+              "key": "pair",
+              "operator": "=",
+              "value": "arrrusdt"
+            }
+          ]
+        }
+      ],
+      "title": "Prices",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "fillOpacity": 95,
+            "lineWidth": 0
+          },
+          "mappings": [
+            {
+              "options": {
+                "connection_failed": {
+                  "color": "dark-red",
+                  "index": 2
+                },
+                "success": {
+                  "color": "dark-green",
+                  "index": 1
+                },
+                "timeout": {
+                  "color": "dark-red",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "fail",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 22,
+        "x": 0,
+        "y": 12
+      },
+      "hideTimeOverride": true,
+      "id": 23,
+      "interval": "5m",
+      "links": [],
+      "maxDataPoints": 12000,
+      "options": {
+        "colWidth": 0.51,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "rowHeight": 0.82,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "$$hashKey": "object:312",
+          "aggregation": "Last",
+          "alias": "Building",
+          "crit": 400,
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "decimals": 0,
+          "displayAliasType": "Warning / Critical",
+          "displayType": "Annotation",
+          "displayValueWithAlias": "When Alias Displayed",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "OnlineStatus",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "result_type"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "server",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8085"
+            }
+          ],
+          "units": "none",
+          "valueHandler": "Number Threshold",
+          "warn": 201
+        },
+        {
+          "$$hashKey": "object:313",
+          "aggregation": "Last",
+          "alias": "138",
+          "crit": 400,
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "decimals": 0,
+          "displayAliasType": "Warning / Critical",
+          "displayType": "Annotation",
+          "displayValueWithAlias": "When Alias Displayed",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "OnlineStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "result_type"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "server",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087"
+            }
+          ],
+          "units": "none",
+          "valueHandler": "Number Threshold",
+          "warn": 201
+        },
+        {
+          "$$hashKey": "object:315",
+          "aggregation": "Last",
+          "alias": "home",
+          "crit": 400,
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "decimals": 0,
+          "displayAliasType": "Warning / Critical",
+          "displayType": "Annotation",
+          "displayValueWithAlias": "When Alias Displayed",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "OnlineStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "result_type"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "server",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085"
+            }
+          ],
+          "units": "none",
+          "valueHandler": "Number Threshold",
+          "warn": 201
+        },
+        {
+          "$$hashKey": "object:316",
+          "aggregation": "Last",
+          "alias": "local-138",
+          "crit": 400,
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "decimals": 0,
+          "displayAliasType": "Warning / Critical",
+          "displayType": "Regular",
+          "displayValueWithAlias": "Never",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "OnlineStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "result_type"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "server",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087"
+            }
+          ],
+          "units": "none",
+          "valueHandler": "Number Threshold",
+          "warn": 201
+        },
+        {
+          "$$hashKey": "object:316",
+          "aggregation": "Last",
+          "alias": "local-3",
+          "crit": 400,
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "decimals": 0,
+          "displayAliasType": "Warning / Critical",
+          "displayType": "Regular",
+          "displayValueWithAlias": "Never",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "OnlineStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "result_type"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "server",
+              "operator": "=",
+              "value": "http://192.168.2.175:8085"
+            }
+          ],
+          "units": "none",
+          "valueHandler": "Number Threshold",
+          "warn": 201
+        },
+        {
+          "$$hashKey": "object:316",
+          "aggregation": "Last",
+          "alias": "local-3",
+          "crit": 400,
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "decimals": 0,
+          "displayAliasType": "Warning / Critical",
+          "displayType": "Regular",
+          "displayValueWithAlias": "Never",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "measurement": "OnlineStatus",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "result_type"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "server",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085"
+            }
+          ],
+          "units": "none",
+          "valueHandler": "Number Threshold",
+          "warn": 201
+        }
+      ],
+      "timeFrom": "24h",
+      "title": "Pool Servers Online",
+      "transformations": [],
+      "transparent": true,
+      "type": "status-history"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 2,
+        "x": 22,
+        "y": 12
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 12
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.7",
+      "targets": [
+        {
+          "alias": "231",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "iptables_rules_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "iptables",
+              "operator": "=",
+              "value": "http://192.168.2.231:9455/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "iptables_rules_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "iptables",
+              "operator": "=",
+              "value": "http://192.168.2.175:9455/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "building-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "iptables_rules_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "iptables",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:9455/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "iptables_rules_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "iptables",
+              "operator": "=",
+              "value": "http://192.168.2.138:9455/metrics"
+            }
+          ]
+        }
+      ],
+      "title": "Hackers",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "axisWidth": 42,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 7,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Net Hashrate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#000aff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 32
+              },
+              {
+                "id": "unit",
+                "value": "MHs"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "group": "A",
+                  "mode": "none"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Net Difficulty"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#b759ff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "GHs"
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "group": "A",
+                  "mode": "normal"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 36
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pending-local-138"
+            },
+            "properties": [
+              {
+                "id": "custom.axisGridShow",
+                "value": true
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#f4f723",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ksols local-3"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#fcff00",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ksols local-138"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#fcf54d",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ksols Home"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#1eff00",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pending-Home-231"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#1df800",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Orphaned-Home-231"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ff0000",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "rejected-Home-231"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#f90000",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 55,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Net Hashrate",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "network_hashrate",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "X",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 1000000"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.184:9003/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "Net Difficulty",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "limit": "0",
+          "measurement": "difficulty",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "Y",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "gauge"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "pirate_wallet",
+              "operator": "=",
+              "value": "http://192.168.2.184:9003/metrics"
+            }
+          ]
+        },
+        {
+          "alias": "Ksols Building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "3m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Ksols Home",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "3m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Ksols 138-building",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "3m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "U",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://pool1.entrustus.org:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Ksols local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "3m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Pending-local-138",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "3m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "K",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.138:8087/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Pending-local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "3m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "Z",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Ksols local-3",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "AA",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_hashrate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [
+                  " / 1000000000000*2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.184:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Pending-Home-231",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_pending"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "Orphaned-Home-231",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_orphaned"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        },
+        {
+          "alias": "rejected-Home-231",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "IgsMz8inz"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "limit": "0",
+          "measurement": "poolStats",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pools_pirate-chain_blocks_blocksRejected"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "distinct"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "slimit": "0",
+          "tags": [
+            {
+              "key": "url",
+              "operator": "=",
+              "value": "http://192.168.2.231:8085/api/stats"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "title": "Hashrate, Difficulty & Blocks",
+      "transparent": true,
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d",
+      "2d",
+      "3d",
+      "7d"
+    ]
+  },
+  "timezone": "America/Chicago",
+  "title": "Pirate - Mining Pool  Monitor New",
+  "uid": "S_9kfWGnk",
+  "version": 735,
+  "weekStart": ""
+}
