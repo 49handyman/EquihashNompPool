@@ -110,9 +110,10 @@
               
              
               
-              <th colspan="1" style="text-align:center;vertical-align: middle;">
-               Wallet Port<BR> {{=it.poolsConfigs[pool].daemons[0].port}}</th>
-              
+              <th id="walletInfo" colspan="1" style="text-align:center;vertical-align: middle;">
+               Wallet Info<BR> 	{{=it.poolsConfigs[pool].daemons[0].port}}
+                	  <BR>	{{=it.poolsConfigs[pool].daemons[0].host}}
+		</th>              
             </tr>
             {{ var sortedPools = Object.keys(it.stats.pools); }}
             {{ sortedPools.sort(function(a, b) { return a.workerCount - b.workerCount; }); }}
